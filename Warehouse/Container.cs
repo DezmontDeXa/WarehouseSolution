@@ -1,30 +1,29 @@
-﻿using Google.Protobuf.Collections;
-using Ninject.Activation;
-using Ninject.Modules;
+﻿using Ninject.Modules;
 using NLog;
-using Warehouse.Data;
+using Warehouse.CameraRoles;
+using Warehouse.Initializers;
 using Warehouse.Models;
-using Warehouse.Models.Commands;
 
 namespace Warehouse
 {
     public class Container : NinjectModule
     {
-        private WarehouseDataBase _db;
-
         public override void Load()
         {
             InitLog();
-            InitDatabase();
-            InitCommands();
-            InitServices();
 
-            Bind<WarehouseDataBase>().ToConstant(_db);
+            Bind<WarehouseContext>().ToSelf().InSingletonScope();
             Bind<ILogger>().ToConstant(LogManager.GetCurrentClassLogger());
+            BindCameraRoles();
+            Bind<CameraRolesInitializer>().ToSelf();
             Bind<WarehouseSystem>().ToSelf();
         }
 
-
+        private void BindCameraRoles()
+        {
+            Bind<CameraRoleBase>().To<BeforeEnterRole>();
+            Bind<CameraRoleBase>().To<AfterEnterRole>();
+        }
 
         private void InitLog()
         {
@@ -42,44 +41,5 @@ namespace Warehouse
             LogManager.Configuration = config;
         }
 
-        private void InitDatabase()
-        {
-            _db = new WarehouseDataBase();
-
-            _db.Database.EnsureDeleted();
-            _db.Database.EnsureCreated();
-
-            var plateNumber = new PlateNumber()
-            {
-                Value = "о123оо123"
-            };
-            _db.PlateNumbers.Add(plateNumber);
-
-            var carStatus = new CarStatus()
-            {
-                Description = "Ожидается"
-            };
-            _db.Statuses.Add(carStatus);
-
-            var car = new Car()
-            {
-                CarStatus = carStatus,
-                PlateNumbers = new List<PlateNumber>() { plateNumber }
-            };
-            _db.Cars.Add(car);
-
-            // Saves changes
-            _db.SaveChanges();
-        }
-
-        private void InitCommands()
-        {
-            Bind<ChangeStatusCommand>().ToSelf();
-        }
-
-        private void InitServices()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
