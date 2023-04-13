@@ -1,7 +1,7 @@
 ﻿using Ninject;
 using Warehouse;
-using Warehouse.Initializers;
+using Warehouse.CameraRoles;
 
 var _kernel = new StandardKernel(new Container());
-_kernel.Get<CameraRolesInitializer>().Initialize();
+_kernel.Get<CameraRolesToDB>().UpdateDB();
 _kernel.Get<WarehouseSystem>().Run();

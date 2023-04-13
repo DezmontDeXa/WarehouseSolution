@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Warehouse;
+﻿namespace Warehouse.DBModels;
 
 public partial class Config
 {

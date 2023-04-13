@@ -1,4 +1,4 @@
-﻿using Warehouse.Models;
+﻿using Warehouse.DBModels;
 
 namespace Warehouse.CameraRoles
 {
@@ -6,28 +6,18 @@ namespace Warehouse.CameraRoles
     {
         public int ID { get; set; }
         public string RoleName { get; }
+        public string Name { get; protected set; }
+        public string Description { get; protected set; }
 
         public CameraRoleBase()
         {
             RoleName = GetType().Name;
         }
 
-        public void Initialize(WarehouseContext db)
+        public void UpdateDB(WarehouseContext db)
         {
-            if (!db.CameraRoles.Any(x => x.Name == RoleName))
-            {
-                db.CameraRoles.Add(new CameraRole() { Name = RoleName });
-                db.SaveChanges();
-            }
+            if (!db.CameraRoles.Any(x => x.TypeName == RoleName))
+                db.CameraRoles.Add(new CameraRole() { Name = Name, Description = Description, TypeName = RoleName });
         }
-    }
-
-    public class BeforeEnterRole : CameraRoleBase
-    {
-    }
-
-    public class AfterEnterRole : CameraRoleBase
-    {
-
     }
 }

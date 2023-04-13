@@ -1,8 +1,7 @@
 ﻿using Ninject.Modules;
 using NLog;
 using Warehouse.CameraRoles;
-using Warehouse.Initializers;
-using Warehouse.Models;
+using Warehouse.DBModels;
 
 namespace Warehouse
 {
@@ -10,13 +9,13 @@ namespace Warehouse
     {
         public override void Load()
         {
-            InitLog();
+            ConfigureLogger();
+            Bind<ILogger>().ToConstant(LogManager.GetCurrentClassLogger()).InSingletonScope();
 
             Bind<WarehouseContext>().ToSelf().InSingletonScope();
-            Bind<ILogger>().ToConstant(LogManager.GetCurrentClassLogger());
             BindCameraRoles();
-            Bind<CameraRolesInitializer>().ToSelf();
-            Bind<WarehouseSystem>().ToSelf();
+            Bind<CameraRolesToDB>().ToSelf().InSingletonScope();
+            Bind<WarehouseSystem>().ToSelf().InSingletonScope();
         }
 
         private void BindCameraRoles()
@@ -25,7 +24,7 @@ namespace Warehouse
             Bind<CameraRoleBase>().To<AfterEnterRole>();
         }
 
-        private void InitLog()
+        private void ConfigureLogger()
         {
             var config = new NLog.Config.LoggingConfiguration();
 
@@ -39,6 +38,7 @@ namespace Warehouse
 
             // Apply config           
             LogManager.Configuration = config;
+
         }
 
     }

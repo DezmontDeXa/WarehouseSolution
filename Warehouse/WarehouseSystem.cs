@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using NLog;
 using Warehouse.CameraRoles;
-using Warehouse.Models;
+using Warehouse.DBModels;
 
 namespace Warehouse
 {
@@ -15,7 +15,6 @@ namespace Warehouse
             _logger = logger;
             _db = db;
         }
-
 
         public void Run()
         {

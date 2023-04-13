@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Warehouse.Models;
+namespace Warehouse.DBModels;
 
-public partial class CameraRole
+public partial class Area
 {
     public int Id { get; set; }
 

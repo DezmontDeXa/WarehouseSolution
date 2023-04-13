@@ -1,12 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
-namespace Warehouse.Models;
-
-/// <summary>
-/// For Update use
-/// Scaffold-DbContext "Server=COMPUTER;Database=Warehouse;Trusted_Connection=True;TrustServerCertificate=true;" Microsoft.EntityFrameworkCore.SqlServer  -OutputDir Model1s
-/// In PM
-/// </summary>
+namespace Warehouse.DBModels;
 
 public partial class WarehouseContext : DbContext
 {
@@ -27,9 +23,8 @@ public partial class WarehouseContext : DbContext
 
     public virtual DbSet<Config> Configs { get; set; }
 
-
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=COMPUTER;Database=Warehouse;Trusted_Connection=True;TrustServerCertificate=true;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,8 +40,6 @@ public partial class WarehouseContext : DbContext
 
         modelBuilder.Entity<Camera>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Cameras__3214EC07D58F93B2");
-
             entity.Property(e => e.Ip)
                 .HasMaxLength(255)
                 .IsUnicode(false)
@@ -59,8 +52,15 @@ public partial class WarehouseContext : DbContext
         modelBuilder.Entity<CameraRole>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__CameraRo__3214EC07D5F38B71");
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
+            entity.Property(e => e.Description)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.Name)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.TypeName)
                 .HasMaxLength(255)
                 .IsUnicode(false);
         });
