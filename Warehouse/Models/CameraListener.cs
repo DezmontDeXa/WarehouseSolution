@@ -1,76 +1,69 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
-using Warehouse.CameraRoles;
 using Warehouse.DBModels;
 
 namespace Warehouse.Models
 {
-    public class CameraListener
+    public class CameraListener : IDisposable
     {
-        public string Url { get; }
-        private HttpClient client;
-        private StreamReader _reader;
+        public Camera Camera { get; }
 
-        public event EventHandler<NotifyBlock> OnNotification;
-        public event EventHandler<Exception> OnError;
+        public event EventHandler<CameraNotifyBlock>? OnNotification;
+        public event EventHandler<Exception>? OnError;
 
-        // Адаптировать AlertStreamListenenr 
+        private readonly HttpClient _http;
+        private readonly Uri _uri;
+        private readonly CancellationTokenSource _cts;
 
-        public CameraListener(Camera camera, CameraRoleBase cameraRole)
+        public CameraListener(Camera camera)
         {
-
-        }
-
-        public NotificationListener(string url)
-        {
-            Url = url;
-            this.client = new HttpClient();
-            Uri uri = new Uri(url);
-            if (uri.UserInfo == null)
-                return;
-            string str1 = ((IEnumerable<string>)uri.UserInfo.Split(':')).First<string>();
-            string str2 = uri.UserInfo.Replace(str1 + ":", "");
-            this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(str1 + ":" + str2)));
-        }
-
-        public async Task StartAsync()
-        {
-            using (var stream = await client.GetStreamAsync(Url))
+            Camera = camera;
+            _http = new HttpClient();
+            _uri = new Uri($"{(camera.UseSsl ? "https":"http")}://{camera.Ip}/{camera.Endpoint}");
+            if(!string.IsNullOrEmpty(camera.Login) || !string.IsNullOrEmpty(camera.Password))
             {
-                _reader = new StreamReader(stream);
-                await Task.Run(Listening);
+                _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                    "Basic", 
+                    Convert.ToBase64String(
+                        Encoding.ASCII.GetBytes(camera.Login + ":" + camera.Password)));
             }
+
+            _cts = new CancellationTokenSource();
+
+            Task.Run(Working);
         }
 
-        private void Listening()
+        private void Working()
         {
-            while (_reader != null)
+            while (!_cts.IsCancellationRequested)
             {
                 try
                 {
-                    if (_reader.ReadLine() == "--boundary")
-                    {
-                        NotifyBlock e = ReadBlock(_reader);
-                        EventHandler<NotifyBlock> onNotification = OnNotification;
-                        if (onNotification != null)
-                            onNotification(this, e);
-                    }
+                    using (var stream = _http.GetStreamAsync(_uri).Result)
+                    using (var reader = new StreamReader(stream))
+                        Listening(reader);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     OnError?.Invoke(this, ex);
-                    return;
+                    continue;
                 }
             }
         }
 
-        public void Stop()
+        private void Listening(StreamReader reader)
         {
-            this._reader.Dispose();
-            this._reader = (StreamReader)null;
+            while (!_cts.IsCancellationRequested)
+            {
+                if (reader.ReadLine() == "--boundary")
+                {
+                    CameraNotifyBlock e = ReadBlock(reader);
+                    OnNotification?.Invoke(this, e);
+                }
+            }
         }
 
-        private NotifyBlock ReadBlock(StreamReader reader)
+        private CameraNotifyBlock ReadBlock(StreamReader reader)
         {
             Dictionary<string, string> headers = this.ReadHeaders(reader);
             int result;
@@ -79,49 +72,26 @@ namespace Warehouse.Models
             char[] chArray = new char[result];
             reader.ReadBlock(chArray, 0, result);
             string content = string.Join<char>("", (IEnumerable<char>)chArray);
-            return new NotifyBlock((IReadOnlyDictionary<string, string>)headers, content);
+            return new CameraNotifyBlock((IReadOnlyDictionary<string, string>)headers, content);
         }
 
         private Dictionary<string, string> ReadHeaders(StreamReader reader)
         {
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
-            string str = "";
-            while (!str.StartsWith("Content-Length"))
+            var dictionary = new Dictionary<string, string>();
+            var line = "";
+            while (!line.StartsWith("Content-Length"))
             {
-                str = this._reader.ReadLine();
-                string[] strArray = str.Split(":;".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                if (strArray.Length >= 2)
+                line = reader.ReadLine();
+                var strArray = line?.Split(":;".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                if (strArray != null && strArray.Length >= 2)
                     dictionary.Add(strArray[0].Trim(), strArray[1].Trim());
             }
             return dictionary;
         }
-    }
-    public class NotifyBlock
-    {
-        public IReadOnlyDictionary<string, string> Headers { get; }
 
-        public string Content { get; }
-
-        public byte[] ContentBytes { get; }
-
-        public string ContentType { get; }
-
-        public NotifyBlock(IReadOnlyDictionary<string, string> headers, byte[] contentBytes)
+        public void Dispose()
         {
-            this.Headers = headers;
-            this.ContentBytes = contentBytes;
-            this.Content = Encoding.UTF8.GetString(contentBytes);
-            this.ContentType = headers["Content-Type"];
+            _cts.Cancel();
         }
-
-        public NotifyBlock(IReadOnlyDictionary<string, string> headers, string content)
-        {
-            this.Headers = headers;
-            this.ContentBytes = Encoding.UTF8.GetBytes(content);
-            this.Content = content;
-            this.ContentType = headers["Content-Type"];
-        }
-
-        public override string ToString() => "ContentType: " + this.ContentType + "\r\nContent: " + this.Content + "\r\n";
     }
 }

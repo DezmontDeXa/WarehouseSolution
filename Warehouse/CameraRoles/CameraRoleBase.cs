@@ -14,7 +14,7 @@ namespace Warehouse.CameraRoles
             RoleName = GetType().Name;
         }
 
-        public void UpdateDB(WarehouseContext db)
+        public void Execute(WarehouseContext db)
         {
             if (!db.CameraRoles.Any(x => x.TypeName == RoleName))
                 db.CameraRoles.Add(new CameraRole() { Name = Name, Description = Description, TypeName = RoleName });

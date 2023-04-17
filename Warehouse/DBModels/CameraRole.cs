@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Warehouse.DBModels;
+﻿namespace Warehouse.DBModels;
 
 public partial class CameraRole
 {

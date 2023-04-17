@@ -13,10 +13,10 @@ namespace Warehouse.CameraRoles
             this.cameraRoles = cameraRoles;
         }
 
-        public void UpdateDB()
+        public void AddExistingCameraRolesToDB()
         {
             foreach (var role in cameraRoles)
-                role.UpdateDB(db);
+                role.Execute(db);
 
             db.SaveChanges();
         }
