@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Warehouse.DBModels;
+namespace Warehouse;
 
 public partial class WarehouseContext : DbContext
 {
@@ -13,9 +13,12 @@ public partial class WarehouseContext : DbContext
     public WarehouseContext(DbContextOptions<WarehouseContext> options)
         : base(options)
     {
+        //Scaffold-DbContext "Server=COMPUTER;Database=Warehouse;Trusted_Connection=True;TrustServerCertificate=true;" Microsoft.EntityFrameworkCore.SqlServer
     }
 
     public virtual DbSet<Area> Areas { get; set; }
+
+    public virtual DbSet<Barrier> Barriers { get; set; }
 
     public virtual DbSet<Camera> Cameras { get; set; }
 
@@ -38,21 +41,42 @@ public partial class WarehouseContext : DbContext
                 .IsUnicode(false);
         });
 
+        modelBuilder.Entity<Barrier>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Barriers__3214EC07B1726FF3");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Name)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.OpenLink)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<Camera>(entity =>
         {
+            entity.Property(e => e.Endpoint)
+                .HasMaxLength(150)
+                .IsUnicode(false);
             entity.Property(e => e.Ip)
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("IP");
+            entity.Property(e => e.Login)
+                .HasMaxLength(150)
+                .IsUnicode(false);
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.Password)
+                .HasMaxLength(150)
                 .IsUnicode(false);
         });
 
         modelBuilder.Entity<CameraRole>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__CameraRo__3214EC07D5F38B71");
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
             entity.Property(e => e.Description)
                 .HasMaxLength(255)
@@ -71,6 +95,7 @@ public partial class WarehouseContext : DbContext
 
             entity.ToTable("Config");
 
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.Key)
                 .HasMaxLength(255)
                 .IsUnicode(false);

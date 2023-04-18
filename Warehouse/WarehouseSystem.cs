@@ -1,7 +1,6 @@
 ﻿using NLog;
-using Warehouse.CameraRoles;
-using Warehouse.DBModels;
-using Warehouse.Models;
+using Warehouse.Models.CameraRoles;
+using Warehouse.Services;
 
 namespace Warehouse
 {
@@ -9,7 +8,7 @@ namespace Warehouse
     {
         private readonly ILogger _logger;
         private readonly WarehouseContext _db;
-        private readonly List<CameraListener> _cameraListeners;
+        private readonly List<CameraListenerService> _cameraListeners;
         private readonly List<CameraRoleBase> _cameraRoles;
 
         public WarehouseSystem(ILogger logger, WarehouseContext db, List<CameraRoleBase> cameraRoles)
@@ -17,7 +16,7 @@ namespace Warehouse
             _logger = logger;
             _db = db;
             _cameraRoles = cameraRoles;
-            _cameraListeners = new List<CameraListener>();
+            _cameraListeners = new List<CameraListenerService>();
         }
 
         public void Run()
@@ -30,7 +29,7 @@ namespace Warehouse
             foreach (var cameraEntity in _db.Cameras)
             {
                 if (cameraEntity == null) continue;
-                var listener = new CameraListener(cameraEntity);
+                var listener = new CameraListenerService(cameraEntity);
                 _cameraListeners.Add(listener);
                 listener.OnNotification += Listener_OnNotification;
                 listener.OnError += Listener_OnError;
@@ -39,17 +38,18 @@ namespace Warehouse
 
         private void Listener_OnError(object? sender, Exception e)
         {
-            var listener = (CameraListener)sender;
+            var listener = (CameraListenerService)sender;
             _logger.Error($"Error while listening {listener.Camera.Name}. Listener will be restarted.");
         }
 
         private void Listener_OnNotification(object? sender, CameraNotifyBlock e)
         {
-            if(TryGetCameraRole((CameraListener)sender, out var cameraRole))
-                cameraRole.Execute(_db);
+            var listener = (CameraListenerService)sender; 
+            if (TryGetCameraRole(listener, out var cameraRole))
+                cameraRole.Execute(listener.Camera);
         }
 
-        private bool TryGetCameraRole(CameraListener listener, out CameraRoleBase cameraRole)
+        private bool TryGetCameraRole(CameraListenerService listener, out CameraRoleBase cameraRole)
         {
             cameraRole = null;
 

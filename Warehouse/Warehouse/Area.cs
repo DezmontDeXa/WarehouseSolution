@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Warehouse.DBModels;
+namespace Warehouse;
 
 public partial class Area
 {

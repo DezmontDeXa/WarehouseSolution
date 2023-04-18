@@ -1,6 +1,7 @@
 ﻿using Warehouse.DBModels;
+using Warehouse.Warehouse;
 
-namespace Warehouse.CameraRoles
+namespace Warehouse.Models.CameraRoles
 {
     public class CameraRolesToDB
     {
@@ -16,7 +17,7 @@ namespace Warehouse.CameraRoles
         public void AddExistingCameraRolesToDB()
         {
             foreach (var role in cameraRoles)
-                role.Execute(db);
+                role.AddThatRoleToDB(db);
 
             db.SaveChanges();
         }

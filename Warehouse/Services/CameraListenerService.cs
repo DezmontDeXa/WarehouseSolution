@@ -1,10 +1,9 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
-using Warehouse.DBModels;
 
-namespace Warehouse.Models
+namespace Warehouse.Services
 {
-    public class CameraListener : IDisposable
+    public class CameraListenerService : IDisposable
     {
         public Camera Camera { get; }
 
@@ -15,15 +14,15 @@ namespace Warehouse.Models
         private readonly Uri _uri;
         private readonly CancellationTokenSource _cts;
 
-        public CameraListener(Camera camera)
+        public CameraListenerService(Camera camera)
         {
             Camera = camera;
             _http = new HttpClient();
-            _uri = new Uri($"{(camera.UseSsl ? "https":"http")}://{camera.Ip}/{camera.Endpoint}");
-            if(!string.IsNullOrEmpty(camera.Login) || !string.IsNullOrEmpty(camera.Password))
+            _uri = new Uri($"{(camera.UseSsl ? "https" : "http")}://{camera.Ip}/{camera.Endpoint}");
+            if (!string.IsNullOrEmpty(camera.Login) || !string.IsNullOrEmpty(camera.Password))
             {
                 _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                    "Basic", 
+                    "Basic",
                     Convert.ToBase64String(
                         Encoding.ASCII.GetBytes(camera.Login + ":" + camera.Password)));
             }
@@ -43,7 +42,7 @@ namespace Warehouse.Models
                     using (var reader = new StreamReader(stream))
                         Listening(reader);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     OnError?.Invoke(this, ex);
                     continue;
@@ -65,14 +64,14 @@ namespace Warehouse.Models
 
         private CameraNotifyBlock ReadBlock(StreamReader reader)
         {
-            Dictionary<string, string> headers = this.ReadHeaders(reader);
+            Dictionary<string, string> headers = ReadHeaders(reader);
             int result;
             if (!int.TryParse(headers["Content-Length"], out result))
                 throw new Exception("Пустой блок даннных.");
-            char[] chArray = new char[result];
+            var chArray = new char[result];
             reader.ReadBlock(chArray, 0, result);
-            string content = string.Join<char>("", (IEnumerable<char>)chArray);
-            return new CameraNotifyBlock((IReadOnlyDictionary<string, string>)headers, content);
+            var content = string.Join("", chArray);
+            return new CameraNotifyBlock(headers, content);
         }
 
         private Dictionary<string, string> ReadHeaders(StreamReader reader)
@@ -93,5 +92,34 @@ namespace Warehouse.Models
         {
             _cts.Cancel();
         }
+
+    }
+    public class CameraNotifyBlock
+    {
+        public IReadOnlyDictionary<string, string> Headers { get; }
+
+        public string Content { get; }
+
+        public byte[] ContentBytes { get; }
+
+        public string ContentType { get; }
+
+        public CameraNotifyBlock(IReadOnlyDictionary<string, string> headers, byte[] contentBytes)
+        {
+            Headers = headers;
+            ContentBytes = contentBytes;
+            Content = Encoding.UTF8.GetString(contentBytes);
+            ContentType = headers["Content-Type"];
+        }
+
+        public CameraNotifyBlock(IReadOnlyDictionary<string, string> headers, string content)
+        {
+            Headers = headers;
+            ContentBytes = Encoding.UTF8.GetBytes(content);
+            Content = content;
+            ContentType = headers["Content-Type"];
+        }
+
+        public override string ToString() => "ContentType: " + ContentType + "\r\nContent: " + Content + "\r\n";
     }
 }

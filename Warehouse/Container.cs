@@ -1,7 +1,7 @@
 ﻿using Ninject.Modules;
 using NLog;
-using Warehouse.CameraRoles;
-using Warehouse.DBModels;
+using Warehouse.Models.CameraRoles;
+using Warehouse.Services;
 
 namespace Warehouse
 {
@@ -15,6 +15,7 @@ namespace Warehouse
             Bind<WarehouseContext>().ToSelf().InSingletonScope();
             BindCameraRoles();
             Bind<CameraRolesToDB>().ToSelf().InSingletonScope();
+            Bind<WaitingListsService>().ToSelf().InSingletonScope();
             Bind<WarehouseSystem>().ToSelf().InSingletonScope();
         }
 
