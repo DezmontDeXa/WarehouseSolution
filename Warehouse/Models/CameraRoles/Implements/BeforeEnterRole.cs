@@ -17,7 +17,7 @@ namespace Warehouse.Models.CameraRoles.Implements
 
         protected override void OnExecute(Camera camera, CameraNotifyBlock notifyBlock)
         {
-            var accessType = _waitingListsService.GetAccessType()
+            //var accessType = _waitingListsService.GetAccessType(notifyBlock.)
 
             // TODO: Проверить номер по спискам (_waitingListsService)
             // TODO: Открыть шлагбаум, если машина в списках. 
