@@ -24,11 +24,11 @@ namespace Warehouse.Models.CameraRoles
                 db.CameraRoles.Add(new CameraRole() { Name = Name, Description = Description, TypeName = RoleName });
         }
 
-        public void Execute(Camera camera)
+        public void Execute(Camera camera, Services.CameraNotifyBlock notifyBlock)
         {
             try
             {
-                OnExecute(camera);
+                OnExecute(camera, notifyBlock);
             }
             catch (Exception ex)
             {
@@ -37,6 +37,6 @@ namespace Warehouse.Models.CameraRoles
             }
         }
 
-        protected abstract void OnExecute(Camera camera);
+        protected abstract void OnExecute(Camera camera, Services.CameraNotifyBlock notifyBlock);
     }
 }

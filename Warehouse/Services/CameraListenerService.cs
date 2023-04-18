@@ -95,6 +95,7 @@ namespace Warehouse.Services
         }
 
     }
+
     public class CameraNotifyBlock
     {
         public IReadOnlyDictionary<string, string> Headers { get; }

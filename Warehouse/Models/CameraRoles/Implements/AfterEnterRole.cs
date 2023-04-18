@@ -2,7 +2,7 @@
 using Warehouse.DataBaseModels;
 using Warehouse.Services;
 
-namespace Warehouse.Models.CameraRoles
+namespace Warehouse.Models.CameraRoles.Implements
 {
     public class AfterEnterRole : CameraRoleBase
     {
@@ -15,7 +15,7 @@ namespace Warehouse.Models.CameraRoles
             _waitingListsService = waitingListsService;
         }
 
-        protected override void OnExecute(Camera camera)
+        protected override void OnExecute(Camera camera, CameraNotifyBlock notifyBlock)
         {
             // TODO: Проверить номер по спискам (_waitingListsService)
             // TODO: Сменить статус - "Ожидает первое взвешивание"

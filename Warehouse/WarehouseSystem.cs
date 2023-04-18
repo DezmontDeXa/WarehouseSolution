@@ -1,7 +1,7 @@
 ﻿using NLog;
+using Warehouse.Services;
 using Warehouse.DataBaseModels;
 using Warehouse.Models.CameraRoles;
-using Warehouse.Services;
 
 namespace Warehouse
 {
@@ -23,8 +23,7 @@ namespace Warehouse
 
         public void Run()
         {
-            RunCameras();
-            RunBarriers();
+            RunCameras();            
         }
 
         private void RunCameras()
@@ -39,27 +38,17 @@ namespace Warehouse
             }
         }
 
-        private void RunBarriers()
-        {
-            foreach (var barrierEntity in _db.BarrierInfos)
-            {
-                if (barrierEntity == null) continue;
-                var barrierService = new BarrierService(barrierEntity);
-                _barrierServices.Add(barrierService);
-            }
-        }
-
         private void Listener_OnError(object? sender, Exception e)
         {
             var listener = (CameraListenerService)sender;
             _logger.Error($"Error while listening {listener.Camera.Name}. Listener will be restarted.");
         }
 
-        private void Listener_OnNotification(object? sender, CameraNotifyBlock e)
+        private void Listener_OnNotification(object? sender, CameraNotifyBlock notifyBlock)
         {
             var listener = (CameraListenerService)sender; 
             if (TryGetCameraRole(listener, out var cameraRole))
-                cameraRole.Execute(listener.Camera);
+                cameraRole.Execute(listener.Camera, notifyBlock);
         }
 
         private bool TryGetCameraRole(CameraListenerService listener, out CameraRoleBase cameraRole)

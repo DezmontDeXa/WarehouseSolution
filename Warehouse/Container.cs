@@ -2,6 +2,7 @@
 using NLog;
 using Warehouse.DataBaseModels;
 using Warehouse.Models.CameraRoles;
+using Warehouse.Models.CameraRoles.Implements;
 using Warehouse.Services;
 
 namespace Warehouse
@@ -12,10 +13,9 @@ namespace Warehouse
         {
             ConfigureLogger();
             Bind<ILogger>().ToConstant(LogManager.GetCurrentClassLogger()).InSingletonScope();
-
             Bind<WarehouseContext>().ToSelf().InSingletonScope();
             BindCameraRoles();
-            Bind<CameraRolesToDB>().ToSelf().InSingletonScope();
+            Bind<BarrierService>().ToSelf().InSingletonScope();
             Bind<WaitingListsService>().ToSelf().InSingletonScope();
             Bind<WarehouseSystem>().ToSelf().InSingletonScope();
         }
@@ -24,6 +24,7 @@ namespace Warehouse
         {
             Bind<CameraRoleBase>().To<BeforeEnterRole>();
             Bind<CameraRoleBase>().To<AfterEnterRole>();
+            Bind<CameraRolesToDB>().ToSelf().InSingletonScope();
         }
 
         private void ConfigureLogger()

@@ -2,7 +2,7 @@
 using Warehouse.DataBaseModels;
 using Warehouse.Services;
 
-namespace Warehouse.Models.CameraRoles
+namespace Warehouse.Models.CameraRoles.Implements
 {
     public class BeforeEnterRole : CameraRoleBase
     {
@@ -15,8 +15,10 @@ namespace Warehouse.Models.CameraRoles
             _waitingListsService = waitingListsService;
         }
 
-        protected override void OnExecute(Camera camera)
+        protected override void OnExecute(Camera camera, CameraNotifyBlock notifyBlock)
         {
+            var accessType = _waitingListsService.GetAccessType()
+
             // TODO: Проверить номер по спискам (_waitingListsService)
             // TODO: Открыть шлагбаум, если машина в списках. 
             // TODO: Если пустили машину - сменить статус - "На въезде"
