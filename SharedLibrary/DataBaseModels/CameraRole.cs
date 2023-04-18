@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Warehouse.DataBaseModels;
+namespace Warehouse.SharedLibrary;
 
 public partial class CameraRole
 {

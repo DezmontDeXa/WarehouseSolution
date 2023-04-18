@@ -1,6 +1,6 @@
 ﻿using Ninject.Modules;
 using NLog;
-using Warehouse.DataBaseModels;
+using Warehouse.SharedLibrary;
 using Warehouse.Models.CameraRoles;
 using Warehouse.Models.CameraRoles.Implements;
 using Warehouse.Services;

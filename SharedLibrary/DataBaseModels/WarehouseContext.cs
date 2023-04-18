@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Warehouse.DataBaseModels;
+namespace Warehouse.SharedLibrary;
 
 public partial class WarehouseContext : DbContext
 {

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Warehouse.DataBaseModels;
+namespace Warehouse.SharedLibrary;
 
-public partial class WaitingList
+public partial class CarState
 {
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
-
-    public int AccessGrantType { get; set; }
 }

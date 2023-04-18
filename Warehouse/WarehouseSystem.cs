@@ -1,6 +1,6 @@
 ﻿using NLog;
 using Warehouse.Services;
-using Warehouse.DataBaseModels;
+using Warehouse.SharedLibrary;
 using Warehouse.Models.CameraRoles;
 
 namespace Warehouse

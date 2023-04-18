@@ -1,5 +1,5 @@
 ﻿using NLog;
-using Warehouse.DataBaseModels;
+using Warehouse.SharedLibrary;
 
 namespace Warehouse.Services
 {

@@ -1,5 +1,5 @@
 ﻿using NLog;
-using Warehouse.DataBaseModels;
+using Warehouse.SharedLibrary;
 using Warehouse.Services;
 
 namespace Warehouse.Models.CameraRoles.Implements
