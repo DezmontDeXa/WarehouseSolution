@@ -1,4 +1,6 @@
-﻿namespace Warehouse.Services
+﻿using Warehouse.DataBaseModels;
+
+namespace Warehouse.Services
 {
     /// <summary>
     /// Check platenumber has access

@@ -1,4 +1,5 @@
 ﻿using NLog;
+using Warehouse.DataBaseModels;
 using Warehouse.Services;
 
 namespace Warehouse.Models.CameraRoles

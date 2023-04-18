@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Warehouse;
+namespace Warehouse.DataBaseModels;
 
 public partial class WarehouseContext : DbContext
 {
@@ -13,12 +13,11 @@ public partial class WarehouseContext : DbContext
     public WarehouseContext(DbContextOptions<WarehouseContext> options)
         : base(options)
     {
-        //Scaffold-DbContext "Server=COMPUTER;Database=Warehouse;Trusted_Connection=True;TrustServerCertificate=true;" Microsoft.EntityFrameworkCore.SqlServer
     }
 
     public virtual DbSet<Area> Areas { get; set; }
 
-    public virtual DbSet<Barrier> Barriers { get; set; }
+    public virtual DbSet<BarrierInfo> BarrierInfos { get; set; }
 
     public virtual DbSet<Camera> Cameras { get; set; }
 
@@ -41,15 +40,21 @@ public partial class WarehouseContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<Barrier>(entity =>
+        modelBuilder.Entity<BarrierInfo>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Barriers__3214EC07B1726FF3");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Login)
+                .HasMaxLength(255)
+                .IsUnicode(false);
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .IsUnicode(false);
-            entity.Property(e => e.OpenLink)
+            entity.Property(e => e.Password)
+                .HasMaxLength(255)
+                .IsUnicode(false);
+            entity.Property(e => e.Uri)
                 .HasMaxLength(255)
                 .IsUnicode(false);
         });

@@ -1,4 +1,5 @@
 ﻿using NLog;
+using Warehouse.DataBaseModels;
 using Warehouse.Models.CameraRoles;
 using Warehouse.Services;
 
@@ -10,6 +11,7 @@ namespace Warehouse
         private readonly WarehouseContext _db;
         private readonly List<CameraListenerService> _cameraListeners;
         private readonly List<CameraRoleBase> _cameraRoles;
+        private readonly List<BarrierService> _barrierServices;
 
         public WarehouseSystem(ILogger logger, WarehouseContext db, List<CameraRoleBase> cameraRoles)
         {
@@ -22,6 +24,7 @@ namespace Warehouse
         public void Run()
         {
             RunCameras();
+            RunBarriers();
         }
 
         private void RunCameras()
@@ -33,6 +36,16 @@ namespace Warehouse
                 _cameraListeners.Add(listener);
                 listener.OnNotification += Listener_OnNotification;
                 listener.OnError += Listener_OnError;
+            }
+        }
+
+        private void RunBarriers()
+        {
+            foreach (var barrierEntity in _db.BarrierInfos)
+            {
+                if (barrierEntity == null) continue;
+                var barrierService = new BarrierService(barrierEntity);
+                _barrierServices.Add(barrierService);
             }
         }
 

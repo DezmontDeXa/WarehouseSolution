@@ -1,5 +1,5 @@
-﻿using Ninject;
-using NLog;
+﻿using NLog;
+using Warehouse.DataBaseModels;
 
 namespace Warehouse.Models.CameraRoles
 {

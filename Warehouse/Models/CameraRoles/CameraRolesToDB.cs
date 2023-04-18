@@ -1,5 +1,4 @@
-﻿using Warehouse.DBModels;
-using Warehouse.Warehouse;
+﻿using Warehouse.DataBaseModels;
 
 namespace Warehouse.Models.CameraRoles
 {
