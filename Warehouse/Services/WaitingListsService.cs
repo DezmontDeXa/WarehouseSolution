@@ -14,14 +14,14 @@ namespace Warehouse.Services
         public WaitingListsService(WarehouseContext db, ILogger logger)
         {
             _db = db;
-            this._logger = logger;
+            _logger = logger;
         }
 
         public AccessGrantType GetAccessType(string plateNumber)
         {
             try
             {
-                Car car = FindCar(plateNumber);
+                var car = FindCar(plateNumber);
                 var includs = new List<WaitingList>();
 
                 foreach (var waitingList in _db.WaitingLists)
