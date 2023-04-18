@@ -11,7 +11,6 @@ namespace Warehouse
         private readonly WarehouseContext _db;
         private readonly List<CameraListenerService> _cameraListeners;
         private readonly List<CameraRoleBase> _cameraRoles;
-        private readonly List<BarrierService> _barrierServices;
 
         public WarehouseSystem(ILogger logger, WarehouseContext db, List<CameraRoleBase> cameraRoles)
         {
