@@ -16,6 +16,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manuals", "Manuals", "{7DC5
 		Scafollding.txt = Scafollding.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data Samples", "Data Samples", "{6A824180-1DBF-43CD-B9F5-D7366CBB2DE6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AlertStreamSamples", "AlertStreamSamples", "{59B90C28-FAB3-4874-A09B-E527DF51E56F}"
+	ProjectSection(SolutionItems) = preProject
+		Car1.xml = Car1.xml
+		car2.xml = car2.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +48,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E5CA8601-2668-4E7E-8294-3CD03A283B9C} = {0EA37DFF-3360-4B1E-90DC-071B1725CEC6}
+		{6A824180-1DBF-43CD-B9F5-D7366CBB2DE6} = {7DC5061C-38A3-44C5-9813-AA37D7F6787C}
+		{59B90C28-FAB3-4874-A09B-E527DF51E56F} = {6A824180-1DBF-43CD-B9F5-D7366CBB2DE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC663EF5-B8BD-453E-9574-7A8375B37941}
