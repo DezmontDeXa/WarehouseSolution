@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Warehouse.SharedLibrary;
+namespace SharedLibrary.DataBaseModels;
 
 public partial class Config
 {

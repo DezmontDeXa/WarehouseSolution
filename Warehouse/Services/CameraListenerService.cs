@@ -1,6 +1,9 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
-using Warehouse.SharedLibrary;
+using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Linq;
+using SharedLibrary.DataBaseModels;
 
 namespace Warehouse.Services
 {
@@ -19,15 +22,25 @@ namespace Warehouse.Services
         {
             Camera = camera;
             _http = new HttpClient();
-            _uri = new Uri($"{(camera.UseSsl ? "https" : "http")}://{camera.Ip}/{camera.Endpoint}");
+            var uriString = $"{camera.Ip}/{camera.Endpoint}";
+
+            //http://camera:lomar010@85.172.107.39:9929/ISAPI/Event/notification/alertStream
             if (!string.IsNullOrEmpty(camera.Login) || !string.IsNullOrEmpty(camera.Password))
             {
                 _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                     "Basic",
                     Convert.ToBase64String(
                         Encoding.ASCII.GetBytes(camera.Login + ":" + camera.Password)));
-            }
 
+                uriString = $"{camera.Login}:{camera.Password}@{uriString}";
+            }
+            //_http.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+            //_http.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate");
+            //_http.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36");
+
+            uriString = $"{(camera.UseSsl ? "https" : "http")}://{uriString}";
+
+            _uri = new Uri(uriString);
             _cts = new CancellationTokenSource();
 
             Task.Run(Working);
@@ -89,6 +102,20 @@ namespace Warehouse.Services
             return dictionary;
         }
 
+#if DEBUG
+
+        public void SendTestData()
+        {
+            OnNotification?.Invoke(this,
+                new CameraNotifyBlock(
+                    new Dictionary<string, string>()
+                    {
+                        { "Content-Type", "TestContent" }
+                    },
+                    File.ReadAllText("TestData/TestCameraNotifyBlock.xml")));
+        }
+#endif
+
         public void Dispose()
         {
             _cts.Cancel();
@@ -106,13 +133,11 @@ namespace Warehouse.Services
 
         public string ContentType { get; }
 
-        public CameraNotifyBlock(IReadOnlyDictionary<string, string> headers, byte[] contentBytes)
-        {
-            Headers = headers;
-            ContentBytes = contentBytes;
-            Content = Encoding.UTF8.GetString(contentBytes);
-            ContentType = headers["Content-Type"];
-        }
+        public XmlDocument XmlDocument { get; }
+
+        public XmlElement XmlDocumentRoot { get; }
+
+        public string? EventType { get; }
 
         public CameraNotifyBlock(IReadOnlyDictionary<string, string> headers, string content)
         {
@@ -120,6 +145,16 @@ namespace Warehouse.Services
             ContentBytes = Encoding.UTF8.GetBytes(content);
             Content = content;
             ContentType = headers["Content-Type"];
+
+            XmlDocument = new XmlDocument();
+            XmlDocument.LoadXml(Content);
+            XmlDocumentRoot = XmlDocument.DocumentElement;
+
+            //var nsmgr = new XmlNamespaceManager(XmlDocument.NameTable);
+            //nsmgr.AddNamespace("hik", "http://www.hikvision.com/ver20/XMLSchema");
+            //XmlDocument.Prefix = "hik";
+
+            EventType = XmlDocumentRoot["eventType"]?.InnerText; 
         }
 
         public override string ToString() => "ContentType: " + ContentType + "\r\nContent: " + Content + "\r\n";

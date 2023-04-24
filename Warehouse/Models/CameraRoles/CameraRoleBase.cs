@@ -1,11 +1,11 @@
 ﻿using NLog;
-using Warehouse.SharedLibrary;
+using Warehouse.Services;
+using SharedLibrary.DataBaseModels;
 
 namespace Warehouse.Models.CameraRoles
 {
     public abstract class CameraRoleBase
     {
-        public int ID { get; set; }
         public string RoleName { get; }
         public string Name { get; protected set; }
         public string Description { get; protected set; }
@@ -24,10 +24,14 @@ namespace Warehouse.Models.CameraRoles
                 db.CameraRoles.Add(new CameraRole() { Name = Name, Description = Description, TypeName = RoleName });
         }
 
-        public void Execute(Camera camera, Services.CameraNotifyBlock notifyBlock)
+        public void Execute(Camera camera, CameraNotifyBlock notifyBlock)
         {
             try
             {
+                // Skip all except Car detected
+                if (notifyBlock.EventType != "ANPR")
+                    return;
+
                 OnExecute(camera, notifyBlock);
             }
             catch (Exception ex)
@@ -37,6 +41,17 @@ namespace Warehouse.Models.CameraRoles
             }
         }
 
-        protected abstract void OnExecute(Camera camera, Services.CameraNotifyBlock notifyBlock);
+        protected string GetPlateNumber(CameraNotifyBlock block)
+        {
+            return block.XmlDocumentRoot["ANPR"]["licensePlate"]?.InnerText;
+        }
+
+        protected string GetDirection(CameraNotifyBlock block)
+        {
+            return block.XmlDocumentRoot["ANPR"]["direction"]?.InnerText;
+            //return block.XmlDocument.SelectSingleNode("//EventNotificationAlert/ANPR/direction")?.InnerText;
+        }
+
+        protected abstract void OnExecute(Camera camera, CameraNotifyBlock notifyBlock);
     }
 }

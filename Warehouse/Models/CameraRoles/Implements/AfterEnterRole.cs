@@ -1,5 +1,5 @@
 ﻿using NLog;
-using Warehouse.SharedLibrary;
+using SharedLibrary.DataBaseModels;
 using Warehouse.Services;
 
 namespace Warehouse.Models.CameraRoles.Implements
@@ -17,6 +17,10 @@ namespace Warehouse.Models.CameraRoles.Implements
 
         protected override void OnExecute(Camera camera, CameraNotifyBlock notifyBlock)
         {
+            var plateNumber = GetPlateNumber(notifyBlock);
+            var direction = GetDirection(notifyBlock);
+
+            return;
             // TODO: Проверить номер по спискам (_waitingListsService)
             // TODO: Сменить статус - "Ожидает первое взвешивание"
             // TODO: Отсыпать в лог, если статус машины не "На въезде"

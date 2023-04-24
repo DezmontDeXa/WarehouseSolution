@@ -5,18 +5,20 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:WarehouseCheckpointClient.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Margin="5"
     d:DesignHeight="450"
-    d:DesignWidth="800" Margin="5"
+    d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid >
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
         <Label Content="{Binding Title}" Style="{StaticResource Header1}" />
-        <ListView Background="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Background}"
+        <ListView
             x:Name="CarList"
             Grid.Row="1"
+            Background="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Background}"
             ItemsSource="{Binding Cars}" />
     </Grid>
 </UserControl>

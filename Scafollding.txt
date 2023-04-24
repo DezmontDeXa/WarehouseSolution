@@ -1,0 +1,1 @@
+Scaffold-DbContext "Server=COMPUTER;Database=Warehouse;Trusted_Connection=True;TrustServerCertificate=true;MultipleActiveResultSets=True;" Microsoft.EntityFrameworkCore.SqlServer -f -OutputDir DataBaseModels

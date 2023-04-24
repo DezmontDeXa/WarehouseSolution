@@ -1,5 +1,6 @@
-﻿using NLog;
-using Warehouse.SharedLibrary;
+﻿using Microsoft.EntityFrameworkCore;
+using NLog;
+using SharedLibrary.DataBaseModels;
 
 namespace Warehouse.Services
 {
@@ -17,30 +18,22 @@ namespace Warehouse.Services
             _logger = logger;
         }
 
-        public AccessGrantType GetAccessType(string plateNumber)
+        public CarAccessInfo GetAccessTypeInfo(string plateNumber)
         {
             try
             {
                 var car = FindCar(plateNumber);
-                var includs = new List<WaitingList>();
+                if (car == null)
+                    return new CarAccessInfo(null, null);
 
-                foreach (var waitingList in _db.WaitingLists)
-                {
-                    foreach (var pair in _db.WaitingListToCars)
-                    {
-                        if (pair.CarId == car.Id)
-                        {
-                            includs.Add(waitingList);
-                            break;
-                        }
-                    }
-                }
+                var includs = car.WaitingLists.OrderByDescending(x=>x.AccessGrantType).ToList();
 
                 if (includs.Count == 0)
-                    return AccessGrantType.None;
+                    return new CarAccessInfo(car, null);
 
-                return (AccessGrantType)includs.Select(x => x.AccessGrantType).Max();
-            }catch(Exception ex)
+                return new CarAccessInfo(car, includs.First());
+            }
+            catch (Exception ex)
             {
                 _logger.Error($"Failed on getting car access type for plateNumber {plateNumber}. Exception: {ex}");
                 throw;
@@ -49,28 +42,36 @@ namespace Warehouse.Services
 
         private Car FindCar(string plateNumber)
         {
-            foreach (var car in _db.Cars)
+            foreach (var car in _db.Cars.Include(x => x.WaitingLists))
             {
                 if (car == null) continue;
                 if (car.PlateNumberForward == plateNumber)
                     return car;
                 if (car.PlateNumberBackward == plateNumber)
                     return car;
-                foreach (var similar in car.PlateNumberSimilars.Split(new char[] {','}))
-                {
-                    if (similar == plateNumber)
-                        return car;
-                }
+
+                if (car.PlateNumberSimilars != null)
+                    foreach (var similar in car.PlateNumberSimilars.Split(new char[] { ',' }))
+                        if (similar == plateNumber)
+                            return car;
             }
 
             return null;
         }
     }
 
-    public enum AccessGrantType
+    public class CarAccessInfo
     {
-        None = -1,
-        Free = 0,
-        Tracked = 1
+        public CarAccessInfo(Car car, WaitingList list)
+        {
+            Car = car;
+            List = list;
+            AccessType = list?.AccessGrantType;
+        }
+
+        public Car Car { get; }
+        public WaitingList? List { get; }
+        public AccessGrantType? AccessType { get; }
     }
+
 }

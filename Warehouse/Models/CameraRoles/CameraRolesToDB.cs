@@ -1,4 +1,4 @@
-﻿using Warehouse.SharedLibrary;
+﻿using SharedLibrary.DataBaseModels;
 
 namespace Warehouse.Models.CameraRoles
 {

@@ -1,6 +1,6 @@
 ﻿using NLog;
 using Warehouse.Services;
-using Warehouse.SharedLibrary;
+using SharedLibrary.DataBaseModels;
 using Warehouse.Models.CameraRoles;
 
 namespace Warehouse
@@ -11,6 +11,7 @@ namespace Warehouse
         private readonly WarehouseContext _db;
         private readonly List<CameraListenerService> _cameraListeners;
         private readonly List<CameraRoleBase> _cameraRoles;
+        private readonly Dictionary<CameraListenerService, CameraRoleBase> _cameraRolesMap;
 
         public WarehouseSystem(ILogger logger, WarehouseContext db, List<CameraRoleBase> cameraRoles)
         {
@@ -18,6 +19,7 @@ namespace Warehouse
             _db = db;
             _cameraRoles = cameraRoles;
             _cameraListeners = new List<CameraListenerService>();
+            _cameraRolesMap = new Dictionary<CameraListenerService, CameraRoleBase>();
         }
 
         public void Run()
@@ -32,43 +34,39 @@ namespace Warehouse
                 if (cameraEntity == null) continue;
                 var listener = new CameraListenerService(cameraEntity);
                 _cameraListeners.Add(listener);
+                _cameraRolesMap.Add(listener, GetCameraRole(cameraEntity.CameraRole));
                 listener.OnNotification += Listener_OnNotification;
                 listener.OnError += Listener_OnError;
+
+#if DEBUG
+                Task.Run(() =>
+                {
+                    while (true)
+                    {
+                        Task.Delay(2000).Wait();
+                        listener.SendTestData();
+                    }
+                });
+#endif
             }
+        }
+
+        private CameraRoleBase GetCameraRole(CameraRole role)
+        {
+            return _cameraRoles.FirstOrDefault(x => x.GetType().Name == role.TypeName);
         }
 
         private void Listener_OnError(object? sender, Exception e)
         {
             var listener = (CameraListenerService)sender;
-            _logger.Error($"Error while listening {listener.Camera.Name}. Listener will be restarted.");
+            _logger.Error($"Error while listening {listener.Camera.Name}. Exception: {e}. Listener will be restarted.");
         }
 
         private void Listener_OnNotification(object? sender, CameraNotifyBlock notifyBlock)
         {
-            var listener = (CameraListenerService)sender; 
-            if (TryGetCameraRole(listener, out var cameraRole))
-                cameraRole.Execute(listener.Camera, notifyBlock);
-        }
-
-        private bool TryGetCameraRole(CameraListenerService listener, out CameraRoleBase cameraRole)
-        {
-            cameraRole = null;
-
-            var roleId = listener.Camera.RoleId;
-            var cameraRoleEntity = _db.CameraRoles.FirstOrDefault(x => x.Id == roleId);
-            if (cameraRoleEntity == null)
-            {
-                _logger.Error($"Failed to execute camera role action. Camera: {listener.Camera.Name}. CameraRole with id {roleId} not found.");
-                return false;
-            }
-
-            cameraRole = _cameraRoles.FirstOrDefault(x => x.GetType().Name == cameraRoleEntity.TypeName);
-            if (cameraRole == null)
-            {
-                _logger.Error($"Failed to execute camera role action. Camera: {listener.Camera.Name}. CameraRole with typename {cameraRoleEntity.TypeName} not registred in container.");
-                return false;
-            }
-            return true;
+            var listener = (CameraListenerService)sender;
+            var listenerToRole = _cameraRolesMap.FirstOrDefault(x => x.Key.GetHashCode() == listener.GetHashCode());
+            listenerToRole.Value.Execute(listener.Camera, notifyBlock);
         }
     }
 }
