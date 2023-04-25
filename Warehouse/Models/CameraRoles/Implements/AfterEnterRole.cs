@@ -31,13 +31,13 @@ namespace Warehouse.Models.CameraRoles.Implements
 
             if (carAccessInfo.AccessType == AccessGrantType.Free)
             {
-                Logger.Warn($"{camera.Name}:Обнаружена машина из постоянного списка ({carAccessInfo.List.Name}) с номером ({plateNumber}) и направлением ({direction}). Без действий.");
+                Logger.Warn($"{camera.Name}: Прибыла машина из постоянного списка ({carAccessInfo.List.Name}) с номером ({plateNumber}) и направлением ({direction}). Без действий.");
                 return;
             }
 
             if (carAccessInfo.AccessType == AccessGrantType.Tracked)
             {
-                Logger.Warn($"{camera.Name}: Обнаружена машина из временного списка ({carAccessInfo.List.Name}) с номером ({plateNumber}). Сменяем статус на \"Ожидает первое взвешивание\".");
+                Logger.Info($"{camera.Name}: Прибыла машина из временного списка ({carAccessInfo.List.Name}) с номером ({plateNumber}). Сменяем статус на \"Ожидает первое взвешивание\".");
                 ChangeCarStatusToFirstWeightingOnCameraArea(camera, carAccessInfo);
                 return;
             }
@@ -53,5 +53,6 @@ namespace Warehouse.Models.CameraRoles.Implements
             carAccessInfo.Car.State = _db.CarStates.First(x => x.Name == "Ожидает первое взвешивание" && x.Area == camera.Area);
             _db.SaveChangesAsync();
         }
+
     }
 }
