@@ -7,7 +7,7 @@ namespace Warehouse.Services
     /// <summary>
     /// Check platenumber has access
     /// </summary>
-    public class WaitingListsService
+    public class WaitingListsService : IDisposable
     {
         private readonly WarehouseContext _db;
         private readonly ILogger _logger;
@@ -57,6 +57,11 @@ namespace Warehouse.Services
             }
 
             return null;
+        }
+
+        public void Dispose()
+        {
+            _db.Dispose();
         }
     }
 
