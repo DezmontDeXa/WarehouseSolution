@@ -20,8 +20,9 @@ public partial class Car
     public int? CarStateId { get; set; }
 
     [ForeignKey(nameof(CarStateId))]
-    public virtual CarState? State { get; set; }
+    public virtual CarState? CarState { get; set; }
 
+    public string CarStateContext { get; set; }
 
     public int? AreaId { get; set; }
 

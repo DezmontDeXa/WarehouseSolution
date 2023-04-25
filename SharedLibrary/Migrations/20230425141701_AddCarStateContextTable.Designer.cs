@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharedLibrary.DataBaseModels;
 
@@ -11,9 +12,11 @@ using SharedLibrary.DataBaseModels;
 namespace SharedLibrary.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    partial class WarehouseContextModelSnapshot : ModelSnapshot
+    [Migration("20230425141701_AddCarStateContextTable")]
+    partial class AddCarStateContextTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,9 +168,8 @@ namespace SharedLibrary.Migrations
                     b.Property<int?>("AreaId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CarStateContext")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("CarStateContextId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("CarStateId")
                         .HasColumnType("int");
@@ -186,6 +188,8 @@ namespace SharedLibrary.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AreaId");
+
+                    b.HasIndex("CarStateContextId");
 
                     b.HasIndex("CarStateId");
 
@@ -212,6 +216,23 @@ namespace SharedLibrary.Migrations
                     b.HasIndex("AreaId");
 
                     b.ToTable("CarStates");
+                });
+
+            modelBuilder.Entity("SharedLibrary.DataBaseModels.CarStateContext", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CarStateContext");
                 });
 
             modelBuilder.Entity("SharedLibrary.DataBaseModels.Config", b =>
@@ -305,6 +326,10 @@ namespace SharedLibrary.Migrations
                         .WithMany()
                         .HasForeignKey("AreaId");
 
+                    b.HasOne("SharedLibrary.DataBaseModels.CarStateContext", "CarStateContext")
+                        .WithMany()
+                        .HasForeignKey("CarStateContextId");
+
                     b.HasOne("SharedLibrary.DataBaseModels.CarState", "CarState")
                         .WithMany()
                         .HasForeignKey("CarStateId");
@@ -312,6 +337,8 @@ namespace SharedLibrary.Migrations
                     b.Navigation("Area");
 
                     b.Navigation("CarState");
+
+                    b.Navigation("CarStateContext");
                 });
 
             modelBuilder.Entity("SharedLibrary.DataBaseModels.CarState", b =>

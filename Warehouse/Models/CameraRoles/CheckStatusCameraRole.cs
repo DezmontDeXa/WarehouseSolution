@@ -30,9 +30,9 @@ namespace Warehouse.Models.CameraRoles
                 return;
             }
 
-            if (carAccessInfo.Car.State != _requiredCarState || carAccessInfo.Car.State?.Area != camera.Area)
+            if (carAccessInfo.Car.CarState != _requiredCarState || carAccessInfo.Car.CarState?.Area != camera.Area)
             {
-                Logger.Warn($"{camera.Name}: Машина ({plateNumber}) имела неожиданный статус. Ожидаемый статус: \"{_requiredCarState.Name} на {_requiredCarState.Area.Name}\". Текущий статус: \"{carAccessInfo.Car.State.Name} на {camera.Area.Name}\". Без действий.");
+                Logger.Warn($"{camera.Name}: Машина ({plateNumber}) имела неожиданный статус. Ожидаемый статус: \"{_requiredCarState.Name} на {_requiredCarState.Area.Name}\". Текущий статус: \"{carAccessInfo.Car.CarState.Name} на {camera.Area.Name}\". Без действий.");
                 return;
             }
 

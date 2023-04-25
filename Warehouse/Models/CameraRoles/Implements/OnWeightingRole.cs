@@ -33,7 +33,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         /// <param name="carAccessInfo"></param>
         private void ChangeCarStatusToFirstWeightingOnCameraArea(Camera camera, CarAccessInfo carAccessInfo)
         {
-            carAccessInfo.Car.State = _db.CarStates.First(x => x.Name == "Первое взвешивание" && x.Area == camera.Area);
+            carAccessInfo.Car.CarState = _db.CarStates.First(x => x.Name == "Первое взвешивание" && x.Area == camera.Area);
             _db.SaveChangesAsync();
         }
     }

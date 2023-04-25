@@ -45,7 +45,7 @@ namespace Warehouse.Models.CameraRoles.Implements
 
         private void ProcessTrackedCar(Camera camera, CameraNotifyBlock notifyBlock, CarAccessInfo carAccessInfo, string plateNumber, string direction)
         {
-            if (carAccessInfo.Car.State == null)
+            if (carAccessInfo.Car.CarState == null)
             {
                 Logger.Warn($"{camera.Name}: Машина {plateNumber} не имеет статуса. Без действий.");
                 return;

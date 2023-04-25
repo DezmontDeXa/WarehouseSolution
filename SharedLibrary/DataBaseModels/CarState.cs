@@ -15,4 +15,5 @@ public partial class CarState
 
     [ForeignKey(nameof(AreaId))]
     public virtual Area? Area { get; set; }
+
 }

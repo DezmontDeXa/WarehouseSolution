@@ -23,9 +23,9 @@ namespace Warehouse.Models.CameraRoles.Implements
                 return;
             }
 
-            if(carAccessInfo.Car.State?.Name != "На въезде" && carAccessInfo.Car.State?.Area != camera.Area)
+            if(carAccessInfo.Car.CarState?.Name != "На въезде" && carAccessInfo.Car.CarState?.Area != camera.Area)
             {
-                Logger.Warn($"{camera.Name}: Машина ({plateNumber}) имела неожиданный статус. Ожидаемый статус: \"На въезде на {camera.Area.Name}\". Текущий статус: \"{carAccessInfo.Car.State.Name}\". Без действий.");
+                Logger.Warn($"{camera.Name}: Машина ({plateNumber}) имела неожиданный статус. Ожидаемый статус: \"На въезде на {camera.Area.Name}\". Текущий статус: \"{carAccessInfo.Car.CarState.Name}\". Без действий.");
                 return;
             }
 
@@ -50,7 +50,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         /// <param name="carAccessInfo"></param>
         private void ChangeCarStatusToFirstWeightingOnCameraArea(Camera camera, CarAccessInfo carAccessInfo)
         {
-            carAccessInfo.Car.State = _db.CarStates.First(x => x.Name == "Ожидает первое взвешивание" && x.Area == camera.Area);
+            carAccessInfo.Car.CarState = _db.CarStates.First(x => x.Name == "Ожидает первое взвешивание" && x.Area == camera.Area);
             _db.SaveChangesAsync();
         }
 

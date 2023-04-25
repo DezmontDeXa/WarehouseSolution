@@ -52,14 +52,14 @@ namespace Warehouse.Models.CameraRoles.Implements
 
         private void ProcessTrackedCar(Camera camera, string plateNumber, CarAccessInfo carAccessInfo)
         {
-            if(carAccessInfo.Car.State == null)
+            if(carAccessInfo.Car.CarState == null)
             {
                 Logger.Warn($"{camera.Name}: Машина {plateNumber} не имеет статуса. Без действий.");
                 return;
             }
 
             // Если машина ожидается на территории камеры
-            if(carAccessInfo.Car.State.Name == "Ожидается" && carAccessInfo.Car.State.Area == camera.Area)
+            if(carAccessInfo.Car.CarState.Name == "Ожидается" && carAccessInfo.Car.CarState.Area == camera.Area)
             {
                 Logger.Info($"{camera.Name}: Прибыла машина из списка {carAccessInfo.List.Name} с номером ({plateNumber}). Открыть шлагбаум. Сменить статус \"На въезде\"");
                 OpenBarrier(camera, carAccessInfo);
@@ -67,7 +67,7 @@ namespace Warehouse.Models.CameraRoles.Implements
             }
             else
             {
-                Logger.Warn($"{camera.Name}: Машина ({plateNumber}) имела неожиданный статус. Ожидаемый статус: \"Ожидается на {camera.Area.Name}\". Текущий статус: \"{carAccessInfo.Car.State.Name}\". Без действий.");
+                Logger.Warn($"{camera.Name}: Машина ({plateNumber}) имела неожиданный статус. Ожидаемый статус: \"Ожидается на {camera.Area.Name}\". Текущий статус: \"{carAccessInfo.Car.CarState.Name}\". Без действий.");
                 return;
             }
 
@@ -86,7 +86,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         /// <param name="carAccessInfo"></param>
         private void ChangeCarStatusToEnterOnCameraArea(Camera camera, CarAccessInfo carAccessInfo)
         {
-            carAccessInfo.Car.State = _db.CarStates.First(x => x.Name == "На въезде" && x.Area == camera.Area);
+            carAccessInfo.Car.CarState = _db.CarStates.First(x => x.Name == "На въезде" && x.Area == camera.Area);
             _db.SaveChangesAsync();
         }
     }
