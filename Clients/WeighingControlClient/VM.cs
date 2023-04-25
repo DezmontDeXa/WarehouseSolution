@@ -49,7 +49,7 @@ namespace WeighingControlClient
         {
             using (var db = new WarehouseContext())
             {
-                var carsInDb = db.Cars.Where(x => x.State.Name == "Ожидает первое взвешивание").ToList();
+                var carsInDb = db.Cars.Where(x => x.State.Name == "Ожидает первое взвешивание" || x.State.Name == "Первое взвешивание").ToList();
                 foreach (var carInDb in carsInDb)
                 {
                     var existCar = awaitingCars.FirstOrDefault(x => x.Id == carInDb.Id);
