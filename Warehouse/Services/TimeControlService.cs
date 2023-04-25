@@ -1,13 +1,84 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NLog;
+using SharedLibrary.DataBaseModels;
 
 namespace Warehouse.Services
 {
     public class TimeControlService
     {
 
+        // Выезд разрешен
+        private int _exitPassGrantedStateId = 12;
+        // Ожидается на герцена
+        private int _awaitingOnGercenaStateId = 2;
+        // Досмотр
+        private int _inspectionStateId = 11;
+
+        private Dictionary<Car, DateTime> _inControlCars = new Dictionary<Car, DateTime>();
+        private TimeSpan _armavirToHercenaTranslateTimeout;
+        private readonly ILogger logger;
+
+        public TimeControlService(ILogger logger)
+        {
+            using (var db = new WarehouseContext())
+            {
+                _armavirToHercenaTranslateTimeout = new TimeSpan(0,0, int.Parse(db.Configs.First(x => x.Key == "TranslateTimeout").Value));
+            }
+
+            Task.Run(Working);
+            this.logger = logger;
+        }
+              
+        private void Working()
+        {
+            using (WarehouseContext db = new WarehouseContext())
+            {
+                while (true)
+                {
+                    UpdateInControlCarsList(db);
+                    CheckTimes(db);
+                    Task.Delay(1000).Wait();
+                }
+            }
+        }
+
+        private void CheckTimes(WarehouseContext db)
+        {
+            foreach (var carToTimePair in _inControlCars.ToArray())
+            {
+                if(carToTimePair.Value + _armavirToHercenaTranslateTimeout < DateTime.Now)
+                {
+                    var carInDb = db.Cars.First(x => x.Id == carToTimePair.Key.Id);
+
+                    if (carInDb.CarStateId == _exitPassGrantedStateId)
+                    {
+                        _inControlCars.Remove(carToTimePair.Key);
+                        carInDb.CarStateId = _inspectionStateId;
+                        db.SaveChanges();
+                        logger.Info($"{GetType().Name}: машина ({carInDb.PlateNumberForward}) задержалась при выезде с Армавирской. Назначен досмотр. Таймер отключен.");
+                    }
+                }
+            }
+        }
+
+        private void UpdateInControlCarsList(WarehouseContext db)
+        {
+            foreach (var car in db.Cars.Where(x => x.CarStateId == _exitPassGrantedStateId))
+            {
+                if (_inControlCars.ContainsKey(car)) continue;
+                _inControlCars.Add(car, DateTime.Now);
+                logger.Info($"{GetType().Name}: запущен таймер выезда с армавирской для машины ({car.PlateNumberForward})");
+            }
+
+            foreach (var carToTimePair in _inControlCars)
+            {
+                var carInDb = db.Cars.First(x => x.Id == carToTimePair.Key.Id);
+                if(carInDb.CarStateId == _awaitingOnGercenaStateId)
+                {
+                    _inControlCars.Remove(carToTimePair.Key);
+                    logger.Info($"{GetType().Name}: машина ({carInDb.PlateNumberForward}) выехала с Армавирской. Таймер отключен.");
+                }
+            }
+
+        }
     }
 }
