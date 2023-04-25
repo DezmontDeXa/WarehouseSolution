@@ -29,7 +29,7 @@ namespace Warehouse
 
 #if DEBUG
             var tests = new WarehouseSystemTests(_db, _cameraListeners);
-            //tests.RunNormalPipelineTest();
+            tests.RunNormalPipelineTest();
 #endif
         }
 
