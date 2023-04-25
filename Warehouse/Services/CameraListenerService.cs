@@ -24,7 +24,6 @@ namespace Warehouse.Services
             _http = new HttpClient();
             var uriString = $"{camera.Ip}/{camera.Endpoint}";
 
-            //http://camera:lomar010@85.172.107.39:9929/ISAPI/Event/notification/alertStream
             if (!string.IsNullOrEmpty(camera.Login) || !string.IsNullOrEmpty(camera.Password))
             {
                 _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
