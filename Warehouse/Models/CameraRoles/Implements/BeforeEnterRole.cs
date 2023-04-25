@@ -20,14 +20,13 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             if(carAccessInfo.Car == null || carAccessInfo.List == null)
             {
-                Logger.Warn($"{camera.Name}: Обнаружена неезарегистрированная машина ({plateNumber}) или ее нет в списках. Уведомляем кпп.");
                 ProcessNotTrakedCar(camera, plateNumber, carAccessInfo);
+                return;
             }
 
             switch (carAccessInfo.AccessType)
             {
                 case AccessGrantType.Free:
-                    Logger.Info($"{camera.Name}: Car {plateNumber} in constant list. Open barrier.");
                     ProcessFreeCar(camera, plateNumber, carAccessInfo);
                     break;
 
@@ -47,6 +46,7 @@ namespace Warehouse.Models.CameraRoles.Implements
 
         private void ProcessNotTrakedCar(Camera camera, string plateNumber, CarAccessInfo carAccessInfo)
         {
+            Logger.Warn($"{camera.Name}: Обнаружена неезарегистрированная машина ({plateNumber}) или ее нет в списках. Уведомляем кпп.");
             //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
         }
 
