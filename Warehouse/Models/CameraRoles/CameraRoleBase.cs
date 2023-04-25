@@ -6,16 +6,19 @@ namespace Warehouse.Models.CameraRoles
 {
     public abstract class CameraRoleBase
     {
+
         public string RoleName { get; }
         public string Name { get; protected set; }
         public string Description { get; protected set; }
 
         protected ILogger Logger { get; private set; }
+        private readonly WaitingListsService _waitingListsService;
 
-        public CameraRoleBase(ILogger logger)
+        public CameraRoleBase(ILogger logger, WaitingListsService waitingListsService)
         {
             RoleName = GetType().Name;
             Logger = logger;
+            _waitingListsService = waitingListsService;
         }
 
         public void AddThatRoleToDB(WarehouseContext db)
@@ -28,11 +31,23 @@ namespace Warehouse.Models.CameraRoles
         {
             try
             {
-                // Skip all except Car detected
+                // Skip all events,except Car detected
                 if (notifyBlock.EventType != "ANPR")
                     return;
 
-                OnExecute(camera, notifyBlock);
+                var plateNumber = GetPlateNumber(notifyBlock);
+                Logger.Info($"{camera.Name}: Обнаружена машина ({plateNumber})");
+
+                var direction = GetDirection(notifyBlock);
+                if (camera.Direction != MoveDirection.Both && direction.ToLower() != camera.Direction.ToString())
+                {
+                    Logger.Warn($"{camera.Name}: Направление: {direction}. Ожидалось \"{camera.Direction}\". Без действий.");
+                    return;
+                }
+
+                var carAccessInfo = _waitingListsService.GetAccessTypeInfo(plateNumber);
+
+                OnExecute(camera, notifyBlock, carAccessInfo, plateNumber, direction);
             }
             catch (Exception ex)
             {
@@ -52,6 +67,6 @@ namespace Warehouse.Models.CameraRoles
             //return block.XmlDocument.SelectSingleNode("//EventNotificationAlert/ANPR/direction")?.InnerText;
         }
 
-        protected abstract void OnExecute(Camera camera, CameraNotifyBlock notifyBlock);
+        protected abstract void OnExecute(Camera camera, CameraNotifyBlock notifyBlock, CarAccessInfo carAccessInfo, string plateNumber, string direction);
     }
 }

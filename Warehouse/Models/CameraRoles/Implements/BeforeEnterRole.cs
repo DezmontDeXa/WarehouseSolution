@@ -7,45 +7,36 @@ namespace Warehouse.Models.CameraRoles.Implements
     public class BeforeEnterRole : CameraRoleBase
     {
         private readonly WarehouseContext _db;
-        private readonly WaitingListsService _waitingListsService;
 
-        public BeforeEnterRole(ILogger logger, WarehouseContext db, WaitingListsService waitingListsService) : base(logger)
+        public BeforeEnterRole(ILogger logger, WarehouseContext db, WaitingListsService waitingListsService) : base(logger, waitingListsService)
         {
             Name = "Перед въездом";
             Description = "Обнаружение машины перед шлагбаумом и открытие шлагбаума";
             this._db = db;
-            _waitingListsService = waitingListsService;
         }
 
-        protected override void OnExecute(Camera camera, CameraNotifyBlock notifyBlock)
+
+        protected override void OnExecute(Camera camera, CameraNotifyBlock notifyBlock, CarAccessInfo carAccessInfo, string plateNumber, string direction)
         {
-            var plateNumber = GetPlateNumber(notifyBlock);
-            var direction = GetDirection(notifyBlock);
-            Logger.Info($"{camera.Name}: Обнаружена машина ({plateNumber})");
-
-            if(direction != "forward")
+            if(carAccessInfo.Car == null || carAccessInfo.List == null)
             {
-                Logger.Info($"{camera.Name}: Направление: {direction}. Ожидалось \"forward\". Без действий.");
-                return;
+                Logger.Warn($"{camera.Name}: Обнаружена неезарегистрированная машина ({plateNumber}) или ее нет в списках. Уведомляем кпп.");
+                ProcessNotTrakedCar(camera, plateNumber, carAccessInfo);
             }
-
-            var carAccessInfo = _waitingListsService.GetAccessTypeInfo(plateNumber);
 
             switch (carAccessInfo.AccessType)
             {
-                case AccessGrantType.None:
-                    Logger.Info($"{camera.Name}: Car {plateNumber} not awaited. Send notify for checkpoint.");
-                    ProcessNotTrakedCar(camera, plateNumber, carAccessInfo);
-                    break;
                 case AccessGrantType.Free:
                     Logger.Info($"{camera.Name}: Car {plateNumber} in constant list. Open barrier.");
                     ProcessFreeCar(camera, plateNumber, carAccessInfo);
                     break;
+
                 case AccessGrantType.Tracked:
                     ProcessTrackedCar(camera, plateNumber, carAccessInfo);
                     break;
             }
         }
+
 
         private void ProcessFreeCar(Camera camera, string plateNumber, CarAccessInfo carAccessInfo)
         {
@@ -76,11 +67,12 @@ namespace Warehouse.Models.CameraRoles.Implements
             }
             else
             {
-                Logger.Warn($"{camera.Name}: Машина ({plateNumber}) имела неожиданный статус. Ожидаемый статус: Ожидается на {camera.Area.Name}. Текущий статус: {carAccessInfo.Car.State.Name}. Без действий.");
+                Logger.Warn($"{camera.Name}: Машина ({plateNumber}) имела неожиданный статус. Ожидаемый статус: \"Ожидается на {camera.Area.Name}\". Текущий статус: \"{carAccessInfo.Car.State.Name}\". Без действий.");
                 return;
             }
 
         }
+
 
         private void OpenBarrier(Camera camera, CarAccessInfo carAccessInfo)
         {

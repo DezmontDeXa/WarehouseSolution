@@ -15,6 +15,8 @@ public partial class Camera
 
     public string Ip { get; set; } = null!;
 
+    public MoveDirection Direction { get; set; }
+
     public int RoleId { get; set; }
 
 
@@ -33,4 +35,10 @@ public partial class Camera
     public string? Password { get; set; }
 
     public bool UseSsl { get; set; }
+}
+
+public enum MoveDirection
+{
+    Forward = 0, Backward = 1,
+    Both = 2
 }
