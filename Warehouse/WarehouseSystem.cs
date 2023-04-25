@@ -2,6 +2,7 @@
 using Warehouse.Services;
 using SharedLibrary.DataBaseModels;
 using Warehouse.Models.CameraRoles;
+using Warehouse.Tests;
 
 namespace Warehouse
 {
@@ -24,8 +25,14 @@ namespace Warehouse
 
         public void Run()
         {
-            RunCameras();            
+            RunCameras();
+
+#if DEBUG
+            var tests = new WarehouseSystemTests(_db, _cameraListeners);
+            tests.RunNormalPipelineTest();
+#endif
         }
+
 
         private void RunCameras()
         {
@@ -38,16 +45,6 @@ namespace Warehouse
                 listener.OnNotification += Listener_OnNotification;
                 listener.OnError += Listener_OnError;
 
-#if DEBUG
-                Task.Run(() =>
-                {
-                    while (true)
-                    {
-                        Task.Delay(2000).Wait();
-                        listener.SendTestData();
-                    }
-                });
-#endif
             }
         }
 
