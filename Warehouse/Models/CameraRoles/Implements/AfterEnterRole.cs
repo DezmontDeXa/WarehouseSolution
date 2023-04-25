@@ -37,7 +37,7 @@ namespace Warehouse.Models.CameraRoles.Implements
 
             if (carAccessInfo.AccessType == AccessGrantType.Tracked)
             {
-                Logger.Warn($"{camera.Name}:Обнаружена машина из временного списка ({carAccessInfo.List.Name}) с номером ({plateNumber}) и направлением ({direction}). Сменяем статус на \"Ожидает первое взвешивание\".");
+                Logger.Warn($"{camera.Name}: Обнаружена машина из временного списка ({carAccessInfo.List.Name}) с номером ({plateNumber}). Сменяем статус на \"Ожидает первое взвешивание\".");
                 ChangeCarStatusToFirstWeightingOnCameraArea(camera, carAccessInfo);
                 return;
             }
