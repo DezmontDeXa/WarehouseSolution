@@ -39,7 +39,7 @@ namespace Warehouse.Models.CameraRoles
                 Logger.Info($"{camera.Name}: Обнаружена машина ({plateNumber})");
 
                 var direction = GetDirection(notifyBlock);
-                if (camera.Direction != MoveDirection.Both && direction.ToLower() != camera.Direction.ToString())
+                if (camera.Direction != MoveDirection.Both && direction.ToLower() != camera.Direction.ToString().ToLower())
                 {
                     Logger.Warn($"{camera.Name}: Направление: {direction}. Ожидалось \"{camera.Direction}\". Без действий.");
                     return;
