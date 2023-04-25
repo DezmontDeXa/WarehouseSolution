@@ -11,6 +11,10 @@ namespace Warehouse.Models.CameraRoles
         public string Description { get; protected set; }
 
         protected ILogger Logger { get; private set; }
+        protected List<CarState> ExpectedStates { get; set; }
+
+
+
         private readonly WaitingListsService _waitingListsService;
 
         public CameraRoleBase(ILogger logger, WaitingListsService waitingListsService)
@@ -35,18 +39,40 @@ namespace Warehouse.Models.CameraRoles
                     return;
 
                 var plateNumber = GetPlateNumber(notifyBlock);
-                Logger.Info($"{camera.Name}: Обнаружена машина ({plateNumber})");
-
                 var direction = GetDirection(notifyBlock);
-                if (camera.Direction != MoveDirection.Both && direction.ToLower() != camera.Direction.ToString().ToLower())
-                {
-                    Logger.Warn($"{camera.Name}: Направление: {direction}. Ожидалось \"{camera.Direction}\". Без действий.");
-                    return;
-                }
+                Logger.Info($"{camera.Name}: Обнаружена машина ({plateNumber}). Направление: {direction}");
+
+                if (!IsAvailableDirection(camera, direction)) return;
 
                 var carAccessInfo = _waitingListsService.GetAccessTypeInfo(plateNumber);
 
-                OnExecute(camera, notifyBlock, carAccessInfo, plateNumber, direction);
+                if(carAccessInfo.Car == null)
+                {
+                    OnCarNotFound(camera, notifyBlock, plateNumber, direction);
+                    return;
+                }
+
+                if (carAccessInfo.List == null)
+                {
+                    OnCarNotInLists(camera, notifyBlock, carAccessInfo.Car, plateNumber, direction);
+                    return;
+                }
+
+                if (ExpectedStates != null && ExpectedStates.Count > 0 && ExpectedStates.Exists(x => x.Id== carAccessInfo.Car?.CarState?.Id)) 
+                {
+                    Logger.Warn($"{camera.Name}: Машина ({carAccessInfo.Car.PlateNumberForward}) имела неожиданный статус. Текущий статус: \"{carAccessInfo.Car.CarState.Name} на {camera.Area.Name}\". Без действий.");
+                    return;
+                }
+
+                switch (carAccessInfo.AccessType)
+                {
+                    case AccessGrantType.Free:
+                        OnCarWithFreeAccess(camera, carAccessInfo.Car, carAccessInfo.List);
+                        break;
+                    case AccessGrantType.Tracked:
+                        OnCarWithTempAccess(camera, carAccessInfo.Car, carAccessInfo.List);
+                        break;
+                }
             }
             catch (Exception ex)
             {
@@ -55,17 +81,79 @@ namespace Warehouse.Models.CameraRoles
             }
         }
 
-        protected string GetPlateNumber(CameraNotifyBlock block)
+
+        protected virtual void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, string plateNumber, string direction)
+        {
+            Logger.Warn($"{camera.Name}: Обнаружена незарегистрированная машина ({plateNumber}).");
+            //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
+        }
+
+        protected virtual void OnCarNotInLists(Camera camera, CameraNotifyBlock notifyBlock, Car car, string plateNumber, string direction)
+        {
+            Logger.Warn($"{camera.Name}: Обнаружена машина ({plateNumber}) не из списков.");
+            //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
+        }
+
+        protected virtual void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)
+        {
+            Logger.Info($"{camera.Name}: Прибыла машина из постоянного списка {list.Name} с номером ({car.PlateNumberForward}).");
+            //TODO: Открыть шлагбаум. Сменить статус  \"На въезде\"
+        }
+
+        protected virtual void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)
+        {
+            Logger.Info($"{camera.Name}: Прибыла машина из временного списка {list.Name} с номером ({car.PlateNumberForward}).");
+        }
+
+
+        private bool IsAvailableDirection(Camera camera, string direction)
+        {
+            if (camera.Direction != MoveDirection.Both && direction.ToLower() != camera.Direction.ToString().ToLower())
+            {
+                Logger.Warn($"{camera.Name}: Направление: {direction}. Ожидалось \"{camera.Direction}\". Без действий.");
+                return false; 
+            }
+            return true;
+        }
+
+        private string GetPlateNumber(CameraNotifyBlock block)
         {
             return block.XmlDocumentRoot["ANPR"]["licensePlate"]?.InnerText;
         }
 
-        protected string GetDirection(CameraNotifyBlock block)
+        private string GetDirection(CameraNotifyBlock block)
         {
             return block.XmlDocumentRoot["ANPR"]["direction"]?.InnerText;
             //return block.XmlDocument.SelectSingleNode("//EventNotificationAlert/ANPR/direction")?.InnerText;
         }
 
-        protected abstract void OnExecute(Camera camera, CameraNotifyBlock notifyBlock, CarAccessInfo carAccessInfo, string plateNumber, string direction);
+        protected void ChangeStatus(Camera camera, Car car, CarState status)
+        {
+            using (var db = new WarehouseContext())
+            {
+                Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) сменить статус на \"{status.Name}\"");
+                var carInDb = db.Cars.First(x => x.Id == car.Id);
+                carInDb.CarState = status;
+                db.SaveChangesAsync();
+            }
+        }
+        protected void ChangeStatus(Camera camera, Car car,  Func<WarehouseContext, Camera, Car, CarState> getCarStateFunc)
+        {
+            using (var db = new WarehouseContext())
+            {
+                var status = getCarStateFunc.Invoke(db, camera, car);
+
+                Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) сменить статус на \"{status.Name}\"");
+                var carInDb = db.Cars.First(x => x.Id == car.Id);
+                carInDb.CarState = status;
+                db.SaveChangesAsync();
+            }
+        }
+
+        protected void OpenBarrier(Camera camera, Car car)
+        {
+            //TODO: Открыть шлагбаум
+        }
+
     }
 }

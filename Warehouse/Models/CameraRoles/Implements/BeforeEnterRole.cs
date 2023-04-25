@@ -6,88 +6,68 @@ namespace Warehouse.Models.CameraRoles.Implements
 {
     public class BeforeEnterRole : CameraRoleBase
     {
-        private readonly WarehouseContext _db;
-
-        public BeforeEnterRole(ILogger logger, WarehouseContext db, WaitingListsService waitingListsService) : base(logger, waitingListsService)
+        public BeforeEnterRole(ILogger logger, WaitingListsService waitingListsService) : base(logger, waitingListsService)
         {
             Name = "Перед въездом";
             Description = "Обнаружение машины перед шлагбаумом и открытие шлагбаума";
-            this._db = db;
-        }
 
-
-        protected override void OnExecute(Camera camera, CameraNotifyBlock notifyBlock, CarAccessInfo carAccessInfo, string plateNumber, string direction)
-        {
-            if(carAccessInfo.Car == null || carAccessInfo.List == null)
+            using(var db = new WarehouseContext())
             {
-                ProcessNotTrakedCar(camera, plateNumber, carAccessInfo);
-                return;
-            }
-
-            switch (carAccessInfo.AccessType)
-            {
-                case AccessGrantType.Free:
-                    ProcessFreeCar(camera, plateNumber, carAccessInfo);
-                    break;
-
-                case AccessGrantType.Tracked:
-                    ProcessTrackedCar(camera, plateNumber, carAccessInfo);
-                    break;
+                ExpectedStates = db.CarStates.Where(x => x.Name == "Ожидается").ToList();
             }
         }
 
-
-        private void ProcessFreeCar(Camera camera, string plateNumber, CarAccessInfo carAccessInfo)
+        protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)
         {
-            Logger.Info($"{camera.Name}: Прибыла машина из списка {carAccessInfo.List.Name} с номером ({plateNumber}). Открыть шлагбаум. Сменить статус \"На въезде\"");
-            OpenBarrier(camera, carAccessInfo);
-            ChangeCarStatusToEnterOnCameraArea(camera, carAccessInfo);
-        }
+            base.OnCarWithTempAccess(camera, car, list);
 
-        private void ProcessNotTrakedCar(Camera camera, string plateNumber, CarAccessInfo carAccessInfo)
-        {
-            Logger.Warn($"{camera.Name}: Обнаружена неезарегистрированная машина ({plateNumber}) или ее нет в списках. Уведомляем кпп.");
-            //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
-        }
-
-        private void ProcessTrackedCar(Camera camera, string plateNumber, CarAccessInfo carAccessInfo)
-        {
-            if(carAccessInfo.Car.CarState == null)
+            if (car?.CarState?.Area == camera.Area)
             {
-                Logger.Warn($"{camera.Name}: Машина {plateNumber} не имеет статуса. Без действий.");
-                return;
-            }
-
-            // Если машина ожидается на территории камеры
-            if(carAccessInfo.Car.CarState.Name == "Ожидается" && carAccessInfo.Car.CarState.Area == camera.Area)
-            {
-                Logger.Info($"{camera.Name}: Прибыла машина из списка {carAccessInfo.List.Name} с номером ({plateNumber}). Открыть шлагбаум. Сменить статус \"На въезде\"");
-                OpenBarrier(camera, carAccessInfo);
-                ChangeCarStatusToEnterOnCameraArea(camera, carAccessInfo);
+                Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) открыть шлагбаум и сменить статус на \"На въезде\"");
+                OpenBarrier(camera);
+                ChangeStatus(camera, car, (db, camera, car)=> db.CarStates.First(x => x.Name == "На въезде" && x.Area == camera.Area));
             }
             else
             {
-                Logger.Warn($"{camera.Name}: Машина ({plateNumber}) имела неожиданный статус. Ожидаемый статус: \"Ожидается на {camera.Area.Name}\". Текущий статус: \"{carAccessInfo.Car.CarState.Name}\". Без действий.");
+                Logger.Warn($"{camera.Name}: Машина ({car?.PlateNumberForward}) имела неожиданный статус. Ожидаемый статус: \"Ожидается на {camera?.Area?.Name}\". Текущий статус: \"{car?.CarState?.Name} на {car?.CarState?.Area?.Name}\". Без действий.");
                 return;
             }
-
         }
 
+        protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)
+        {
+            base.OnCarWithFreeAccess(camera, car, list);
 
-        private void OpenBarrier(Camera camera, CarAccessInfo carAccessInfo)
+            // TODO: Вынести входящий статус и выходящий статус в конфиг роли
+            if (car.CarState.Name == "Ожидается" && car.CarState.Area == camera.Area)
+            {
+                Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) открыть шлагбаум и сменить статус на \"На въезде\"");
+                OpenBarrier(camera);
+                ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "На въезде" && x.Area == camera.Area));
+            }
+            else
+            {
+                Logger.Warn($"{camera.Name}: Машина ({car.PlateNumberForward}) имела неожиданный статус. Ожидаемый статус: \"Ожидается на {camera.Area.Name}\". Текущий статус: \"{car.CarState.Name}\". Без действий.");
+                return;
+            }
+        }
+
+        protected override void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, string plateNumber, string direction)
+        {
+            base.OnCarNotFound(camera, notifyBlock, plateNumber, direction);
+            //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
+        }
+
+        protected override void OnCarNotInLists(Camera camera, CameraNotifyBlock notifyBlock, Car car, string plateNumber, string direction)
+        {
+            base.OnCarNotInLists(camera, notifyBlock, car, plateNumber, direction);
+            //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
+        }
+
+        private void OpenBarrier(Camera camera)
         {
             //TODO: Открыть шлагбаум
         }
 
-        /// <summary>
-        /// Сменить статус машины на "На въезде" в территорию камеры
-        /// </summary>
-        /// <param name="camera"></param>
-        /// <param name="carAccessInfo"></param>
-        private void ChangeCarStatusToEnterOnCameraArea(Camera camera, CarAccessInfo carAccessInfo)
-        {
-            carAccessInfo.Car.CarState = _db.CarStates.First(x => x.Name == "На въезде" && x.Area == camera.Area);
-            _db.SaveChangesAsync();
-        }
     }
 }

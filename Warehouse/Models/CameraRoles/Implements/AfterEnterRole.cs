@@ -6,53 +6,34 @@ namespace Warehouse.Models.CameraRoles.Implements
 {
     public class AfterEnterRole : CameraRoleBase
     {
-        private readonly WarehouseContext _db;
+        private CarState _expectedState;
+        private CarState _firstWeighingState;
+        private CarState _canExitState;
+        private int _targetAreaId = 1;
 
-        public AfterEnterRole(ILogger logger, WarehouseContext db, WaitingListsService waitingListsService) : base(logger, waitingListsService)
+        public AfterEnterRole(ILogger logger, WaitingListsService waitingListsService) : base(logger, waitingListsService)
         {
             Name = "После въезда";
             Description = "Подтверждение въезда машины на территорию";
-            _db = db;
+
+            using(var db = new WarehouseContext())
+            {
+                ExpectedStates = db.CarStates.Where(x => x.Name == "На въезде" && x.AreaId == _targetAreaId).ToList();
+                _firstWeighingState = db.CarStates.First(x => x.Name == "Ожидает первое взвешивание" && x.AreaId == _targetAreaId);
+                _canExitState = db.CarStates.First(x => x.Name == "Выезд разрешен" && x.AreaId == _targetAreaId);
+            }
         }
 
-        protected override void OnExecute(Camera camera, CameraNotifyBlock notifyBlock, CarAccessInfo carAccessInfo, string plateNumber, string direction)
+        protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)
         {
-            if (carAccessInfo.Car == null || carAccessInfo.List == null)
-            {
-                Logger.Warn($"{camera.Name}: Обнаружена незарегистрированная машина ({plateNumber}) или ее нет в списках. Без действий.");
-                return;
-            }
-
-            if(carAccessInfo.Car.CarState?.Name != "На въезде" && carAccessInfo.Car.CarState?.Area != camera.Area)
-            {
-                Logger.Warn($"{camera.Name}: Машина ({plateNumber}) имела неожиданный статус. Ожидаемый статус: \"На въезде на {camera.Area.Name}\". Текущий статус: \"{carAccessInfo.Car.CarState.Name}\". Без действий.");
-                return;
-            }
-
-            if (carAccessInfo.AccessType == AccessGrantType.Free)
-            {
-                Logger.Warn($"{camera.Name}: Прибыла машина из постоянного списка ({carAccessInfo.List.Name}) с номером ({plateNumber}) и направлением ({direction}). Без действий.");
-                return;
-            }
-
-            if (carAccessInfo.AccessType == AccessGrantType.Tracked)
-            {
-                Logger.Info($"{camera.Name}: Прибыла машина из временного списка ({carAccessInfo.List.Name}) с номером ({plateNumber}). Сменяем статус на \"Ожидает первое взвешивание\".");
-                ChangeCarStatusToFirstWeightingOnCameraArea(camera, carAccessInfo);
-                return;
-            }
+            base.OnCarWithTempAccess(camera, car, list);
+            ChangeStatus(camera, car, _firstWeighingState);
         }
 
-        /// <summary>
-        /// Сменить статус машины на "Ожидает первое взвешивание" в территорию камеры
-        /// </summary>
-        /// <param name="camera"></param>
-        /// <param name="carAccessInfo"></param>
-        private void ChangeCarStatusToFirstWeightingOnCameraArea(Camera camera, CarAccessInfo carAccessInfo)
+        protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)
         {
-            carAccessInfo.Car.CarState = _db.CarStates.First(x => x.Name == "Ожидает первое взвешивание" && x.Area == camera.Area);
-            _db.SaveChangesAsync();
+            base.OnCarWithFreeAccess(camera, car, list);
+            ChangeStatus(camera, car, _canExitState);
         }
-
     }
 }

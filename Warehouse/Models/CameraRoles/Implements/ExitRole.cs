@@ -6,57 +6,46 @@ namespace Warehouse.Models.CameraRoles.Implements
 {
     public class ExitRole : CameraRoleBase
     {
+        private CarState _waitingState;
+        private CarState _finishState;
+
         public ExitRole(ILogger logger, WaitingListsService waitingList) : base(logger, waitingList)
         {
             Name = "Выезд";
             Description = "Обнаружение машин на выезд и открытие шлагбаума";
-        }
 
-        protected override void OnExecute(Camera camera, CameraNotifyBlock notifyBlock, CarAccessInfo carAccessInfo, string plateNumber, string direction)
-        {
-            if (carAccessInfo.Car == null || carAccessInfo.List == null)
+            using (var db = new WarehouseContext())
             {
-                ProcessNotTrakedCar(camera, plateNumber, carAccessInfo);
-                return;
-            }
-
-            switch (carAccessInfo.AccessType)
-            {
-                case AccessGrantType.Free:
-                    ProcessFreeCar(camera, notifyBlock, carAccessInfo, plateNumber, direction);
-                    break;
-                case AccessGrantType.Tracked:
-                    ProcessTrackedCar(camera, notifyBlock, carAccessInfo, plateNumber, direction);
-                    break;
+                ExpectedStates = new List<CarState>()
+                {
+                    db.CarStates.First(x=>x.Name == "Выезд разрешен"),
+                    db.CarStates.First(x=>x.Name == "Выезд на другую территорию разрешен"),                    
+                };
+                _waitingState = db.CarStates.First(x => x.Name == "Ожидается на другой территории"); 
+                _finishState = db.CarStates.First(x => x.Name == "Работа завершена");
             }
         }
 
-        private void ProcessNotTrakedCar(Camera camera, string plateNumber, CarAccessInfo carAccessInfo)
+        protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)
         {
-            //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
-            Logger.Warn($"{camera.Name}: Обнаружена неезарегистрированная машина ({plateNumber}) или ее нет в списках. Уведомляем кпп.");
+            base.OnCarWithFreeAccess(camera, car, list);
+            ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "Ожидается" && x.Area == camera.Area));
+            OpenBarrier(camera, car);
         }
 
-        private void ProcessFreeCar(Camera camera, CameraNotifyBlock notifyBlock, CarAccessInfo carAccessInfo, string plateNumber, string direction)
+        protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)
         {
-            Logger.Info($"{camera.Name}: Выезжает машина из списка {carAccessInfo.List.Name} с номером ({plateNumber}). Открыть шлагбаум. Сменить статус на \"Ожидается\"");
-            OpenBarrier(camera, carAccessInfo);
-        }
+            base.OnCarWithTempAccess(camera, car, list);
 
-        private void ProcessTrackedCar(Camera camera, CameraNotifyBlock notifyBlock, CarAccessInfo carAccessInfo, string plateNumber, string direction)
-        {
-            if (carAccessInfo.Car.CarState == null)
+            if(car.CarStateContext.StartsWith("TargetAreaId="))
             {
-                Logger.Warn($"{camera.Name}: Машина {plateNumber} не имеет статуса. Без действий.");
-                return;
+                //var targetAreaId = int.Parse(car.CarStateContext.Split('=').Last());
+                ChangeStatus(camera, car, _waitingState);
             }
-
-        }
-
-
-        private void OpenBarrier(Camera camera, CarAccessInfo carAccessInfo)
-        {
-            //TODO: Открыть шлагбаум
+            else
+            {
+                ChangeStatus(camera, car, _finishState);
+            }
         }
     }
 }

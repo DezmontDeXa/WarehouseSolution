@@ -18,8 +18,8 @@ namespace WeighingControlClient
         private DelegateCommand sendToArmavirCommand;
         private DelegateCommand sendToGencenaCommand;
         private Car selectedCar;
-        private Func<WarehouseContext, CarState> _waitingSecondWeightingOnArmavirState;
-        private Func<WarehouseContext, CarState> _exitPassGrantedState;
+        private int secondWeithingStateId = 9;
+        private int exitPassGrantedStateId = 13;
         private int _gercenaAreaId = 2;
 
         public ObservableCollection<Car> AwaitingCars { get => awaitingCars; set => SetProperty(ref awaitingCars, value); }
@@ -30,9 +30,6 @@ namespace WeighingControlClient
         public VM()
         {
             awaitingCars = new ObservableCollection<Car>();
-
-            _waitingSecondWeightingOnArmavirState = new Func<WarehouseContext, CarState>((db) => db.CarStates.First(x => x.Name == "Ожидает второе взвешивание" && x.AreaId == 1));
-            _exitPassGrantedState = new Func<WarehouseContext, CarState>((db) => db.CarStates.First(x => x.Name == "Выезд разрешен" && x.AreaId == 1));
 
             Task.Run(AwaitingListUpdating);
         }
@@ -73,7 +70,7 @@ namespace WeighingControlClient
             using (var db = new WarehouseContext())
             {
                 var carInDb = db.Cars.First(x => x.Id == selectedCar.Id);
-                carInDb.CarState = _waitingSecondWeightingOnArmavirState.Invoke(db);
+                carInDb.CarStateId = secondWeithingStateId;
                 db.SaveChanges();
             }
             UpdateAwaitingCars();
@@ -87,8 +84,8 @@ namespace WeighingControlClient
             using (var db = new WarehouseContext())
             {
                 var carInDb = db.Cars.First(x => x.Id == selectedCar.Id);
-                carInDb.CarState = _exitPassGrantedState.Invoke(db);
-                carInDb.CarStateContext = $"Translate to {db.Areas.FirstOrDefault(x=>x.Id == _gercenaAreaId).Name}";
+                carInDb.CarStateId = exitPassGrantedStateId;
+                carInDb.CarStateContext = $"TargetAreaId={_gercenaAreaId}";
                 db.SaveChanges();
             }
             UpdateAwaitingCars();

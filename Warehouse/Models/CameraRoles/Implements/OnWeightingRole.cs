@@ -4,37 +4,44 @@ using Warehouse.Services;
 
 namespace Warehouse.Models.CameraRoles.Implements
 {
-    public class OnWeightingRole : CheckStatusCameraRole
+    public class OnWeightingRole : CameraRoleBase
     {
-        private readonly WarehouseContext _db;
+        private CarState _awaitFirstWeighingState;
+        private CarState _awaitSecondWeighingState;
+        private CarState _firstWeighingState;
+        private CarState _secondWeighingState;
 
-        public OnWeightingRole(ILogger logger, WarehouseContext db, WaitingListsService waitingList) : base(logger, db, waitingList, db.CarStates.First(x=>x.Id == 7))
+        public OnWeightingRole(ILogger logger, WaitingListsService waitingList) : base(logger, waitingList)
         {
             Name = "На весовой";
-            Description = "Проверка что машина ождает взвешивание и смена статуса на \"Взвешивание\"";
-            _db = db;
+            Description = "Проверка что машина ожидает взвешивание и смена статуса на \"Взвешивание\"";
+
+            using(var db = new WarehouseContext())
+            {
+                _awaitFirstWeighingState = db.CarStates.First(x => x.Name == "Ожидает первое взвешивание");
+                _awaitSecondWeighingState = db.CarStates.First(x => x.Name == "Ожидает второе взвешивание");
+                _firstWeighingState = db.CarStates.First(x => x.Name == "Первое взвешивание");
+                _secondWeighingState = db.CarStates.First(x => x.Name == "Второе взвешивание");
+
+                ExpectedStates = new List<CarState>()
+                {
+                    _awaitFirstWeighingState,
+                    _awaitSecondWeighingState,
+                    _firstWeighingState,
+                    _secondWeighingState
+                };
+            }
         }
 
-        protected override void ProcessFreeCar(Camera camera, CameraNotifyBlock notifyBlock, CarAccessInfo carAccessInfo, string plateNumber, string direction)
+        protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)
         {
-            Logger.Warn($"{camera.Name}: Прибыла машина из постоянного списка ({carAccessInfo.List.Name}) с номером ({plateNumber}) и направлением ({direction}). Без действий.");
-        }
+            base.OnCarWithTempAccess(camera, car, list);
 
-        protected override void ProcessTrackedCar(Camera camera, CameraNotifyBlock notifyBlock, CarAccessInfo carAccessInfo, string plateNumber, string direction)
-        {
-            Logger.Info($"{camera.Name}: Прибыла машина из временного списка ({carAccessInfo.List.Name}) с номером ({plateNumber}). Сменяем статус на \"Первое взвешивание\".");
-            ChangeCarStatusToFirstWeightingOnCameraArea(camera, carAccessInfo);
-        }
+            if (car.CarState == _awaitFirstWeighingState)
+                ChangeStatus(camera, car, _firstWeighingState);
 
-        /// <summary>
-        /// Сменить статус машины на "Ожидает первое взвешивание" в территорию камеры
-        /// </summary>
-        /// <param name="camera"></param>
-        /// <param name="carAccessInfo"></param>
-        private void ChangeCarStatusToFirstWeightingOnCameraArea(Camera camera, CarAccessInfo carAccessInfo)
-        {
-            carAccessInfo.Car.CarState = _db.CarStates.First(x => x.Name == "Первое взвешивание" && x.Area == camera.Area);
-            _db.SaveChangesAsync();
+            if (car.CarState == _awaitSecondWeighingState)
+                ChangeStatus(camera, car, _secondWeighingState);
         }
     }
 }

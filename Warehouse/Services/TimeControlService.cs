@@ -5,7 +5,6 @@ namespace Warehouse.Services
 {
     public class TimeControlService
     {
-
         // Выезд разрешен
         private int _exitPassGrantedStateId = 12;
         // Ожидается на герцена
@@ -34,7 +33,8 @@ namespace Warehouse.Services
             {
                 while (true)
                 {
-                    UpdateInControlCarsList(db);
+                    AddCarsToControl(db);
+                    RemoveCarsFromControl(db);
                     CheckTimes(db);
                     Task.Delay(1000).Wait();
                 }
@@ -60,25 +60,28 @@ namespace Warehouse.Services
             }
         }
 
-        private void UpdateInControlCarsList(WarehouseContext db)
+        private void AddCarsToControl(WarehouseContext db)
         {
-            foreach (var car in db.Cars.Where(x => x.CarStateId == _exitPassGrantedStateId))
+            foreach (var car in db.Cars.Where(x => x.CarStateId == _exitPassGrantedStateId && x.CarStateContext != null))
             {
                 if (_inControlCars.ContainsKey(car)) continue;
                 _inControlCars.Add(car, DateTime.Now);
-                logger.Info($"{GetType().Name}: запущен таймер выезда с армавирской для машины ({car.PlateNumberForward})");
+                logger.Info($"{GetType().Name}: запущен таймер выезда для машины ({car.PlateNumberForward}). Контекст: {car.CarStateContext}");
             }
+        }
 
+        private void RemoveCarsFromControl(WarehouseContext db)
+        {
             foreach (var carToTimePair in _inControlCars)
             {
                 var carInDb = db.Cars.First(x => x.Id == carToTimePair.Key.Id);
-                if(carInDb.CarStateId == _awaitingOnGercenaStateId)
+                // Если машина выехала с с армавирской на Герцена
+                if (carInDb.CarStateId == _awaitingOnGercenaStateId)
                 {
                     _inControlCars.Remove(carToTimePair.Key);
-                    logger.Info($"{GetType().Name}: машина ({carInDb.PlateNumberForward}) выехала с Армавирской. Таймер отключен.");
+                    logger.Info($"{GetType().Name}: машина ({carInDb.PlateNumberForward}) выехала с Армавирской до Герцена. Таймер отключен.");
                 }
             }
-
         }
     }
 }
