@@ -19,7 +19,8 @@ namespace WeighingControlClient
         private DelegateCommand sendToGencenaCommand;
         private Car selectedCar;
         private Func<WarehouseContext, CarState> _waitingSecondWeightingOnArmavirState;
-        private Func<WarehouseContext, CarState> _waitingOnHercenaState;
+        private Func<WarehouseContext, CarState> _exitPassGrantedState;
+        private int _gercenaAreaId = 2;
 
         public ObservableCollection<Car> AwaitingCars { get => awaitingCars; set => SetProperty(ref awaitingCars, value); }
         public Car SelectedCar { get => selectedCar; set => SetProperty(ref selectedCar, value); } 
@@ -31,7 +32,7 @@ namespace WeighingControlClient
             awaitingCars = new ObservableCollection<Car>();
 
             _waitingSecondWeightingOnArmavirState = new Func<WarehouseContext, CarState>((db) => db.CarStates.First(x => x.Name == "Ожидает второе взвешивание" && x.AreaId == 1));
-            _waitingOnHercenaState = new Func<WarehouseContext, CarState>((db) => db.CarStates.First(x => x.Name == "Ожидается" && x.AreaId == 2));
+            _exitPassGrantedState = new Func<WarehouseContext, CarState>((db) => db.CarStates.First(x => x.Name == "Выезд разрешен" && x.AreaId == 1));
 
             Task.Run(AwaitingListUpdating);
         }
@@ -49,7 +50,7 @@ namespace WeighingControlClient
         {
             using (var db = new WarehouseContext())
             {
-                var carsInDb = db.Cars.Where(x => x.State.Name == "Ожидает первое взвешивание" || x.State.Name == "Первое взвешивание").ToList();
+                var carsInDb = db.Cars.Where(x => x.CarState.Name == "Ожидает первое взвешивание" || x.CarState.Name == "Первое взвешивание").ToList();
                 foreach (var carInDb in carsInDb)
                 {
                     var existCar = awaitingCars.FirstOrDefault(x => x.Id == carInDb.Id);
@@ -72,7 +73,7 @@ namespace WeighingControlClient
             using (var db = new WarehouseContext())
             {
                 var carInDb = db.Cars.First(x => x.Id == selectedCar.Id);
-                carInDb.State = _waitingSecondWeightingOnArmavirState.Invoke(db);
+                carInDb.CarState = _waitingSecondWeightingOnArmavirState.Invoke(db);
                 db.SaveChanges();
             }
             UpdateAwaitingCars();
@@ -86,7 +87,8 @@ namespace WeighingControlClient
             using (var db = new WarehouseContext())
             {
                 var carInDb = db.Cars.First(x => x.Id == selectedCar.Id);
-                carInDb.State = _waitingOnHercenaState.Invoke(db);
+                carInDb.CarState = _exitPassGrantedState.Invoke(db);
+                carInDb.CarStateContext = $"Translate to {db.Areas.FirstOrDefault(x=>x.Id == _gercenaAreaId).Name}";
                 db.SaveChanges();
             }
             UpdateAwaitingCars();
