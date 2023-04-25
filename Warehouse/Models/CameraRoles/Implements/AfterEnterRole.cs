@@ -53,6 +53,5 @@ namespace Warehouse.Models.CameraRoles.Implements
             carAccessInfo.Car.State = _db.CarStates.First(x => x.Name == "Ожидает первое взвешивание" && x.Area == camera.Area);
             _db.SaveChangesAsync();
         }
-
     }
 }

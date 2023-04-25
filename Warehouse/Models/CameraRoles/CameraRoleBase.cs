@@ -6,7 +6,6 @@ namespace Warehouse.Models.CameraRoles
 {
     public abstract class CameraRoleBase
     {
-
         public string RoleName { get; }
         public string Name { get; protected set; }
         public string Description { get; protected set; }
