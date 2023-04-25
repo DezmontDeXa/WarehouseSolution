@@ -33,7 +33,6 @@ namespace Warehouse
 #endif
         }
 
-
         private void RunCameras()
         {
             foreach (var cameraEntity in _db.Cameras)
