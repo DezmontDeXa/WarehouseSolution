@@ -21,7 +21,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AlertStreamSamples", "AlertStreamSamples", "{59B90C28-FAB3-4874-A09B-E527DF51E56F}"
 	ProjectSection(SolutionItems) = preProject
 		Car1.xml = Car1.xml
-		car2.xml = car2.xml
+		Car2.xml = Car2.xml
 	EndProjectSection
 EndProject
 Global
