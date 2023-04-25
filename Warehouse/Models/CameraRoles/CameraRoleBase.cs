@@ -58,7 +58,7 @@ namespace Warehouse.Models.CameraRoles
                     return;
                 }
 
-                if (ExpectedStates != null && ExpectedStates.Count > 0 && ExpectedStates.Exists(x => x.Id== carAccessInfo.Car?.CarState?.Id)) 
+                if (ExpectedStates != null && ExpectedStates.Count > 0 && !ExpectedStates.Exists(x => x.Id== carAccessInfo.Car?.CarState?.Id)) 
                 {
                     Logger.Warn($"{camera.Name}: Машина ({carAccessInfo.Car.PlateNumberForward}) имела неожиданный статус. Текущий статус: \"{carAccessInfo.Car.CarState.Name} на {camera.Area.Name}\". Без действий.");
                     return;
@@ -146,12 +146,13 @@ namespace Warehouse.Models.CameraRoles
                 Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) сменить статус на \"{status.Name}\"");
                 var carInDb = db.Cars.First(x => x.Id == car.Id);
                 carInDb.CarState = status;
-                db.SaveChangesAsync();
+                db.SaveChanges();
             }
         }
 
         protected void OpenBarrier(Camera camera, Car car)
         {
+            Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) открыть шлагбаум");
             //TODO: Открыть шлагбаум
         }
 

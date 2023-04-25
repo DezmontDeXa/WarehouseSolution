@@ -21,35 +21,16 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithTempAccess(camera, car, list);
 
-            if (car?.CarState?.Area == camera.Area)
-            {
-                Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) открыть шлагбаум и сменить статус на \"На въезде\"");
-                OpenBarrier(camera);
-                ChangeStatus(camera, car, (db, camera, car)=> db.CarStates.First(x => x.Name == "На въезде" && x.Area == camera.Area));
-            }
-            else
-            {
-                Logger.Warn($"{camera.Name}: Машина ({car?.PlateNumberForward}) имела неожиданный статус. Ожидаемый статус: \"Ожидается на {camera?.Area?.Name}\". Текущий статус: \"{car?.CarState?.Name} на {car?.CarState?.Area?.Name}\". Без действий.");
-                return;
-            }
+            OpenBarrier(camera, car);
+            ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "На въезде" && x.Area == camera.Area));
         }
 
         protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)
         {
             base.OnCarWithFreeAccess(camera, car, list);
 
-            // TODO: Вынести входящий статус и выходящий статус в конфиг роли
-            if (car.CarState.Name == "Ожидается" && car.CarState.Area == camera.Area)
-            {
-                Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) открыть шлагбаум и сменить статус на \"На въезде\"");
-                OpenBarrier(camera);
-                ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "На въезде" && x.Area == camera.Area));
-            }
-            else
-            {
-                Logger.Warn($"{camera.Name}: Машина ({car.PlateNumberForward}) имела неожиданный статус. Ожидаемый статус: \"Ожидается на {camera.Area.Name}\". Текущий статус: \"{car.CarState.Name}\". Без действий.");
-                return;
-            }
+            OpenBarrier(camera, car);
+            ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "На въезде" && x.Area == camera.Area));
         }
 
         protected override void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, string plateNumber, string direction)
@@ -64,10 +45,6 @@ namespace Warehouse.Models.CameraRoles.Implements
             //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
         }
 
-        private void OpenBarrier(Camera camera)
-        {
-            //TODO: Открыть шлагбаум
-        }
 
     }
 }

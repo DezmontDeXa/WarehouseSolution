@@ -18,7 +18,7 @@ namespace Warehouse.Models.CameraRoles.Implements
 
             using(var db = new WarehouseContext())
             {
-                ExpectedStates = db.CarStates.Where(x => x.Name == "На въезде" && x.AreaId == _targetAreaId).ToList();
+                ExpectedStates = db.CarStates.Where(x => x.Name == "На въезде").ToList();
                 _firstWeighingState = db.CarStates.First(x => x.Name == "Ожидает первое взвешивание" && x.AreaId == _targetAreaId);
                 _canExitState = db.CarStates.First(x => x.Name == "Выезд разрешен" && x.AreaId == _targetAreaId);
             }

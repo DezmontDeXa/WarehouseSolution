@@ -65,21 +65,30 @@ namespace Warehouse.Services
                 if (reader.ReadLine() == "--boundary")
                 {
                     CameraNotifyBlock e = ReadBlock(reader);
+                    if (e == null) continue;
                     OnNotification?.Invoke(this, e);
+
                 }
             }
         }
 
         private CameraNotifyBlock ReadBlock(StreamReader reader)
         {
-            Dictionary<string, string> headers = ReadHeaders(reader);
-            int result;
-            if (!int.TryParse(headers["Content-Length"], out result))
-                throw new Exception("Пустой блок даннных.");
-            var chArray = new char[result];
-            reader.ReadBlock(chArray, 0, result);
-            var content = string.Join("", chArray);
-            return new CameraNotifyBlock(headers, content);
+            try
+            {
+                Dictionary<string, string> headers = ReadHeaders(reader);
+                int result;
+                if (!int.TryParse(headers["Content-Length"], out result))
+                    throw new Exception("Пустой блок даннных.");
+                var chArray = new char[result];
+                reader.ReadBlock(chArray, 0, result);
+                var content = string.Join("", chArray);
+                return new CameraNotifyBlock(headers, content);
+            }
+            catch (XmlException e)
+            {
+                return null;
+            }
         }
 
         private Dictionary<string, string> ReadHeaders(StreamReader reader)
@@ -148,7 +157,7 @@ namespace Warehouse.Services
             //nsmgr.AddNamespace("hik", "http://www.hikvision.com/ver20/XMLSchema");
             //XmlDocument.Prefix = "hik";
 
-            EventType = XmlDocumentRoot["eventType"]?.InnerText; 
+            EventType = XmlDocumentRoot["eventType"]?.InnerText;
         }
 
         public override string ToString() => "ContentType: " + ContentType + "\r\nContent: " + Content + "\r\n";
