@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AlertStreamSamples", "Alert
 		Car2.xml = Car2.xml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeighingControlClient", "Clients\WeighingControlClient\WeighingControlClient.csproj", "{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{9E3D3CCA-C9AB-47FB-BD21-F343E6CC0461}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E3D3CCA-C9AB-47FB-BD21-F343E6CC0461}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E3D3CCA-C9AB-47FB-BD21-F343E6CC0461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{E5CA8601-2668-4E7E-8294-3CD03A283B9C} = {0EA37DFF-3360-4B1E-90DC-071B1725CEC6}
 		{6A824180-1DBF-43CD-B9F5-D7366CBB2DE6} = {7DC5061C-38A3-44C5-9813-AA37D7F6787C}
 		{59B90C28-FAB3-4874-A09B-E527DF51E56F} = {6A824180-1DBF-43CD-B9F5-D7366CBB2DE6}
+		{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041} = {0EA37DFF-3360-4B1E-90DC-071B1725CEC6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC663EF5-B8BD-453E-9574-7A8375B37941}
