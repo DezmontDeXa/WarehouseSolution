@@ -17,6 +17,7 @@ namespace Warehouse
             BindCameraRoles();
             Bind<BarrierService>().ToSelf().InSingletonScope();
             Bind<WaitingListsService>().ToSelf().InSingletonScope();
+            Bind<TimeControlService>().ToSelf().InSingletonScope();
             Bind<WarehouseSystem>().ToSelf().InSingletonScope();
         }
 
