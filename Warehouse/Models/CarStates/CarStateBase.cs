@@ -8,7 +8,7 @@ namespace Warehouse.Models.CarStates
         public string Name { get; protected set; }
         public string TypeName { get; protected set; }
 
-        public CarStateBase(int id, string name)
+        protected CarStateBase(int id, string name)
         {
             Id = id;
             Name = name;
@@ -20,6 +20,17 @@ namespace Warehouse.Models.CarStates
             var stateInDb = db.CarStates.FirstOrDefault(x => x.Id == Id && x.Name == Name && x.TypeName == TypeName);
             if (stateInDb == null)
                 db.CarStates.Add(new CarState() { Id = Id, Name = Name, TypeName = TypeName });
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if(obj is CarState)
+            {
+                var carState = (CarState)obj;
+                return Id == carState.Id;
+            }
+
+            return base.Equals(obj);
         }
     }
 
@@ -54,6 +65,10 @@ namespace Warehouse.Models.CarStates
     public class ChangingAreaState : CarStateBase
     {
         public ChangingAreaState() : base(7, "Едет к другой территории") { }
+    }
+    public class ExitPassGrantedState : CarStateBase
+    {
+        public ExitPassGrantedState() : base(8, "Выезд разрешен") { }
     }
 
     //public class RequiredInspectioState : CarStateBase

@@ -43,6 +43,7 @@ namespace Warehouse
             Bind<CarStateBase>().To<UnloadingState>();
             Bind<CarStateBase>().To<ExitingForChangeAreaState>();
             Bind<CarStateBase>().To<ChangingAreaState>();
+            Bind<CarStateBase>().To<ExitPassGrantedState>();
             // TODO: Add other car states and run app for add to database
             Bind<CarStatesToDB>().ToSelf().InSingletonScope();
         }

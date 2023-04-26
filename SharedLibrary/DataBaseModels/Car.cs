@@ -17,17 +17,27 @@ public partial class Car
 
     public string? PlateNumberSimilars { get; set; }
 
+    public string CarStateContext { get; set; }
+
+    public virtual ICollection<WaitingList> WaitingLists { get; set; }
+
+    public bool IsInspectionRequired { get; set; }
+
+    public bool FirstWeighingCompleted { get; set; }
+
+    public bool SecondWeighingCompleted { get; set; }
+
+
     public int? CarStateId { get; set; }
 
     [ForeignKey(nameof(CarStateId))]
     public virtual CarState? CarState { get; set; }
 
-    public string CarStateContext { get; set; }
 
     public int? AreaId { get; set; }
 
     [ForeignKey(nameof(AreaId))]
     public virtual Area? Area { get; set; }
 
-    public virtual ICollection<WaitingList> WaitingLists { get; set; }
+
 }
