@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using SharedLibrary.AppSettings;
 
 namespace SharedLibrary.DataBaseModels;
 
@@ -36,9 +38,18 @@ public partial class WarehouseContext : DbContext
     public DbSet<TimeControledState> TimeControledStates { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder
-        .UseSqlServer("Server=COMPUTER;Database=Warehouse;Trusted_Connection=True;TrustServerCertificate=true;MultipleActiveResultSets=True;")
+    {
+        IConfiguration config = new ConfigurationBuilder()
+            .AddJsonFile("AppSettings.json")
+            .Build();
+
+        // Get values from the config given their key and their target type.
+        var settings = config.GetSection("Settings").Get<Settings>();
+        //"Server=COMPUTER;Database=Warehouse;Trusted_Connection=True;TrustServerCertificate=true;MultipleActiveResultSets=True;"
+        optionsBuilder
+        .UseSqlServer(settings.ConnectionString)
         .UseLazyLoadingProxies();
+    }
 
     //protected override void OnModelCreating(ModelBuilder modelBuilder)
     //{
