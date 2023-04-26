@@ -28,12 +28,14 @@ namespace Warehouse.Models.CameraRoles.Implements
         protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)
         {
             base.OnCarWithTempAccess(camera, car, list);
+            SetCarArea(camera, car, camera.Area);
             ChangeStatus(camera, car, _weighingState);
         }
 
         protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)
         {
             base.OnCarWithFreeAccess(camera, car, list);
+            SetCarArea(camera, car, camera.Area);
             ChangeStatus(camera, car, _canExitState);
         }
     }

@@ -34,7 +34,10 @@ namespace Warehouse.Models.CameraRoles.Implements
             base.OnCarWithTempAccess(camera, car, list);
 
             if (car.CarStateId == _awaitWeighingState.Id)
+            {
+                SetCarArea(camera, car, camera.Area);
                 ChangeStatus(camera, car, _weighingState);
+            }
         }
     }
 }

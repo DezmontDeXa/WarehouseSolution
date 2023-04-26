@@ -32,7 +32,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithFreeAccess(camera, car, list);
             ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "Ожидается"));
-            SetCarArea(car, camera.Area);
+            SetCarArea(camera, car, camera.Area);
             OpenBarrier(camera, car);
         }
 

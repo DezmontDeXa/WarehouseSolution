@@ -25,7 +25,7 @@ namespace Warehouse.Models.CameraRoles.Implements
             base.OnCarWithTempAccess(camera, car, list);
 
             ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "На въезде"));
-            SetCarArea(camera, car);
+            SetCarArea(camera, car, camera.Area);
             OpenBarrier(camera, car);
         }
 
@@ -34,6 +34,7 @@ namespace Warehouse.Models.CameraRoles.Implements
             base.OnCarWithFreeAccess(camera, car, list);
 
             OpenBarrier(camera, car);
+            SetCarArea(camera, car, camera.Area);
             ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "На въезде"));
         }
 
