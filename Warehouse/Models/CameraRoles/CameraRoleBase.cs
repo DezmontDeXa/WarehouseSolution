@@ -149,6 +149,17 @@ namespace Warehouse.Models.CameraRoles
             }
         }
 
+        protected void SetCarArea(Camera camera, Car car)
+        {
+            using (var db = new WarehouseContext())
+            {
+                Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) сменить территорию на \"{camera.Area.Name}\"");
+                var carInDb = db.Cars.First(x => x.Id == car.Id);
+                carInDb.AreaId = camera.Area.Id;
+                db.SaveChanges();
+            }
+        }
+
         protected void OpenBarrier(Camera camera, Car car)
         {
             Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) открыть шлагбаум");

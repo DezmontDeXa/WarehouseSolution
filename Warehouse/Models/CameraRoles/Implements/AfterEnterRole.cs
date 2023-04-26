@@ -15,12 +15,12 @@ namespace Warehouse.Models.CameraRoles.Implements
             Name = "После въезда";
             Description = "Подтверждение въезда машины на территорию";
 
-            using(var db = new WarehouseContext())
-            {
-                ExpectedStates = db.CarStates.Where(x => x.Name == "На въезде").ToList();
-                _firstWeighingState = db.CarStates.First(x => x.Name == "Ожидает первое взвешивание" && x.AreaId == _targetAreaId);
-                _canExitState = db.CarStates.First(x => x.Name == "Выезд разрешен" && x.AreaId == _targetAreaId);
-            }
+            //using(var db = new WarehouseContext())
+            //{
+            //    ExpectedStates = db.CarStates.Where(x => x.Name == "На въезде").ToList();
+            //    _firstWeighingState = db.CarStates.First(x => x.Name == "Ожидает первое взвешивание");
+            //    _canExitState = db.CarStates.First(x => x.Name == "Выезд разрешен");
+            //}
         }
 
         protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)

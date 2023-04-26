@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharedLibrary.DataBaseModels;
 
@@ -11,9 +12,11 @@ using SharedLibrary.DataBaseModels;
 namespace SharedLibrary.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    partial class WarehouseContextModelSnapshot : ModelSnapshot
+    [Migration("20230426115522_ChangeKeyInCarState")]
+    partial class ChangeKeyInCarState
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,8 +197,11 @@ namespace SharedLibrary.Migrations
 
             modelBuilder.Entity("SharedLibrary.DataBaseModels.CarState", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("iddd")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("iddd"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -205,7 +211,7 @@ namespace SharedLibrary.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("iddd");
 
                     b.ToTable("CarStates");
                 });

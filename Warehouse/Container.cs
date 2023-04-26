@@ -3,6 +3,7 @@ using NLog;
 using SharedLibrary.DataBaseModels;
 using Warehouse.Models.CameraRoles;
 using Warehouse.Models.CameraRoles.Implements;
+using Warehouse.Models.CarStates;
 using Warehouse.Services;
 
 namespace Warehouse
@@ -15,11 +16,13 @@ namespace Warehouse
             Bind<ILogger>().ToConstant(LogManager.GetCurrentClassLogger()).InSingletonScope();
             Bind<WarehouseContext>().ToSelf().InSingletonScope();
             BindCameraRoles();
+            BindCarStates();
             Bind<BarrierService>().ToSelf().InSingletonScope();
             Bind<WaitingListsService>().ToSelf().InSingletonScope();
             Bind<TimeControlService>().ToSelf().InSingletonScope();
             Bind<WarehouseSystem>().ToSelf().InSingletonScope();
         }
+
 
         private void BindCameraRoles()
         {
@@ -28,6 +31,20 @@ namespace Warehouse
             Bind<CameraRoleBase>().To<OnWeightingRole>();
             // TODO: Add other camera roles and run app for add to database
             Bind<CameraRolesToDB>().ToSelf().InSingletonScope();
+        }
+
+        private void BindCarStates()
+        {
+            Bind<CarStateBase>().To<AwaitingState>();
+            Bind<CarStateBase>().To<OnEnterState>();
+            Bind<CarStateBase>().To<AwaitingWeighingState>();
+            Bind<CarStateBase>().To<WeighingState>();
+            Bind<CarStateBase>().To<LoadingState>();
+            Bind<CarStateBase>().To<UnloadingState>();
+            Bind<CarStateBase>().To<ExitingForChangeAreaState>();
+            Bind<CarStateBase>().To<ChangingAreaState>();
+            // TODO: Add other car states and run app for add to database
+            Bind<CarStatesToDB>().ToSelf().InSingletonScope();
         }
 
         private void ConfigureLogger()

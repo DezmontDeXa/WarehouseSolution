@@ -12,18 +12,19 @@ namespace Warehouse.Models.CameraRoles.Implements
             Name = "Перед въездом";
             Description = "Обнаружение машины перед шлагбаумом и открытие шлагбаума";
 
-            using(var db = new WarehouseContext())
-            {
-                ExpectedStates = db.CarStates.Where(x => x.Name == "Ожидается").ToList();
-            }
+            //using(var db = new WarehouseContext())
+            //{
+            //    ExpectedStates = db.CarStates.Where(x => x.Name == "Ожидается").ToList();
+            //}
         }
 
         protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)
         {
             base.OnCarWithTempAccess(camera, car, list);
 
+            ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "На въезде"));
+            SetCarArea(camera, car);
             OpenBarrier(camera, car);
-            ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "На въезде" && x.Area == camera.Area));
         }
 
         protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)
@@ -31,7 +32,7 @@ namespace Warehouse.Models.CameraRoles.Implements
             base.OnCarWithFreeAccess(camera, car, list);
 
             OpenBarrier(camera, car);
-            ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "На въезде" && x.Area == camera.Area));
+            ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "На въезде"));
         }
 
         protected override void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, string plateNumber, string direction)

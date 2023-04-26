@@ -1,10 +1,12 @@
 ﻿using Ninject;
 using Warehouse;
 using Warehouse.Models.CameraRoles;
+using Warehouse.Models.CarStates;
 using Warehouse.Services;
 
 var _kernel = new StandardKernel(new Container());
 _kernel.Get<CameraRolesToDB>().AddExistingCameraRolesToDB();
+_kernel.Get<CarStatesToDB>().AddExistingCarStatesToDB();
 _kernel.Get<TimeControlService>();
 _kernel.Get<WarehouseSystem>().Run();
 

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SharedLibrary.DataBaseModels;
@@ -6,14 +7,10 @@ namespace SharedLibrary.DataBaseModels;
 public partial class CarState
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int Id { get; set; }
 
     public string Name { get; set; } = null!;
 
-    public int? AreaId { get; set; }
-
-    [ForeignKey(nameof(AreaId))]
-    public virtual Area? Area { get; set; }
-
+    public string TypeName { get; set; } = null!;
 }
