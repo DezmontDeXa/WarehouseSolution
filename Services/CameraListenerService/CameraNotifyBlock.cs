@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Xml;
 
-namespace Warehouse.Services.CameraListenerService
+namespace CameraListenerService
 {
 
     public class CameraNotifyBlock

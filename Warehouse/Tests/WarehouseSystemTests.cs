@@ -1,6 +1,5 @@
-﻿using SharedLibrary.DataBaseModels;
-using Warehouse.Services;
-using Warehouse.Services.CameraListenerService;
+﻿using CameraListenerService;
+using SharedLibrary.DataBaseModels;
 
 namespace Warehouse.Tests
 {
@@ -12,9 +11,9 @@ namespace Warehouse.Tests
         const int delay = 3000;
 
         private readonly WarehouseContext _db; 
-        private readonly IEnumerable<CameraListenerService> _cameraListeners;
+        private readonly IEnumerable<CameraListener> _cameraListeners;
 
-        public WarehouseSystemTests(WarehouseContext db, IEnumerable<CameraListenerService> cameraListeners)
+        public WarehouseSystemTests(WarehouseContext db, IEnumerable<CameraListener> cameraListeners)
         {            
             _db = db;
             _cameraListeners = cameraListeners;

@@ -1,7 +1,7 @@
-﻿using NLog;
+﻿using CameraListenerService;
+using NLog;
 using SharedLibrary.DataBaseModels;
 using Warehouse.Services;
-using Warehouse.Services.CameraListenerService;
 
 namespace Warehouse.Models.CameraRoles.Implements
 {

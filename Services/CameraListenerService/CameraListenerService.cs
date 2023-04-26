@@ -3,9 +3,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Xml;
 
-namespace Warehouse.Services.CameraListenerService
+namespace CameraListenerService
 {
-    public class CameraListenerService : IDisposable
+    public class CameraListener : IDisposable
     {
         public Camera Camera { get; }
 
@@ -16,7 +16,7 @@ namespace Warehouse.Services.CameraListenerService
         private readonly Uri _uri;
         private readonly CancellationTokenSource _cts;
 
-        public CameraListenerService(Camera camera)
+        public CameraListener(Camera camera)
         {
             Camera = camera;
             _http = new HttpClient();
