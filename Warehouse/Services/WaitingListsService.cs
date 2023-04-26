@@ -7,14 +7,12 @@ namespace Warehouse.Services
     /// <summary>
     /// Check platenumber has access
     /// </summary>
-    public class WaitingListsService : IDisposable
+    public class WaitingListsService
     {
-        private readonly WarehouseContext _db;
         private readonly ILogger _logger;
 
-        public WaitingListsService(WarehouseContext db, ILogger logger)
+        public WaitingListsService(ILogger logger)
         {
-            _db = db;
             _logger = logger;
         }
 
@@ -42,26 +40,24 @@ namespace Warehouse.Services
 
         private Car FindCar(string plateNumber)
         {
-            foreach (var car in _db.Cars.Include(x => x.WaitingLists))
+            using (var db = new WarehouseContext())
             {
-                if (car == null) continue;
-                if (car.PlateNumberForward == plateNumber)
-                    return car;
-                if (car.PlateNumberBackward == plateNumber)
-                    return car;
+                foreach (var car in db.Cars.Include(x => x.WaitingLists).Include(x=>x.CarState))
+                {
+                    if (car == null) continue;
+                    if (car.PlateNumberForward == plateNumber)
+                        return car;
+                    if (car.PlateNumberBackward == plateNumber)
+                        return car;
 
-                if (car.PlateNumberSimilars != null)
-                    foreach (var similar in car.PlateNumberSimilars.Split(new char[] { ',' }))
-                        if (similar == plateNumber)
-                            return car;
+                    if (car.PlateNumberSimilars != null)
+                        foreach (var similar in car.PlateNumberSimilars.Split(new char[] { ',' }))
+                            if (similar == plateNumber)
+                                return car;
+                }
+
+                return null;
             }
-
-            return null;
-        }
-
-        public void Dispose()
-        {
-            _db.Dispose();
         }
     }
 

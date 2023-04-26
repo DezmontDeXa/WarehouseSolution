@@ -37,10 +37,10 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithTempAccess(camera, car, list);
 
-            if (car.CarState == _awaitFirstWeighingState)
+            if (car.CarStateId == _awaitFirstWeighingState.Id)
                 ChangeStatus(camera, car, _firstWeighingState);
 
-            if (car.CarState == _awaitSecondWeighingState)
+            if (car.CarStateId == _awaitSecondWeighingState.Id)
                 ChangeStatus(camera, car, _secondWeighingState);
         }
     }

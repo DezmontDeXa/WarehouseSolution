@@ -6,7 +6,6 @@ namespace Warehouse.Models.CameraRoles.Implements
 {
     public class AfterEnterRole : CameraRoleBase
     {
-        private CarState _expectedState;
         private CarState _firstWeighingState;
         private CarState _canExitState;
         private int _targetAreaId = 1;

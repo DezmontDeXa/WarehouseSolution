@@ -85,25 +85,22 @@ namespace Warehouse.Models.CameraRoles
 
         protected virtual void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, string plateNumber, string direction)
         {
-            Logger.Warn($"{camera.Name}: Обнаружена незарегистрированная машина ({plateNumber}).");
-            //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
+            Logger.Warn($"{camera.Name}: Обнаружена неизвестная машина с номером ({plateNumber}).");
         }
 
         protected virtual void OnCarNotInLists(Camera camera, CameraNotifyBlock notifyBlock, Car car, string plateNumber, string direction)
         {
-            Logger.Warn($"{camera.Name}: Обнаружена машина ({plateNumber}) не из списков.");
-            //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
+            Logger.Warn($"{camera.Name}: Обнаружена машина с номером ({plateNumber}) не из списков.");
         }
 
         protected virtual void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)
         {
-            Logger.Info($"{camera.Name}: Прибыла машина из постоянного списка {list.Name} с номером ({car.PlateNumberForward}).");
-            //TODO: Открыть шлагбаум. Сменить статус  \"На въезде\"
+            Logger.Info($"{camera.Name}: Прибыла машина из постоянного списка \"{list.Name}\" с номером ({car.PlateNumberForward}).");
         }
 
         protected virtual void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)
         {
-            Logger.Info($"{camera.Name}: Прибыла машина из временного списка {list.Name} с номером ({car.PlateNumberForward}).");
+            Logger.Info($"{camera.Name}: Прибыла машина из временного списка \"{list.Name}\" с номером ({car.PlateNumberForward}).");
         }
 
 
@@ -135,9 +132,10 @@ namespace Warehouse.Models.CameraRoles
                 Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) сменить статус на \"{status.Name}\"");
                 var carInDb = db.Cars.First(x => x.Id == car.Id);
                 carInDb.CarState = status;
-                db.SaveChangesAsync();
+                db.SaveChanges();
             }
         }
+
         protected void ChangeStatus(Camera camera, Car car,  Func<WarehouseContext, Camera, Car, CarState> getCarStateFunc)
         {
             using (var db = new WarehouseContext())
