@@ -33,6 +33,8 @@ public partial class WarehouseContext : DbContext
 
     public DbSet<WaitingList> WaitingLists { get; set; }
 
+    public DbSet<TimeControledState> TimeControledStates { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder
         .UseSqlServer("Server=COMPUTER;Database=Warehouse;Trusted_Connection=True;TrustServerCertificate=true;MultipleActiveResultSets=True;")

@@ -59,6 +59,7 @@ namespace Warehouse
             // Targets where to log to: File and Console
             var logfile = new FileTarget("logfile") { FileName = $"logs/{DateTime.Now.ToString("\\yyyy-\\MM-\\dd")}.log" };
             var logconsole = new ColoredConsoleTarget("logconsole");
+            logconsole.Layout = "${longdate}|${level:uppercase=true}|${logger}|${message:withexception=false}";
 
             var dbTarget = BuildDatabaseTarget();
 
@@ -97,12 +98,12 @@ namespace Warehouse
 
             param = new DatabaseParameterInfo();
             param.Name = "@exception";
-            param.Layout = "${exception}";
+            param.Layout = "${exception:format=type}";
             target.Parameters.Add(param);
 
             param = new DatabaseParameterInfo();
             param.Name = "@trace";
-            param.Layout = "${trace}";
+            param.Layout = "${exception:format=stacktrace}";
             target.Parameters.Add(param);
 
             param = new DatabaseParameterInfo();

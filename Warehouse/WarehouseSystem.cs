@@ -59,7 +59,7 @@ namespace Warehouse
         private void Listener_OnError(object? sender, Exception e)
         {
             var listener = (CameraListener)sender;
-            _logger.Error($"Error while listening {_listenersToCameraMap[listener].Name}. Exception: {e}. Listener will be restarted.");
+            _logger.Error(e, $"Error while listening {_listenersToCameraMap[listener].Name}. {e.Message}. Listener will be restarted. Check stacktrace in file or db.");
         }
 
         private void Listener_OnNotification(object? sender, CameraNotifyBlock notifyBlock)
