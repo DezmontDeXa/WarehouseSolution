@@ -1,100 +1,90 @@
-﻿using NLog;
+﻿using Microsoft.EntityFrameworkCore;
+using NLog;
 using SharedLibrary.DataBaseModels;
 
 namespace Warehouse.Services
 {
     public class TimeControlService
     {
-        private Dictionary<Car, DateTime> _inControlCars = new Dictionary<Car, DateTime>();
-        private TimeSpan _armavirToHercenaTranslateTimeout;
+        private List<TimeControledState> _observableStates = new List<TimeControledState>();
+        private List<TimeControlCarStateItem> _observableCars = new List<TimeControlCarStateItem>();
         private readonly ILogger logger;
 
-        //private List<CarState> _observableStates = new List<CarState>();
+        public TimeControlService(ILogger logger)
+        {
+            using (var db = new WarehouseContext())
+            {
+                _observableStates = db.TimeControledStates.Include(x => x.CarState).ToList();
+            }
 
-        //public TimeControlService(ILogger logger)
-        //{
-        //    using (var db = new WarehouseContext())
-        //    {
-        //        _armavirToHercenaTranslateTimeout = new TimeSpan(0, 0, int.Parse(db.Configs.First(x => x.Key == "TranslateTimeout").Value));
+            Task.Run(Working);
+            this.logger = logger;
+        }
 
-        //        _exitingForChangeAreaState = db.CarStates.ToList().First(x => CarStateBase.Equals<ExitingForChangeAreaState>(x));
-        //        _changingAreaState = db.CarStates.ToList().First(x => CarStateBase.Equals<ChangingAreaState>(x));
-        //        _observableStates = new List<CarState>()
-        //        {
-        //            _exitingForChangeAreaState,
-        //            _changingAreaState
-        //        };
-        //    }
+        private void Working()
+        {
+            while (true)
+            {
+                using (var db = new WarehouseContext())
+                {
+                    ProcessObservedCars(db);
+                    AddCarsToObserve(db);
+                }
+                Task.Delay(1000).Wait();
+            }
+        }
 
-        //    Task.Run(Working);
-        //    this.logger = logger;
-        //}
+        private void ProcessObservedCars(WarehouseContext db)
+        {
+            foreach (var observedCar in _observableCars.ToArray())
+            {
+                var car = db.Cars.Include(x => x.CarState).First(x => x.Id == observedCar.Car.Id);
 
-        //private void Working()
-        //{
-        //    using (WarehouseContext db = new WarehouseContext())
-        //    {
-        //        while (true)
-        //        {
-        //            AddCarsToControl(db);
-        //            RemoveCarsFromControl(db);
-        //            CheckTimes(db);
-        //            Task.Delay(1000).Wait();
-        //        }
-        //    }
-        //}
+                if (CarStateChanged(db, car, observedCar))
+                {
+                    _observableCars.Remove(observedCar);
+                    logger.Info($"{GetType().Name}: статус машины ({car.PlateNumberForward}) изменился с \"{observedCar.State.Name}\" на \"{car.CarState.Name}\". Таймер отключен.");
+                    return;
+                }
 
-        //private void AddCarsToControl(WarehouseContext db)
-        //{
-        //    var allCars = db.Cars.ToList();
+                if (observedCar.IsTimedOut)
+                {
+                    SendCarToInspect(db, observedCar.Car);
+                    _observableCars.Remove(observedCar);
+                    logger.Info($"{GetType().Name}: Таймер истек. Машина ({car.PlateNumberForward}) отправлена на досмотр.");
+                    return;
+                }
+            }
+        }
 
-        //    foreach (var car in allCars)
-        //    {
-        //        var carState = car.CarState;
+        private bool CarStateChanged(WarehouseContext db, Car car, TimeControlCarStateItem observedCar)
+        {
+            var carStateId = car.CarStateId;
+            if (carStateId != observedCar.State.Id)
+            {
+                return true;
+            }
+            return false;
+        }
 
-        //    }
+        private void SendCarToInspect(WarehouseContext db, Car car)
+        {
+            db.Cars.First(x => x.Id == car.Id).IsInspectionRequired = true;
+        }
 
-        //    //foreach (var car in db.Cars.Where(x => x.CarStateId == _exitPassGrantedStateId && x.CarStateContext != null))
-        //    //{
-        //    //    if (_inControlCars.ContainsKey(car)) continue;
-        //    //    _inControlCars.Add(car, DateTime.Now);
-        //    //    logger.Info($"{GetType().Name}: запущен таймер выезда для машины ({car.PlateNumberForward}). Контекст: {car.CarStateContext}");
-        //    //}
-        //}
+        private void AddCarsToObserve(WarehouseContext db)
+        {
+            var cars = db.Cars.Include(x => x.CarState).ToList();
 
-        //private void CheckTimes(WarehouseContext db)
-        //{
-        //    foreach (var carToTimePair in _inControlCars.ToArray())
-        //    {
-        //        if (carToTimePair.Value + _armavirToHercenaTranslateTimeout < DateTime.Now)
-        //        {
-        //            var carInDb = db.Cars.First(x => x.Id == carToTimePair.Key.Id);
-
-        //            if (carInDb.CarStateId == _exitPassGrantedStateId)
-        //            {
-        //                _inControlCars.Remove(carToTimePair.Key);
-        //                carInDb.CarStateId = _inspectionStateId;
-        //                db.SaveChanges();
-        //                logger.Info($"{GetType().Name}: машина ({carInDb.PlateNumberForward}) задержалась при выезде с Армавирской. Назначен досмотр. Таймер отключен.");
-        //            }
-        //        }
-        //    }
-        //}
-
-
-        //private void RemoveCarsFromControl(WarehouseContext db)
-        //{
-        //    foreach (var carToTimePair in _inControlCars)
-        //    {
-        //        var carInDb = db.Cars.First(x => x.Id == carToTimePair.Key.Id);
-        //        // Если машина выехала с с армавирской на Герцена
-        //        if (carInDb.CarStateId == _awaitingOnGercenaStateId)
-        //        {
-        //            _inControlCars.Remove(carToTimePair.Key);
-        //            logger.Info($"{GetType().Name}: машина ({carInDb.PlateNumberForward}) выехала с Армавирской до Герцена. Таймер отключен.");
-        //        }
-        //    }
-        //}
+            foreach (var car in cars)
+            {
+                var observableStateConfig = _observableStates.FirstOrDefault(x => x.CarStateId == car.CarStateId);
+                if (observableStateConfig == null) return;
+                if (_observableCars.Any(x => x.Car.Id == car.Id && x.State.Id == observableStateConfig.CarStateId)) return;
+                _observableCars.Add(new TimeControlCarStateItem(car, car.CarState, observableStateConfig.Timeout));
+                logger.Info($"{GetType().Name}: Запущен таймер для машины ({car.PlateNumberForward}). Статус: {observableStateConfig.CarState.Name}. Таймаут: {observableStateConfig.Timeout}");
+            }
+        }
     }
 
     public class TimeControlCarStateItem
@@ -102,5 +92,16 @@ namespace Warehouse.Services
         public Car Car { get; }
         public CarState State { get; }
         public DateTime OnBegin { get; }
+        public TimeSpan Timeout { get; }
+        public bool IsTimedOut => DateTime.Now > OnBegin + Timeout;
+
+        public TimeControlCarStateItem(Car car, CarState? carState, int timeout)
+        {
+            Car = car;
+            State = carState;
+            Timeout = new TimeSpan(0, 0, timeout);
+            OnBegin = DateTime.Now;
+        }
+
     }
 }
