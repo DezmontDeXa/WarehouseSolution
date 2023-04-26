@@ -32,7 +32,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithFreeAccess(camera, car, list);
             ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "Ожидается"));
-            SetCarArea(camera, car);
+            SetCarArea(car, camera.Area);
             OpenBarrier(camera, car);
         }
 
@@ -40,7 +40,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithTempAccess(camera, car, list);
 
-            if(car.CarStateContext.StartsWith("TargetAreaId="))
+            if (car.CarStateContext.StartsWith("TargetAreaId="))
             {
                 //var targetAreaId = int.Parse(car.CarStateContext.Split('=').Last());
                 ChangeStatus(camera, car, _changingAreaState);

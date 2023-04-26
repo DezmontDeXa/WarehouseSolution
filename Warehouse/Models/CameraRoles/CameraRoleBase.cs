@@ -149,13 +149,13 @@ namespace Warehouse.Models.CameraRoles
             }
         }
 
-        protected void SetCarArea(Camera camera, Car car)
+        protected void SetCarArea(Camera camera, Car car, Area area)
         {
             using (var db = new WarehouseContext())
             {
-                Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) сменить территорию на \"{camera.Area.Name}\"");
+                Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) сменить территорию на \"{area.Name}\"");
                 var carInDb = db.Cars.First(x => x.Id == car.Id);
-                carInDb.AreaId = camera.Area.Id;
+                carInDb.AreaId = area.Id;
                 db.SaveChanges();
             }
         }
