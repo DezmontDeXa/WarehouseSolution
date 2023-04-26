@@ -9,6 +9,8 @@ namespace Warehouse.Models.CameraRoles.Implements
 {
     public class BeforeEnterRole : CameraRoleBase
     {
+        private CarState _onEnterState;
+
         public BeforeEnterRole(ILogger logger, WaitingListsService waitingListsService) : base(logger, waitingListsService)
         {
             Name = "Перед въездом";
@@ -17,6 +19,8 @@ namespace Warehouse.Models.CameraRoles.Implements
             using (var db = new WarehouseContext())
             {
                 ExpectedStates = db.CarStates.ToList().Where(x => CarStateBase.Equals<AwaitingState>(x)).ToList();
+
+                _onEnterState = GetDbCarStateByType<OnEnterState>(db);
             }
         }
 
@@ -24,7 +28,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithTempAccess(camera, car, list);
 
-            ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "На въезде"));
+            ChangeStatus(camera, car, _onEnterState);
             SetCarArea(camera, car, camera.Area);
             OpenBarrier(camera, car);
         }
@@ -33,9 +37,9 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithFreeAccess(camera, car, list);
 
-            OpenBarrier(camera, car);
+            ChangeStatus(camera, car, _onEnterState);
             SetCarArea(camera, car, camera.Area);
-            ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "На въезде"));
+            OpenBarrier(camera, car);
         }
 
         protected override void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, string plateNumber, string direction)
@@ -49,7 +53,5 @@ namespace Warehouse.Models.CameraRoles.Implements
             base.OnCarNotInLists(camera, notifyBlock, car, plateNumber, direction);
             //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
         }
-
-
     }
 }

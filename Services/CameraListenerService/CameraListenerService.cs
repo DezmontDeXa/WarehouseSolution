@@ -42,6 +42,7 @@ namespace CameraListenerService
                 catch (Exception ex)
                 {
                     OnError?.Invoke(this, ex);
+                    Task.Delay(1000).Wait();
                     continue;
                 }
             }
@@ -56,7 +57,6 @@ namespace CameraListenerService
                     CameraNotifyBlock e = ReadBlock(reader);
                     if (e == null) continue;
                     OnNotification?.Invoke(this, e);
-
                 }
             }
         }

@@ -29,6 +29,8 @@ public partial class WarehouseContext : DbContext
 
     public DbSet<Config> Configs { get; set; }
 
+    public DbSet<Log> Logs { get; set; }
+
     public DbSet<WaitingList> WaitingLists { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

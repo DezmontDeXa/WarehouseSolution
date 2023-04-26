@@ -2,6 +2,7 @@
 using Warehouse.Services;
 using SharedLibrary.DataBaseModels;
 using CameraListenerService;
+using Warehouse.Models.CarStates;
 
 namespace Warehouse.Models.CameraRoles
 {
@@ -136,19 +137,6 @@ namespace Warehouse.Models.CameraRoles
             }
         }
 
-        protected void ChangeStatus(Camera camera, Car car,  Func<WarehouseContext, Camera, Car, CarState> getCarStateFunc)
-        {
-            using (var db = new WarehouseContext())
-            {
-                var status = getCarStateFunc.Invoke(db, camera, car);
-
-                Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) сменить статус на \"{status.Name}\"");
-                var carInDb = db.Cars.First(x => x.Id == car.Id);
-                carInDb.CarStateId = status.Id;
-                db.SaveChanges();
-            }
-        }
-
         protected void SetCarArea(Camera camera, Car car, Area area)
         {
             using (var db = new WarehouseContext())
@@ -164,6 +152,11 @@ namespace Warehouse.Models.CameraRoles
         {
             Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) открыть шлагбаум");
             //TODO: Открыть шлагбаум
+        }
+
+        protected static CarState GetDbCarStateByType<T>(WarehouseContext db) where T : CarStateBase
+        {
+            return db.CarStates.ToList().First(x => CarStateBase.Equals<T>(x));
         }
 
     }

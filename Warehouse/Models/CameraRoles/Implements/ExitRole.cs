@@ -8,6 +8,7 @@ namespace Warehouse.Models.CameraRoles.Implements
 {
     public class ExitRole : CameraRoleBase
     {
+        private CarState _awaitingState;
         private CarState _changingAreaState;
         private CarState _finishState;
 
@@ -20,18 +21,20 @@ namespace Warehouse.Models.CameraRoles.Implements
             {
                 ExpectedStates = new List<CarState>()
                 {
-                    db.CarStates.ToList().First(x=>CarStateBase.Equals<ExitPassGrantedState>(x)),
-                    db.CarStates.ToList().First(x=>CarStateBase.Equals<ExitingForChangeAreaState>(x)),
+                    GetDbCarStateByType<ExitPassGrantedState>(db),
+                    GetDbCarStateByType<ExitingForChangeAreaState>(db)
                 };
-                _changingAreaState = db.CarStates.ToList().First(x => CarStateBase.Equals<ChangingAreaState>(x));
-                _finishState = db.CarStates.ToList().First(x => CarStateBase.Equals<FinishState>(x));
+
+                _awaitingState = GetDbCarStateByType<AwaitingState>(db);
+                _changingAreaState = GetDbCarStateByType<ChangingAreaState>(db);
+                _finishState = GetDbCarStateByType<FinishState>(db);
             }
         }
 
         protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)
         {
             base.OnCarWithFreeAccess(camera, car, list);
-            ChangeStatus(camera, car, (db, camera, car) => db.CarStates.First(x => x.Name == "Ожидается"));
+            ChangeStatus(camera, car, _awaitingState);
             SetCarArea(camera, car, camera.Area);
             OpenBarrier(camera, car);
         }
@@ -40,14 +43,20 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithTempAccess(camera, car, list);
 
-            if (car.CarStateContext.StartsWith("TargetAreaId="))
+            if(car.CarStateId == new ExitingForChangeAreaState().Id)
             {
-                //var targetAreaId = int.Parse(car.CarStateContext.Split('=').Last());
                 ChangeStatus(camera, car, _changingAreaState);
+                SetCarArea(camera, car, camera.Area);
+                OpenBarrier(camera, car);
+                return;
             }
-            else
+
+            if (car.CarStateId == new ExitPassGrantedState().Id)
             {
                 ChangeStatus(camera, car, _finishState);
+                SetCarArea(camera, car, camera.Area);
+                OpenBarrier(camera, car);
+                return;
             }
         }
     }
