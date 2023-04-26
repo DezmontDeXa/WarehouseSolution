@@ -10,7 +10,6 @@ namespace Warehouse.Models.CameraRoles.Implements
     {
         private CarState _weighingState;
         private CarState _canExitState;
-        private int _targetAreaId = 1;
 
         public AfterEnterRole(ILogger logger, WaitingListsService waitingListsService) : base(logger, waitingListsService)
         {
