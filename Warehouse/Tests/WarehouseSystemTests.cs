@@ -8,7 +8,7 @@ namespace Warehouse.Tests
         const string testCarPlateNumber = "P302AC193";
         const int testCarId = 1;
         const int testCarDefaultStateId = 0;
-        const int delay = 1000;
+        const int delay = 5000;
 
         private readonly WarehouseContext _db; 
         private readonly IEnumerable<CameraListener> _cameraListeners;
