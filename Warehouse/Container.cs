@@ -4,6 +4,7 @@ using SharedLibrary.DataBaseModels;
 using Warehouse.Models.CameraRoles;
 using Warehouse.Models.CameraRoles.Implements;
 using Warehouse.Models.CarStates;
+using Warehouse.Models.CarStates.Implements;
 using Warehouse.Services;
 
 namespace Warehouse
@@ -43,7 +44,8 @@ namespace Warehouse
             Bind<CarStateBase>().To<UnloadingState>();
             Bind<CarStateBase>().To<ExitingForChangeAreaState>();
             Bind<CarStateBase>().To<ChangingAreaState>();
-            Bind<CarStateBase>().To<ExitPassGrantedState>();
+            Bind<CarStateBase>().To<ExitPassGrantedState>(); 
+            Bind<CarStateBase>().To<FinishState>();
             // TODO: Add other car states and run app for add to database
             Bind<CarStatesToDB>().ToSelf().InSingletonScope();
         }

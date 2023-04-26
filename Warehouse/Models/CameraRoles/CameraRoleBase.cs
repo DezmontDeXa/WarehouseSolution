@@ -131,7 +131,7 @@ namespace Warehouse.Models.CameraRoles
             {
                 Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) сменить статус на \"{status.Name}\"");
                 var carInDb = db.Cars.First(x => x.Id == car.Id);
-                carInDb.CarState = status;
+                carInDb.CarStateId = status.Id;
                 db.SaveChanges();
             }
         }
@@ -144,7 +144,7 @@ namespace Warehouse.Models.CameraRoles
 
                 Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) сменить статус на \"{status.Name}\"");
                 var carInDb = db.Cars.First(x => x.Id == car.Id);
-                carInDb.CarState = status;
+                carInDb.CarStateId = status.Id;
                 db.SaveChanges();
             }
         }

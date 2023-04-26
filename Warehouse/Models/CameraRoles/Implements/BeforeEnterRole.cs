@@ -1,6 +1,8 @@
 ﻿using CameraListenerService;
 using NLog;
 using SharedLibrary.DataBaseModels;
+using Warehouse.Models.CarStates;
+using Warehouse.Models.CarStates.Implements;
 using Warehouse.Services;
 
 namespace Warehouse.Models.CameraRoles.Implements
@@ -12,10 +14,10 @@ namespace Warehouse.Models.CameraRoles.Implements
             Name = "Перед въездом";
             Description = "Обнаружение машины перед шлагбаумом и открытие шлагбаума";
 
-            //using(var db = new WarehouseContext())
-            //{
-            //    ExpectedStates = db.CarStates.Where(x => x.Name == "Ожидается").ToList();
-            //}
+            using (var db = new WarehouseContext())
+            {
+                ExpectedStates = db.CarStates.ToList().Where(x => CarStateBase.Equals<AwaitingState>(x)).ToList();
+            }
         }
 
         protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Warehouse.Models.CarStates;
+using Warehouse.Models.CarStates.Implements;
 
 namespace WeighingControlClient
 {
@@ -18,9 +20,6 @@ namespace WeighingControlClient
         private DelegateCommand sendToArmavirCommand;
         private DelegateCommand sendToGencenaCommand;
         private Car selectedCar;
-        private int secondWeithingStateId = 9;
-        private int exitPassGrantedStateId = 13;
-        private int _gercenaAreaId = 2;
 
         public ObservableCollection<Car> AwaitingCars { get => awaitingCars; set => SetProperty(ref awaitingCars, value); }
         public Car SelectedCar { get => selectedCar; set => SetProperty(ref selectedCar, value); } 
@@ -47,7 +46,7 @@ namespace WeighingControlClient
         {
             using (var db = new WarehouseContext())
             {
-                var carsInDb = db.Cars.Where(x => x.CarState.Name == "Ожидает первое взвешивание" || x.CarState.Name == "Первое взвешивание").ToList();
+                var carsInDb = db.Cars.ToList().Where(x => CarStateBase.Equals<AwaitingWeighingState>(x.CarState) || CarStateBase.Equals<WeighingState>(x.CarState)).ToList();
                 foreach (var carInDb in carsInDb)
                 {
                     var existCar = awaitingCars.FirstOrDefault(x => x.Id == carInDb.Id);
@@ -70,7 +69,7 @@ namespace WeighingControlClient
             using (var db = new WarehouseContext())
             {
                 var carInDb = db.Cars.First(x => x.Id == selectedCar.Id);
-                carInDb.CarStateId = secondWeithingStateId;
+                carInDb.CarStateId = new UnloadingState().Id;
                 db.SaveChanges();
             }
             UpdateAwaitingCars();
@@ -84,13 +83,10 @@ namespace WeighingControlClient
             using (var db = new WarehouseContext())
             {
                 var carInDb = db.Cars.First(x => x.Id == selectedCar.Id);
-                carInDb.CarStateId = exitPassGrantedStateId;
-                carInDb.CarStateContext = $"TargetAreaId={_gercenaAreaId}";
+                carInDb.CarStateId = new ExitingForChangeAreaState().Id;
                 db.SaveChanges();
             }
             UpdateAwaitingCars();
         }
-
-
     }
 }
