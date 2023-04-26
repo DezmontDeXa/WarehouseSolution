@@ -1,7 +1,6 @@
 ﻿using CameraListenerService;
 using NLog;
 using SharedLibrary.DataBaseModels;
-using Warehouse.Models.CarStates;
 using Warehouse.Models.CarStates.Implements;
 using Warehouse.Services;
 
@@ -10,6 +9,7 @@ namespace Warehouse.Models.CameraRoles.Implements
     public class BeforeEnterRole : CameraRoleBase
     {
         private CarState _onEnterState;
+        private CarState _loagingState;
 
         public BeforeEnterRole(ILogger logger, WaitingListsService waitingListsService) : base(logger, waitingListsService)
         {
@@ -18,9 +18,14 @@ namespace Warehouse.Models.CameraRoles.Implements
 
             using (var db = new WarehouseContext())
             {
-                ExpectedStates = db.CarStates.ToList().Where(x => CarStateBase.Equals<AwaitingState>(x)).ToList();
+                ExpectedStates = new List<CarState>()
+                {
+                    GetDbCarStateByType<AwaitingState>(db),
+                    GetDbCarStateByType<ChangingAreaState>(db),
+                };
 
                 _onEnterState = GetDbCarStateByType<OnEnterState>(db);
+                _loagingState = GetDbCarStateByType<LoadingState>(db);
             }
         }
 
@@ -28,9 +33,21 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithTempAccess(camera, car, list);
 
-            ChangeStatus(camera, car, _onEnterState);
-            SetCarArea(camera, car, camera.Area);
-            OpenBarrier(camera, car);
+            if (car.CarStateId == new AwaitingState().Id)
+            {
+                ChangeStatus(camera, car, _onEnterState);
+                SetCarArea(camera, car, camera.Area);
+                OpenBarrier(camera, car);
+                return;
+            }
+            
+            if (car.CarStateId == new ChangingAreaState().Id)
+            {
+                ChangeStatus(camera, car, _loagingState);
+                SetCarArea(camera, car, camera.Area);
+                OpenBarrier(camera, car);
+                return;
+            }
         }
 
         protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)

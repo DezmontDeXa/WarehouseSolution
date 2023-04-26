@@ -21,7 +21,8 @@ namespace Warehouse.Models.CameraRoles.Implements
                 ExpectedStates = new List<CarState>()
                 {
                     GetDbCarStateByType<ExitPassGrantedState>(db),
-                    GetDbCarStateByType<ExitingForChangeAreaState>(db)
+                    GetDbCarStateByType<ExitingForChangeAreaState>(db),
+                    GetDbCarStateByType<LoadingState>(db)
                 };
 
                 _awaitingState = GetDbCarStateByType<AwaitingState>(db);
@@ -42,7 +43,15 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithTempAccess(camera, car, list);
 
-            if(car.CarStateId == new ExitingForChangeAreaState().Id)
+            if (car.IsInspectionRequired)
+            {
+                Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) требуется провести досмотр. Уведомляем КПП.");
+                // TODO: Уведомить КПП
+                return;
+            }
+
+            // Для выезда с целью смены территории
+            if (car.CarStateId == new ExitingForChangeAreaState().Id)
             {
                 ChangeStatus(camera, car, _changingAreaState);
                 SetCarArea(camera, car, camera.Area);
@@ -50,6 +59,7 @@ namespace Warehouse.Models.CameraRoles.Implements
                 return;
             }
 
+            // Для выездас концами
             if (car.CarStateId == new ExitPassGrantedState().Id)
             {
                 ChangeStatus(camera, car, _finishState);
@@ -57,6 +67,16 @@ namespace Warehouse.Models.CameraRoles.Implements
                 OpenBarrier(camera, car);
                 return;
             }
+
+            // Для выезда с другой территории
+            if (car.CarStateId == new LoadingState().Id)
+            {
+                ChangeStatus(camera, car, _changingAreaState);
+                SetCarArea(camera, car, camera.Area);
+                OpenBarrier(camera, car);
+                return;
+            }
+
         }
     }
 }
