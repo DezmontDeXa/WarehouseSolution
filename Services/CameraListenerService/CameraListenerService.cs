@@ -7,8 +7,6 @@ namespace CameraListenerService
 {
     public class CameraListener : IDisposable
     {
-        public Camera Camera { get; }
-
         public event EventHandler<CameraNotifyBlock>? OnNotification;
         public event EventHandler<Exception>? OnError;
 
@@ -16,26 +14,17 @@ namespace CameraListenerService
         private readonly Uri _uri;
         private readonly CancellationTokenSource _cts;
 
-        public CameraListener(Camera camera)
+        public CameraListener(Uri uri)
         {
-            Camera = camera;
             _http = new HttpClient();
-            var uriString = $"{camera.Ip}/{camera.Endpoint}";
+            _cts = new CancellationTokenSource();
+            _uri = uri;
 
-            if (!string.IsNullOrEmpty(camera.Login) || !string.IsNullOrEmpty(camera.Password))
-            {
+            if (!string.IsNullOrEmpty(_uri.UserInfo))
                 _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                     "Basic",
                     Convert.ToBase64String(
-                        Encoding.ASCII.GetBytes(camera.Login + ":" + camera.Password)));
-
-                uriString = $"{camera.Login}:{camera.Password}@{uriString}";
-            }
-
-            uriString = $"{(camera.UseSsl ? "https" : "http")}://{uriString}";
-
-            _uri = new Uri(uriString);
-            _cts = new CancellationTokenSource();
+                        Encoding.ASCII.GetBytes(_uri.UserInfo)));
 
             Task.Run(Working);
         }

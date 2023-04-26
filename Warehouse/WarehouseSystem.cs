@@ -14,6 +14,7 @@ namespace Warehouse
         private readonly List<CameraListener> _cameraListeners;
         private readonly List<CameraRoleBase> _cameraRoles;
         private readonly Dictionary<CameraListener, CameraRoleBase> _cameraRolesMap;
+        private readonly Dictionary<CameraListener, Camera> _listenersToCameraMap;
 
         public WarehouseSystem(ILogger logger, WarehouseContext db, List<CameraRoleBase> cameraRoles)
         {
@@ -22,6 +23,7 @@ namespace Warehouse
             _cameraRoles = cameraRoles;
             _cameraListeners = new List<CameraListener>();
             _cameraRolesMap = new Dictionary<CameraListener, CameraRoleBase>();
+            _listenersToCameraMap = new Dictionary<CameraListener, Camera>();
         }
 
         public void Run()
@@ -39,9 +41,10 @@ namespace Warehouse
             foreach (var cameraEntity in _db.Cameras)
             {
                 if (cameraEntity == null) continue;
-                var listener = new CameraListener(cameraEntity);
+                var listener = new CameraListener(cameraEntity.BuildUri());
                 _cameraListeners.Add(listener);
                 _cameraRolesMap.Add(listener, GetCameraRole(cameraEntity.CameraRole));
+                _listenersToCameraMap.Add(listener, cameraEntity);
                 listener.OnNotification += Listener_OnNotification;
                 listener.OnError += Listener_OnError;
 
@@ -56,14 +59,14 @@ namespace Warehouse
         private void Listener_OnError(object? sender, Exception e)
         {
             var listener = (CameraListener)sender;
-            _logger.Error($"Error while listening {listener.Camera.Name}. Exception: {e}. Listener will be restarted.");
+            _logger.Error($"Error while listening {_listenersToCameraMap[listener].Name}. Exception: {e}. Listener will be restarted.");
         }
 
         private void Listener_OnNotification(object? sender, CameraNotifyBlock notifyBlock)
         {
             var listener = (CameraListener)sender;
             var listenerToRole = _cameraRolesMap.FirstOrDefault(x => x.Key.GetHashCode() == listener.GetHashCode());
-            listenerToRole.Value.Execute(listener.Camera, notifyBlock);
+            listenerToRole.Value.Execute(_listenersToCameraMap[listener], notifyBlock);
         }
     }
 }
