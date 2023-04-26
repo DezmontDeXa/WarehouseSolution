@@ -24,7 +24,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AlertStreamSamples", "Alert
 		Car2.xml = Car2.xml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeighingControlClient", "Clients\WeighingControlClient\WeighingControlClient.csproj", "{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeighingControlClient", "Clients\WeighingControlClient\WeighingControlClient.csproj", "{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{DA36D013-8D53-46AB-9C57-15F928D21474}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraListenerService", "Services\CameraListenerService\CameraListenerService.csproj", "{DEF1D6A4-1F31-42BF-A680-EC317313C558}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +52,10 @@ Global
 		{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEF1D6A4-1F31-42BF-A680-EC317313C558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEF1D6A4-1F31-42BF-A680-EC317313C558}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEF1D6A4-1F31-42BF-A680-EC317313C558}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEF1D6A4-1F31-42BF-A680-EC317313C558}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +65,7 @@ Global
 		{6A824180-1DBF-43CD-B9F5-D7366CBB2DE6} = {7DC5061C-38A3-44C5-9813-AA37D7F6787C}
 		{59B90C28-FAB3-4874-A09B-E527DF51E56F} = {6A824180-1DBF-43CD-B9F5-D7366CBB2DE6}
 		{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041} = {0EA37DFF-3360-4B1E-90DC-071B1725CEC6}
+		{DEF1D6A4-1F31-42BF-A680-EC317313C558} = {DA36D013-8D53-46AB-9C57-15F928D21474}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC663EF5-B8BD-453E-9574-7A8375B37941}

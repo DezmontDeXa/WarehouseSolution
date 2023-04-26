@@ -1,5 +1,6 @@
 ﻿using SharedLibrary.DataBaseModels;
 using Warehouse.Services;
+using Warehouse.Services.CameraListenerService;
 
 namespace Warehouse.Tests
 {

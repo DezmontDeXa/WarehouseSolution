@@ -1,6 +1,7 @@
 ﻿using NLog;
 using Warehouse.Services;
 using SharedLibrary.DataBaseModels;
+using Warehouse.Services.CameraListenerService;
 
 namespace Warehouse.Models.CameraRoles
 {
