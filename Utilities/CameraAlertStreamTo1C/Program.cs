@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using System.Net.Http.Headers;
 
 IConfiguration config = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
+    .AddJsonFile("Settings.json")
     .Build();
 
 // Get values from the config given their key and their target type.
@@ -14,6 +14,11 @@ var _http = new HttpClient();
 var _callbackLink = settings.CallbackUri;
 
 RunCameras(settings.Cameras);
+
+while (true)
+{
+    Console.ReadLine();
+}
 
 void RunCameras(List<string> cameras)
 {
@@ -33,18 +38,23 @@ void Listener_OnError(object? sender, Exception e)
 void Listener_OnNotification(object? sender, CameraNotifyBlock e)
 {
     Console.WriteLine((object)e);
-    try
-    {
-        var content = new MultipartFormDataContent();
-        content.Headers.ContentType = new MediaTypeHeaderValue(e.ContentType);
-        content.Add(new ByteArrayContent(e.ContentBytes));
-        var result = _http.PostAsync(_callbackLink, content).Result;
 
-        if (!result.IsSuccessStatusCode)
-            Console.WriteLine($"API return error. Status Code: {result.StatusCode}.");
-    }
-    catch (Exception ex)
+    Task.Run(() =>
     {
-        Console.WriteLine($"Error on sending callback to API: {ex.Message}.");
-    }
+        try
+        {
+            var content = new MultipartFormDataContent();
+            content.Headers.ContentType = new MediaTypeHeaderValue(e.ContentType);
+            content.Add(new ByteArrayContent(e.ContentBytes));
+            var result = _http.PostAsync(_callbackLink, content).Result;
+
+            if (!result.IsSuccessStatusCode)
+                Console.WriteLine($"API return error. Status Code: {result.StatusCode}.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error on sending callback to API: {ex.Message}.");
+        }
+    });
+
 }
