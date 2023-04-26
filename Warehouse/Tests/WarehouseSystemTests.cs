@@ -11,12 +11,12 @@ namespace Warehouse.Tests
         const int delay = 5000;
 
         private readonly WarehouseContext _db; 
-        private readonly IEnumerable<CameraListener> _cameraListeners;
+        private readonly List<CameraListener> _cameraListeners;
 
         public WarehouseSystemTests(WarehouseContext db, IEnumerable<CameraListener> cameraListeners)
         {            
             _db = db;
-            _cameraListeners = cameraListeners;
+            _cameraListeners = cameraListeners.ToList();
         }
 
         public void RunNormalPipelineTest()
@@ -27,6 +27,14 @@ namespace Warehouse.Tests
                 testCar.CarStateId = testCarDefaultStateId;
                 _db.SaveChanges();
 
+                Task.Delay(delay).Wait();
+                _cameraListeners[0].SendTestData();
+                Task.Delay(delay).Wait();
+                _cameraListeners[1].SendTestData();
+                Task.Delay(delay).Wait();
+                _cameraListeners[2].SendTestData();
+                Task.Delay(10000).Wait();
+                _cameraListeners[3].SendTestData();
                 Task.Delay(delay).Wait();
 
                 foreach (var listener in _cameraListeners)
