@@ -1,8 +1,8 @@
 {
   "Settings": {
-    "CallbackUri": "http://admin:qwerty123@192.168.1.91:80/smartbarrier/hs/GetJournal",
+    "CallbackUri": "http://an:q23@192.168.1.91:80/smartbarrier/hs/GetJournal",
     "Cameras": [
-      "http://camera:lomar010@85.172.107.39:9929/ISAPI/Event/notification/alertStream"
+      "http://caa:lom@85.172.107.39:9929/ISAPI/Event/notification/alertStream"
     ]
   }  
 }
