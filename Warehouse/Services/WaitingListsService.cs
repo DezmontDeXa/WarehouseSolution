@@ -45,14 +45,14 @@ namespace Warehouse.Services
                 foreach (var car in db.Cars.Include(x => x.WaitingLists).Include(x=>x.CarState))
                 {
                     if (car == null) continue;
-                    if (car.PlateNumberForward == plateNumber)
+                    if (car.PlateNumberForward.ToLower() == plateNumber.ToLower())
                         return car;
-                    if (car.PlateNumberBackward == plateNumber)
+                    if (car.PlateNumberBackward.ToLower() == plateNumber.ToLower())
                         return car;
 
                     if (car.PlateNumberSimilars != null)
                         foreach (var similar in car.PlateNumberSimilars.Split(new char[] { ',' }))
-                            if (similar == plateNumber)
+                            if (similar.ToLower() == plateNumber.ToLower())
                                 return car;
                 }
 

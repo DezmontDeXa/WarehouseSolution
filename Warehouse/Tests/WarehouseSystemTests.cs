@@ -37,11 +37,11 @@ namespace Warehouse.Tests
                 _cameraListeners[3].SendTestData();
                 Task.Delay(delay).Wait();
 
-                foreach (var listener in _cameraListeners)
-                {
-                    listener.SendTestData();
-                    Task.Delay(delay).Wait();
-                }
+                //foreach (var listener in _cameraListeners)
+                //{
+                //    listener.SendTestData();
+                //    Task.Delay(delay).Wait();
+                //}
             });
         }
     }

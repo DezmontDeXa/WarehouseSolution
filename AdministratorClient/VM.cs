@@ -18,6 +18,7 @@ namespace AdministratorClient
         private WaitingList selectedWaitingList;
         private ObservableCollection<Car> cars;
         private DelegateCommand uploadCarsCommand;
+        private DelegateCommand uploadFreeCarsCommand;
 
         public ObservableCollection<WaitingList> WaitingLists { get => waitingLists; set => SetProperty(ref waitingLists, value); }
         public WaitingList SelectedWaitingList
@@ -31,6 +32,7 @@ namespace AdministratorClient
         }
         public ObservableCollection<Car> Cars { get => cars; set => SetProperty(ref cars, value); }
         public ICommand UploadCarsCommand => uploadCarsCommand ??= new DelegateCommand(UploadCars);
+        public ICommand UploadFreeCarsCommand => uploadFreeCarsCommand ??= new DelegateCommand(UploadFreeCars);
 
         public VM()
         {
@@ -64,6 +66,28 @@ namespace AdministratorClient
                 var waitingList = db.WaitingLists.First(x => x.Id == waitingListId);
                 waitingList.Cars.AddRange(cars);
                 db.SaveChanges();
+            }
+        }
+
+
+        private void UploadFreeCars()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            if (ofd.ShowDialog() == true)
+            {
+                var lines = File.ReadAllLines(ofd.FileName);
+                var cars = new List<Car>();
+                foreach (var line in lines)
+                    cars.Add(new Car() { PlateNumberForward = line, PlateNumberBackward = line, CarStateId = 0 });
+
+                using (var db = new WarehouseContext())
+                {
+                    var waitingListId = WaitingLists[0].Id;
+
+                    var waitingList = db.WaitingLists.First(x => x.Id == waitingListId);
+                    waitingList.Cars.AddRange(cars);
+                    db.SaveChanges();
+                }
             }
         }
     }

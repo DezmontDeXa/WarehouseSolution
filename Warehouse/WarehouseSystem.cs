@@ -2,6 +2,7 @@
 using SharedLibrary.DataBaseModels;
 using Warehouse.Models.CameraRoles;
 using CameraListenerService;
+using Warehouse.Tests;
 
 namespace Warehouse
 {

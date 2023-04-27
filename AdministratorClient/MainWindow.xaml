@@ -97,6 +97,7 @@
                     <Label HorizontalAlignment="Center" Content="Контроль" />
                     <StackPanel Grid.Row="1">
                         <Button Command="{Binding UploadCarsCommand}" Content="Загрузить список машин во временный список" />
+                        <Button Command="{Binding UploadFreeCarsCommand}" Content="Загрузить список машин в постоянный список" />
                     </StackPanel>
                 </Grid>
             </Grid>
