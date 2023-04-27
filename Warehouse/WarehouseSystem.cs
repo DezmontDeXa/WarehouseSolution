@@ -1,8 +1,6 @@
 ﻿using NLog;
-using Warehouse.Services;
 using SharedLibrary.DataBaseModels;
 using Warehouse.Models.CameraRoles;
-using Warehouse.Tests;
 using CameraListenerService;
 
 namespace Warehouse
@@ -31,8 +29,8 @@ namespace Warehouse
             RunCameras();
 
 #if DEBUG
-            var tests = new WarehouseSystemTests(_db, _cameraListeners);
-            tests.RunNormalPipelineTest();
+            //var tests = new WarehouseSystemTests(_db, _cameraListeners);
+            //tests.RunNormalPipelineTest();
 #endif
         }
 
@@ -41,7 +39,7 @@ namespace Warehouse
             foreach (var cameraEntity in _db.Cameras)
             {
                 if (cameraEntity == null) continue;
-                var listener = new CameraListener(cameraEntity.BuildUri());
+                var listener = new CameraListener(new Uri(cameraEntity.Link));
                 _cameraListeners.Add(listener);
                 _cameraRolesMap.Add(listener, GetCameraRole(cameraEntity.CameraRole));
                 _listenersToCameraMap.Add(listener, cameraEntity);

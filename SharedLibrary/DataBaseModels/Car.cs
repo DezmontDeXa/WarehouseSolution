@@ -39,5 +39,8 @@ public partial class Car
     [ForeignKey(nameof(AreaId))]
     public virtual Area? Area { get; set; }
 
-
+    public Car()
+    {
+        CarStateContext = string.Empty;
+    }
 }

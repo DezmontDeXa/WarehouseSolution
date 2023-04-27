@@ -16,7 +16,7 @@ public partial class Camera
 
     public string? Name { get; set; }
 
-    public string Ip { get; set; } = null!;
+    public string Link { get; set; }
 
     public MoveDirection Direction { get; set; }
 
@@ -30,28 +30,6 @@ public partial class Camera
 
     [ForeignKey(nameof(AreaId))]
     public virtual Area Area { get; set; }
-
-    public string? Endpoint { get; set; }
-
-    public string? Login { get; set; }
-
-    public string? Password { get; set; }
-
-    public bool UseSsl { get; set; }
-
-    public Uri BuildUri()
-    {
-        var uriString = $"{Ip}/{Endpoint}";
-
-        if (!string.IsNullOrEmpty(Login) || !string.IsNullOrEmpty(Password))
-        {
-            uriString = $"{Login}:{Password}@{uriString}";
-        }
-
-        uriString = $"{(UseSsl ? "https" : "http")}://{uriString}";
-
-        return new Uri(uriString);        
-    }
 }
 
 public enum MoveDirection
