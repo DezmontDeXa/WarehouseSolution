@@ -28,11 +28,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeighingControlClient", "Cl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{DA36D013-8D53-46AB-9C57-15F928D21474}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraListenerService", "Services\CameraListenerService\CameraListenerService.csproj", "{DEF1D6A4-1F31-42BF-A680-EC317313C558}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CameraListenerService", "Services\CameraListenerService\CameraListenerService.csproj", "{DEF1D6A4-1F31-42BF-A680-EC317313C558}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{C5447726-2D22-40F1-B3D7-96D03BD33658}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CameraAlertStreamTo1C", "Utilities\CameraAlertStreamTo1C\CameraAlertStreamTo1C.csproj", "{893E823E-774C-4383-AD88-2111ECBC4D64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CameraAlertStreamTo1C", "Utilities\CameraAlertStreamTo1C\CameraAlertStreamTo1C.csproj", "{893E823E-774C-4383-AD88-2111ECBC4D64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarriersService", "Services\BarriersService\BarriersService.csproj", "{4DDF5486-C258-4272-AED1-6820F58A159A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,6 +66,10 @@ Global
 		{893E823E-774C-4383-AD88-2111ECBC4D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{893E823E-774C-4383-AD88-2111ECBC4D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{893E823E-774C-4383-AD88-2111ECBC4D64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DDF5486-C258-4272-AED1-6820F58A159A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DDF5486-C258-4272-AED1-6820F58A159A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DDF5486-C258-4272-AED1-6820F58A159A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DDF5486-C258-4272-AED1-6820F58A159A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{D9C80FF8-1C65-47A4-B7F3-6B56D8AC6041} = {0EA37DFF-3360-4B1E-90DC-071B1725CEC6}
 		{DEF1D6A4-1F31-42BF-A680-EC317313C558} = {DA36D013-8D53-46AB-9C57-15F928D21474}
 		{893E823E-774C-4383-AD88-2111ECBC4D64} = {C5447726-2D22-40F1-B3D7-96D03BD33658}
+		{4DDF5486-C258-4272-AED1-6820F58A159A} = {DA36D013-8D53-46AB-9C57-15F928D21474}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC663EF5-B8BD-453E-9574-7A8375B37941}

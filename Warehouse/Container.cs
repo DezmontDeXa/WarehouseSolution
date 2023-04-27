@@ -1,5 +1,7 @@
-﻿using Ninject.Modules;
+﻿using Ninject.Activation;
+using Ninject.Modules;
 using NLog;
+using NLog.Fluent;
 using NLog.Targets;
 using SharedLibrary.DataBaseModels;
 using Warehouse.Models.CameraRoles;
@@ -15,7 +17,9 @@ namespace Warehouse
         public override void Load()
         {
             ConfigureLogger();
-            Bind<ILogger>().ToConstant(LogManager.GetCurrentClassLogger()).InSingletonScope();
+            Bind<ILogger>().ToMethod((context)=> LogManager.GetLogger(
+                context.Request.Target.Member.DeclaringType.Name, 
+                context.Request.Target.Member.DeclaringType));
             Bind<WarehouseContext>().ToSelf().InSingletonScope();
             BindCameraRoles();
             BindCarStates();
@@ -24,7 +28,6 @@ namespace Warehouse
             Bind<TimeControlService>().ToSelf().InSingletonScope();
             Bind<WarehouseSystem>().ToSelf().InSingletonScope();
         }
-
 
         private void BindCameraRoles()
         {
