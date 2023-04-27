@@ -70,6 +70,7 @@ namespace Warehouse.Services
         private void SendCarToInspect(WarehouseContext db, Car car)
         {
             db.Cars.First(x => x.Id == car.Id).IsInspectionRequired = true;
+            db.SaveChanges();
         }
 
         private void AddCarsToObserve(WarehouseContext db)
@@ -78,6 +79,7 @@ namespace Warehouse.Services
 
             foreach (var car in cars)
             {
+                if (car.IsInspectionRequired) return;
                 var observableStateConfig = _observableStates.FirstOrDefault(x => x.CarStateId == car.CarStateId);
                 if (observableStateConfig == null) return;
                 if (_observableCars.Any(x => x.Car.Id == car.Id && x.State.Id == observableStateConfig.CarStateId)) return;
