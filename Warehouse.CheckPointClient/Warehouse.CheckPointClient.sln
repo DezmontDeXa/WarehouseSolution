@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8DAFE5F4-37C9-4E97-BFCA-8D37FF841C51}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{AA967833-2E95-4795-826E-0D4DDB49DA12}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warehouse.CheckPointClient.Modules.ModuleName", "Warehouse.CheckPointClient\Modules\Warehouse.CheckPointClient.Modules.ModuleName\Warehouse.CheckPointClient.Modules.ModuleName.csproj", "{724DA7D4-7165-47C5-9024-A997D1B76E2E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{80A5FF21-8DA5-42C5-9599-50BAFCD60C3A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warehouse.CheckPointClient.Services", "Warehouse.CheckPointClient\Services\Warehouse.CheckPointClient.Services\Warehouse.CheckPointClient.Services.csproj", "{CB9F8563-509D-4797-B10B-87A17EA1C08C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warehouse.CheckPointClient.Services.Interfaces", "Warehouse.CheckPointClient\Services\Warehouse.CheckPointClient.Services.Interfaces\Warehouse.CheckPointClient.Services.Interfaces.csproj", "{3A8EDAC5-3389-40FD-9405-2CFB88FD4824}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warehouse.CheckPointClient", "Warehouse.CheckPointClient\Warehouse.CheckPointClient\Warehouse.CheckPointClient.csproj", "{2090E355-9A14-4BCE-8220-2D4B45ECAAA6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warehouse.CheckPointClient.Core", "Warehouse.CheckPointClient\Warehouse.CheckPointClient.Core\Warehouse.CheckPointClient.Core.csproj", "{99A64C32-BEA8-4EEF-84DE-4CAB54634745}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{724DA7D4-7165-47C5-9024-A997D1B76E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{724DA7D4-7165-47C5-9024-A997D1B76E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{724DA7D4-7165-47C5-9024-A997D1B76E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{724DA7D4-7165-47C5-9024-A997D1B76E2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB9F8563-509D-4797-B10B-87A17EA1C08C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB9F8563-509D-4797-B10B-87A17EA1C08C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB9F8563-509D-4797-B10B-87A17EA1C08C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB9F8563-509D-4797-B10B-87A17EA1C08C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A8EDAC5-3389-40FD-9405-2CFB88FD4824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A8EDAC5-3389-40FD-9405-2CFB88FD4824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A8EDAC5-3389-40FD-9405-2CFB88FD4824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A8EDAC5-3389-40FD-9405-2CFB88FD4824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2090E355-9A14-4BCE-8220-2D4B45ECAAA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2090E355-9A14-4BCE-8220-2D4B45ECAAA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2090E355-9A14-4BCE-8220-2D4B45ECAAA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2090E355-9A14-4BCE-8220-2D4B45ECAAA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99A64C32-BEA8-4EEF-84DE-4CAB54634745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99A64C32-BEA8-4EEF-84DE-4CAB54634745}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99A64C32-BEA8-4EEF-84DE-4CAB54634745}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A64C32-BEA8-4EEF-84DE-4CAB54634745}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{724DA7D4-7165-47C5-9024-A997D1B76E2E} = {AA967833-2E95-4795-826E-0D4DDB49DA12}
+		{CB9F8563-509D-4797-B10B-87A17EA1C08C} = {80A5FF21-8DA5-42C5-9599-50BAFCD60C3A}
+		{3A8EDAC5-3389-40FD-9405-2CFB88FD4824} = {80A5FF21-8DA5-42C5-9599-50BAFCD60C3A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2512A189-71D8-49FC-A71E-3BBD54D23AE8}
+	EndGlobalSection
+EndGlobal
