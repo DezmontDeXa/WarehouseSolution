@@ -17,6 +17,8 @@ public partial class Car
 
     public string? PlateNumberSimilars { get; set; }
 
+    public string? Driver { get; set; }
+
     public string CarStateContext { get; set; }
 
     public virtual ICollection<WaitingList> WaitingLists { get; set; }
