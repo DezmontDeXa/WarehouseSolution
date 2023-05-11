@@ -10,19 +10,24 @@ namespace Warehouse.Services
     public class WaitingListsService
     {
         private readonly ILogger _logger;
+        private readonly FuzzyFindCarService _findCarService;
 
-        public WaitingListsService(ILogger logger)
+        public WaitingListsService(ILogger logger, FuzzyFindCarService findCarService)
         {
             _logger = logger;
+            _findCarService = findCarService;
         }
 
         public CarAccessInfo GetAccessTypeInfo(string plateNumber)
         {
             try
             {
-                var car = FindCar(plateNumber);
+                var car = _findCarService.FindCar(plateNumber);// FindCar(plateNumber);
                 if (car == null)
                     return new CarAccessInfo(null, null);
+
+                using(var db  = new WarehouseContext())
+                    car = db.Cars.Include(x => x.CarState).Include(x => x.WaitingLists).First(x => x.Id == car.Id);
 
                 var includs = car.WaitingLists.OrderByDescending(x=>x.AccessGrantType).ToList();
 
@@ -42,6 +47,8 @@ namespace Warehouse.Services
         {
             using (var db = new WarehouseContext())
             {
+                //var cars = db.Cars.Include(x => x.WaitingLists).Include(x => x.CarState);
+
                 foreach (var car in db.Cars.Include(x => x.WaitingLists).Include(x=>x.CarState))
                 {
                     if (car == null) continue;

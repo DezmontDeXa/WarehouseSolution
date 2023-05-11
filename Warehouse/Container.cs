@@ -1,7 +1,5 @@
-﻿using Ninject.Activation;
-using Ninject.Modules;
+﻿using Ninject.Modules;
 using NLog;
-using NLog.Fluent;
 using NLog.Targets;
 using SharedLibrary.DataBaseModels;
 using Warehouse.Models.CameraRoles;
@@ -24,6 +22,7 @@ namespace Warehouse
             BindCameraRoles();
             BindCarStates();
             Bind<BarrierService>().ToSelf().InSingletonScope();
+            Bind<FuzzyFindCarService>().ToSelf().InSingletonScope();
             Bind<WaitingListsService>().ToSelf().InSingletonScope();
             Bind<TimeControlService>().ToSelf().InSingletonScope();
             Bind<WarehouseSystem>().ToSelf().InSingletonScope();

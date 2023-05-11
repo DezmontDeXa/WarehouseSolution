@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Services\CameraListenerService\CameraListenerService.csproj" />
+    <ProjectReference Include="..\Services\FindCarService\FindCarService.csproj" />
     <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
   </ItemGroup>
 

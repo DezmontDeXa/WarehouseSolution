@@ -1,7 +1,5 @@
-﻿using SharedLibrary.DataBaseModels;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Text;
-using System.Xml;
 
 namespace CameraListenerService
 {
@@ -63,19 +61,24 @@ namespace CameraListenerService
 
         private CameraNotifyBlock ReadBlock(StreamReader reader)
         {
+            Dictionary<string, string> headers = ReadHeaders(reader);
+            if (headers["Content-Type"] != "application/xml" && headers["Content-Type"] != "text/xml")
+                return null;
+            int result;
+            if (!int.TryParse(headers["Content-Length"], out result))
+                throw new Exception("Пустой блок даннных.");
+            var chArray = new char[result];
+
+            reader.ReadBlock(chArray, 0, result);
+            var content = string.Join("", chArray).TrimStart();
+
             try
             {
-                Dictionary<string, string> headers = ReadHeaders(reader);
-                int result;
-                if (!int.TryParse(headers["Content-Length"], out result))
-                    throw new Exception("Пустой блок даннных.");
-                var chArray = new char[result];
-                reader.ReadBlock(chArray, 0, result);
-                var content = string.Join("", chArray);
                 return new CameraNotifyBlock(headers, content);
             }
-            catch (XmlException e)
+            catch (Exception ex)
             {
+                OnError?.Invoke(this, ex);
                 return null;
             }
         }
