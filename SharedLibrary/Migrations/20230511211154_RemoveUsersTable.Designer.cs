@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharedLibrary.DataBaseModels;
 
@@ -11,9 +12,11 @@ using SharedLibrary.DataBaseModels;
 namespace SharedLibrary.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    partial class WarehouseContextModelSnapshot : ModelSnapshot
+    [Migration("20230511211154_RemoveUsersTable")]
+    partial class RemoveUsersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -287,54 +290,6 @@ namespace SharedLibrary.Migrations
                     b.ToTable("TimeControledStates");
                 });
 
-            modelBuilder.Entity("SharedLibrary.DataBaseModels.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Login");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("SharedLibrary.DataBaseModels.UserRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Permissions")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RoleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserRole");
-                });
-
             modelBuilder.Entity("SharedLibrary.DataBaseModels.WaitingList", b =>
                 {
                     b.Property<int>("Id")
@@ -443,17 +398,6 @@ namespace SharedLibrary.Migrations
                         .HasForeignKey("CarStateId");
 
                     b.Navigation("CarState");
-                });
-
-            modelBuilder.Entity("SharedLibrary.DataBaseModels.User", b =>
-                {
-                    b.HasOne("SharedLibrary.DataBaseModels.UserRole", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
                 });
 #pragma warning restore 612, 618
         }

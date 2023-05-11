@@ -17,6 +17,8 @@ public partial class WarehouseContext : DbContext
     {
     }
 
+    public DbSet<User> Users { get; set; }
+
     public DbSet<Area> Areas { get; set; }
 
     public DbSet<BarrierInfo> BarrierInfos { get; set; }
