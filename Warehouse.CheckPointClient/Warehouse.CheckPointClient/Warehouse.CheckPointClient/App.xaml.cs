@@ -1,8 +1,10 @@
 ﻿using Autorization;
+using CheckPointControl;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 using Prism.Ioc;
 using Prism.Modularity;
+using Services;
 using SharedLibrary.Logging;
 using System;
 using System.Windows;
@@ -27,12 +29,15 @@ namespace Warehouse.CheckPointClient
         {
             LoggingConfigurator.ConfigureLogger();
             containerRegistry.RegisterSingleton<IMessageService, MessageService>();
-
+            containerRegistry.RegisterSingleton<AutorizationService>();
+            containerRegistry.RegisterSingleton<AreaService>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
-            moduleCatalog.AddModule<AutorizationModule>();
+            // disable for development
+            //moduleCatalog.AddModule<AutorizationModule>();
+            moduleCatalog.AddModule<CheckPointControlModule>();
         }
     }
 }

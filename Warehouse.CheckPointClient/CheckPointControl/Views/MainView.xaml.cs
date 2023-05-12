@@ -18,9 +18,9 @@ namespace CheckPointControl.Views
     /// <summary>
     /// Interaction logic for ViewA.xaml
     /// </summary>
-    public partial class ViewA : UserControl
+    public partial class MainView : UserControl
     {
-        public ViewA()
+        public MainView()
         {
             InitializeComponent();
         }

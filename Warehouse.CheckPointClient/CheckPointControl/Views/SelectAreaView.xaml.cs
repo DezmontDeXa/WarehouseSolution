@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Autorization.Views
+namespace CheckPointControl.Views
 {
     /// <summary>
-    /// Interaction logic for ViewA.xaml
+    /// Логика взаимодействия для SelectAreaView.xaml
     /// </summary>
-    public partial class ViewA : UserControl
+    public partial class SelectAreaView : UserControl
     {
-        public ViewA()
+        public SelectAreaView()
         {
             InitializeComponent();
         }

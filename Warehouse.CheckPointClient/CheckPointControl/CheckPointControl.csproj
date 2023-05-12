@@ -7,6 +7,8 @@
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AutorizationModule\Autorization.csproj" />
+    <ProjectReference Include="..\Warehouse.CheckPointClient\Services\Warehouse.CheckPointClient.Services\Services.csproj" />
     <ProjectReference Include="..\Warehouse.CheckPointClient\Warehouse.CheckPointClient.Core\Warehouse.CheckPointClient.Core.csproj" />
   </ItemGroup>
 </Project>

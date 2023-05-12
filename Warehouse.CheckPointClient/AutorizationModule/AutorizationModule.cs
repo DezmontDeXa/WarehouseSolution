@@ -1,5 +1,4 @@
-﻿using Autorization.Services;
-using Autorization.Views;
+﻿using Autorization.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -18,13 +17,12 @@ namespace Autorization
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            _regionManager.RequestNavigate(RegionNames.ContentRegion, "ViewA");
+            _regionManager.RequestNavigate(RegionNames.ContentRegion, nameof(SignInView));
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<ViewA>();
-            containerRegistry.Register<AutorizationService>();
+            containerRegistry.RegisterForNavigation<SignInView>();
         }
     }
 }

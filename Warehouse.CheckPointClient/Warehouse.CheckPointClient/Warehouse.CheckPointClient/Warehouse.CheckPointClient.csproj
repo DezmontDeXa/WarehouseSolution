@@ -10,6 +10,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\AutorizationModule\Autorization.csproj" />
+    <ProjectReference Include="..\..\CheckPointControl\CheckPointControl.csproj" />
     <ProjectReference Include="..\Warehouse.CheckPointClient.Core\Warehouse.CheckPointClient.Core.csproj" />
     <ProjectReference Include="..\Modules\Warehouse.CheckPointClient.Modules.ModuleName\ModuleName.csproj" />
     <ProjectReference Include="..\Services\Warehouse.CheckPointClient.Services.Interfaces\Services.Interfaces.csproj" />

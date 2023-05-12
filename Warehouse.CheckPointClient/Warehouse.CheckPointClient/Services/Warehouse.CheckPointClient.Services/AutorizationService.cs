@@ -3,11 +3,15 @@ using SharedLibrary.DataBaseModels;
 using System;
 using System.Linq;
 
-namespace Autorization.Services
+namespace Warehouse.CheckPointClient.Services
 {
     public class AutorizationService
     {
         private ILogger logger = LogManager.GetCurrentClassLogger();
+
+        public bool RequiredAutorize { get; set; } = false;
+
+        public event EventHandler Authorized;
 
         public AutorizationService()
         {
@@ -31,6 +35,7 @@ namespace Autorization.Services
                     if (user.PasswordHash == passHash)
                     {
                         logger.Warn($"Авторизован пользователь с логином: \"{login}\"");
+                        Authorized?.Invoke(this, EventArgs.Empty);
                         return true;
                     }
                     else
