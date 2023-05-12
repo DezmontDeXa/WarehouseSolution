@@ -23,9 +23,12 @@
             HorizontalContentAlignment="Center"
             Content="{Binding ElementName=_this, Path=Header}"
             Style="{StaticResource HeaderStyle}" />
-        <ListView Grid.Row="1" ItemsSource="{Binding ElementName=_this, Path=ItemsSource}"
-                  ItemTemplate="{Binding ElementName=_this, Path=ItemTemplate}">
-            
+        <ListView
+            Grid.Row="1"
+            ItemTemplate="{Binding ElementName=_this, Path=ItemTemplate}"
+            ItemsSource="{Binding ElementName=_this, Path=ItemsSource}"
+            SelectedValue="{Binding ElementName=_this, Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+
             <ListView.Template>
                 <ControlTemplate>
                     <ScrollViewer>

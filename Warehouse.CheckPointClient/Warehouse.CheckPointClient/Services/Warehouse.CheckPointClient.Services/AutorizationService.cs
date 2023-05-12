@@ -7,11 +7,12 @@ namespace Warehouse.CheckPointClient.Services
 {
     public class AutorizationService
     {
-        private ILogger logger = LogManager.GetCurrentClassLogger();
-
         public bool RequiredAutorize { get; set; } = false;
+        public string AuthorizedUserLogin { get; private set; }
 
         public event EventHandler Authorized;
+
+        private ILogger logger = LogManager.GetCurrentClassLogger();
 
         public AutorizationService()
         {
@@ -36,6 +37,7 @@ namespace Warehouse.CheckPointClient.Services
                     {
                         logger.Warn($"Авторизован пользователь с логином: \"{login}\"");
                         Authorized?.Invoke(this, EventArgs.Empty);
+                        AuthorizedUserLogin = login;
                         return true;
                     }
                     else

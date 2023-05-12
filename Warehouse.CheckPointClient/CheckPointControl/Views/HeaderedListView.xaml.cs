@@ -38,6 +38,17 @@ namespace CheckPointControl.Views
             get { return (object)GetValue(ItemTemplateProperty); }
             set { SetValue(ItemTemplateProperty, value); }
         }
+        public object SelectedItem
+        {
+            get
+            {
+                return (object)GetValue(SelectedItemProperty);
+            }
+            set
+            {
+                SetValue(SelectedItemProperty, value);
+            }
+        }
 
         // Using a DependencyProperty as the backing store for Header.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty HeaderProperty =
@@ -50,6 +61,10 @@ namespace CheckPointControl.Views
         // Using a DependencyProperty as the backing store for ItemTemplate.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ItemTemplateProperty =
             DependencyProperty.Register("ItemTemplate", typeof(object), typeof(HeaderedListView), new PropertyMetadata(null));
+
+        // Using a DependencyProperty as the backing store for SelectedItem.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedItemProperty =
+            DependencyProperty.Register("SelectedItem", typeof(object), typeof(HeaderedListView), new PropertyMetadata(null));
 
 
 

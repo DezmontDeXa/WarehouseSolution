@@ -10,7 +10,7 @@ namespace SharedLibrary.Logging
             var config = new NLog.Config.LoggingConfiguration();
 
             // Targets where to log to: File and Console
-            var logfile = new FileTarget("logfile") { FileName = $"logs/{DateTime.Now.ToString("\\yyyy-\\MM-\\dd")}.log" };
+            var logfile = new FileTarget("logfile") { FileName = $"logs/{DateTime.Now.ToString("yyyy-MM-dd")}.log" };
             var logconsole = new ColoredConsoleTarget("logconsole");
             logconsole.Layout = "${longdate}|${level:uppercase=true}|${logger}|${message:withexception=false}";
 
@@ -25,6 +25,7 @@ namespace SharedLibrary.Logging
             LogManager.Configuration = config;
 
         }
+
         private static DatabaseTarget BuildDatabaseTarget()
         {
             var target = new DatabaseTarget();

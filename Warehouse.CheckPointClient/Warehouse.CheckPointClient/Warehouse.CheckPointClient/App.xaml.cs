@@ -1,14 +1,9 @@
-﻿using Autorization;
-using CheckPointControl;
-using Microsoft.EntityFrameworkCore;
-using NLog;
+﻿using CheckPointControl;
 using Prism.Ioc;
 using Prism.Modularity;
 using Services;
 using SharedLibrary.Logging;
-using System;
 using System.Windows;
-using Warehouse.CheckPointClient.Modules.ModuleName;
 using Warehouse.CheckPointClient.Services;
 using Warehouse.CheckPointClient.Services.Interfaces;
 using Warehouse.CheckPointClient.Views;
