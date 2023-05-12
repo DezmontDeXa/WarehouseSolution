@@ -4,10 +4,11 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="MahApps.Metro" Version="2.4.9" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Warehouse.CheckPointClient.Core\Warehouse.CheckPointClient.Core.csproj" />
-    <ProjectReference Include="..\..\Services\Warehouse.CheckPointClient.Services.Interfaces\Warehouse.CheckPointClient.Services.Interfaces.csproj" />
+    <ProjectReference Include="..\..\SharedLibrary\SharedLibrary.csproj" />
+    <ProjectReference Include="..\Warehouse.CheckPointClient\Warehouse.CheckPointClient.Core\Warehouse.CheckPointClient.Core.csproj" />
   </ItemGroup>
 </Project>

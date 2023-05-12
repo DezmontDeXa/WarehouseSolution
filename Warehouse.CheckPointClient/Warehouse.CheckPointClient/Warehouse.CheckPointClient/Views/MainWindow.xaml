@@ -1,11 +1,16 @@
-﻿<Window x:Class="Warehouse.CheckPointClient.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:prism="http://prismlibrary.com/"
-        prism:ViewModelLocator.AutoWireViewModel="True"
-        xmlns:core="clr-namespace:Warehouse.CheckPointClient.Core;assembly=Warehouse.CheckPointClient.Core"
-        Title="{Binding Title}" Height="350" Width="525" >
+﻿<mah:MetroWindow
+    x:Class="Warehouse.CheckPointClient.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:core="clr-namespace:Warehouse.CheckPointClient.Core;assembly=Warehouse.CheckPointClient.Core"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:prism="http://prismlibrary.com/"
+    Title="{Binding Title}"
+    Width="525"
+    Height="350"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    WindowState="Maximized">
     <Grid>
         <ContentControl prism:RegionManager.RegionName="{x:Static core:RegionNames.ContentRegion}" />
     </Grid>
-</Window>
+</mah:MetroWindow>
