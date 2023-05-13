@@ -10,6 +10,23 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Blue.xaml" />
+                <ResourceDictionary>
+                    <DataTemplate x:Key="CarItemTemplate">
+                        <TextBlock>
+                            <Run Text="{Binding PlateNumberForward}" />
+                            <Run Text="&#09;(" />
+                            <Run Text="{Binding PlateNumberBackward}" />
+                            <Run Text=")&#09;" />
+                            <Run Text="{Binding Driver}" />
+                        </TextBlock>
+                    </DataTemplate>
+                    <Style BasedOn="{StaticResource MahApps.Styles.TextBlock}" TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="20" />
+                    </Style>
+                    <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
+                        <Setter Property="FontSize" Value="20" />
+                    </Style>
+                </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

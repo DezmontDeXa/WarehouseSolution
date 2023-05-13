@@ -1,4 +1,5 @@
-﻿using CheckPointControl.Views;
+﻿using CheckPointControl.Services;
+using CheckPointControl.Views;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -36,6 +37,7 @@ namespace CheckPointControl
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<CarsService>();
             containerRegistry.RegisterForNavigation<MainView>();
             containerRegistry.RegisterForNavigation<SelectAreaView>();
         }
