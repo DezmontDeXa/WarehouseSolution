@@ -61,6 +61,7 @@ namespace CheckPointControl.ViewModels
             PassReason = null;
             SelectedCar = null;
         }
+
         private void OpenBarrier(WarehouseContext db)
         {
             var barrier = db.BarrierInfos.Include(x => x.Area).FirstOrDefault(x => x.Area.Id == areaService.SelectedArea.Id);
