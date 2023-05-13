@@ -13,6 +13,7 @@ using System.Windows.Input;
 using Warehouse.CheckPointClient.Services;
 using Warehouse.Models.CarStates;
 using Warehouse.Models.CarStates.Implements;
+using Warehouse.Services;
 
 namespace CheckPointControl.ViewModels
 {
@@ -40,15 +41,19 @@ namespace CheckPointControl.ViewModels
         private List<Car> _cars = new List<Car>();
         private readonly AreaService areaService;
         private readonly AutorizationService authorizationService;
+        private readonly IBarriersService barrierService;
+        private readonly ILogger logger;
         private Car inspectionSelectedCar;
         private string inspectionPassReason;
         private ActionCommand inspectionPassCommand;
 
-        public MainViewModel(AreaService areaService, AutorizationService authorizationService)
+        public MainViewModel(AreaService areaService, AutorizationService authorizationService, IBarriersService barrierService, ILogger logger)
         {
             Task.Run(UpdateLists);
             this.areaService = areaService;
             this.authorizationService = authorizationService;
+            this.barrierService = barrierService;
+            this.logger = logger;
         }
 
         private void UpdateLists()
@@ -111,9 +116,18 @@ namespace CheckPointControl.ViewModels
 
         private void InspectionPass()
         {
-            LogManager.GetCurrentClassLogger().Warn($"Машина с номером {inspectionSelectedCar.PlateNumberForward} была пропущена клиентом КПП (Пользоваатель: {authorizationService.AuthorizedUserLogin}) по причине: {InspectionPassReason}.");
+            using(var db = new WarehouseContext())
+            {
+                var carInDb = db.Cars.First(x => x.Id == inspectionSelectedCar.Id);
+                carInDb.IsInspectionRequired = false;
+
+                var barrier = db.BarrierInfos.First(x => x.Area.Id == areaService.SelectedArea.Id);
+                barrierService.Switch(barrier, SimpleBarrierService.BarrierCommand.Open);
+            }
+            
             InspectionPassReason = null;
             InspectionSelectedCar = null;
+            logger.Warn($"Машина с номером {inspectionSelectedCar.PlateNumberForward} была пропущена клиентом КПП (Пользоваатель: {authorizationService.AuthorizedUserLogin}) по причине: {InspectionPassReason}.");
         }
     }
 }

@@ -19,11 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warehouse.CheckPointClient"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Warehouse.CheckPointClient.Core", "Warehouse.CheckPointClient\Warehouse.CheckPointClient.Core\Warehouse.CheckPointClient.Core.csproj", "{99A64C32-BEA8-4EEF-84DE-4CAB54634745}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autorization", "AutorizationModule\Autorization.csproj", "{0ECDD52E-4ADB-4C0E-8BEA-74A1794F5BA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Autorization", "AutorizationModule\Autorization.csproj", "{0ECDD52E-4ADB-4C0E-8BEA-74A1794F5BA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckPointControl", "CheckPointControl\CheckPointControl.csproj", "{DD4256FC-A3D2-49D6-9C62-5415145155C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckPointControl", "CheckPointControl\CheckPointControl.csproj", "{DD4256FC-A3D2-49D6-9C62-5415145155C4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedLibrary", "..\SharedLibrary\SharedLibrary.csproj", "{79AD4946-EA9F-4FD9-A08B-B2302D7ACF6D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarriersService", "..\Services\BarriersService\BarriersService.csproj", "{F62F4963-F0E9-4807-A303-AB691F67FF97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{79AD4946-EA9F-4FD9-A08B-B2302D7ACF6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79AD4946-EA9F-4FD9-A08B-B2302D7ACF6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79AD4946-EA9F-4FD9-A08B-B2302D7ACF6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F62F4963-F0E9-4807-A303-AB691F67FF97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F62F4963-F0E9-4807-A303-AB691F67FF97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F62F4963-F0E9-4807-A303-AB691F67FF97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F62F4963-F0E9-4807-A303-AB691F67FF97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{3A8EDAC5-3389-40FD-9405-2CFB88FD4824} = {80A5FF21-8DA5-42C5-9599-50BAFCD60C3A}
 		{0ECDD52E-4ADB-4C0E-8BEA-74A1794F5BA4} = {AA967833-2E95-4795-826E-0D4DDB49DA12}
 		{DD4256FC-A3D2-49D6-9C62-5415145155C4} = {AA967833-2E95-4795-826E-0D4DDB49DA12}
+		{F62F4963-F0E9-4807-A303-AB691F67FF97} = {80A5FF21-8DA5-42C5-9599-50BAFCD60C3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2512A189-71D8-49FC-A71E-3BBD54D23AE8}

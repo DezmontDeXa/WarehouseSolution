@@ -1,7 +1,9 @@
-﻿namespace BarriersService
+﻿using SharedLibrary.DataBaseModels;
+
+namespace Warehouse.Services
 {
     public interface IBarriersService
     {
-        void Open(string uri);
+        void Switch(BarrierInfo barrier, SimpleBarrierService.BarrierCommand command);
     }
 }

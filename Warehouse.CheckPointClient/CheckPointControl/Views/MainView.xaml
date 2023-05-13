@@ -83,6 +83,8 @@
             Header="На выезд"
             ItemsSource="{Binding ExitPassGrantedCars}" />
 
+        
+        
         <!--  Досмотр  -->
         <Grid
             Grid.Row="2"
@@ -106,7 +108,6 @@
                 ItemsSource="{Binding RequiredInspectionCars}"
                 SelectedItem="{Binding InspectionSelectedCar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Grid Grid.Row="1" Grid.Column="1">
-
                 <Label
                     Margin="5"
                     HorizontalContentAlignment="Center"
@@ -124,7 +125,6 @@
                         </Style>
                     </Label.Style>
                 </Label>
-
                 <Grid>
                     <Grid.Style>
                         <Style TargetType="Grid">

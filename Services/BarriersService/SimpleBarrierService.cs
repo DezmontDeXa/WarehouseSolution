@@ -5,12 +5,12 @@ using SharedLibrary.DataBaseModels;
 
 namespace Warehouse.Services
 {
-    public class BarrierService : IDisposable
+    public class SimpleBarrierService : IBarriersService, IDisposable
     {
         private HttpClient _http;
         private readonly ILogger _logger;
 
-        public BarrierService(ILogger logger)
+        public SimpleBarrierService(ILogger logger)
         {
             _logger = logger;
             _http = new HttpClient(); 

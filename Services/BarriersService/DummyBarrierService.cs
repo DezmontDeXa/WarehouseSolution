@@ -1,19 +1,12 @@
-﻿using NLog;
+﻿using SharedLibrary.DataBaseModels;
 
-namespace BarriersService
+namespace Warehouse.Services
 {
     public class DummyBarrierService : IBarriersService
     {
-        private readonly ILogger logger;
-
-        public DummyBarrierService()
+        public void Switch(BarrierInfo barrier, SimpleBarrierService.BarrierCommand command)
         {
-            logger = LogManager.GetCurrentClassLogger();
-        }
 
-        public void Open(string uri)
-        {
-            logger.Info($"Открыть шлагбаум по адресу: {uri}");
         }
     }
 }

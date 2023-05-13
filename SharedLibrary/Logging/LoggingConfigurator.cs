@@ -1,5 +1,7 @@
-﻿using NLog;
+﻿using Microsoft.Extensions.Configuration;
+using NLog;
 using NLog.Targets;
+using SharedLibrary.AppSettings;
 
 namespace SharedLibrary.Logging
 {
@@ -23,15 +25,21 @@ namespace SharedLibrary.Logging
 
             // Apply config           
             LogManager.Configuration = config;
-
         }
 
         private static DatabaseTarget BuildDatabaseTarget()
         {
             var target = new DatabaseTarget();
 
+            IConfiguration config = new ConfigurationBuilder()
+                .AddJsonFile("AppSettings.json")
+                .Build();
+
+            // Get values from the config given their key and their target type.
+            var settings = config.GetSection("Settings").Get<Settings>();
+
             target.DBProvider = "System.Data.SqlClient";
-            target.ConnectionString = "Server=COMPUTER;Database=Warehouse;Trusted_Connection=True;TrustServerCertificate=true;MultipleActiveResultSets=True;";
+            target.ConnectionString = settings.ConnectionString;
             target.CommandText = "INSERT INTO Logs(CreatedOn,Message,Level,Exception,StackTrace,Logger) VALUES (@datetime,@message,@level,@exception,@trace,@logger)";
 
             var param = new DatabaseParameterInfo();
