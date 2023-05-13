@@ -1,4 +1,6 @@
-﻿using Microsoft.Xaml.Behaviors.Core;
+﻿using CheckPointControl.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Xaml.Behaviors.Core;
 using NLog;
 using Prism.Mvvm;
 using Services;
@@ -13,45 +15,59 @@ namespace CheckPointControl.ViewModels
 {
     public class InspectionViewModel : BindableBase
     {
-        public Car InspectionSelectedCar { get => inspectionSelectedCar; set => SetProperty(ref inspectionSelectedCar, value); }
-        public IEnumerable<Car> RequiredInspectionCars { get => requiredInspectionCars; set => SetProperty(ref requiredInspectionCars, value); }
-        public string InspectionPassReason { get => inspectionPassReason; set => SetProperty(ref inspectionPassReason, value); }
+        public Car SelectedCar { get => selectedCar; set { SetProperty(ref selectedCar, value); RaisePropertyChanged(nameof(HasSelectedCar)); } }
+        public IEnumerable<Car> RequiredInspectionCars => carsService.Cars.ByArea(areaService.SelectedArea).WithInspectionRequired();
+        public string PassReason { get => passReason; set => SetProperty(ref passReason, value); }
         public ICommand InspectionPassCommand => inspectionPassCommand ??= new ActionCommand(InspectionPass);
-        public bool InspectionHasSelectedCar => InspectionSelectedCar != null;
+        public bool HasSelectedCar => SelectedCar != null;
 
-
-        private Car inspectionSelectedCar;
-        private IEnumerable<Car> requiredInspectionCars;
-        private string inspectionPassReason;
+        private Car selectedCar;
+        private string passReason;
         private ActionCommand inspectionPassCommand;
         private readonly ILogger logger;
         private readonly AreaService areaService;
         private readonly AutorizationService authService;
+        private readonly CarsService carsService;
         private readonly IBarriersService barrierService;
 
-        public InspectionViewModel(ILogger logger, IBarriersService barriersService, AreaService areaService, AutorizationService authService)
+        public InspectionViewModel(ILogger logger, IBarriersService barriersService, AreaService areaService, AutorizationService authService, CarsService carsService)
         {
             this.logger = logger;
             this.areaService = areaService;
             this.authService = authService;
+            this.carsService = carsService;
             this.barrierService = barriersService;
+
+            carsService.CarsUpdated += OnCarsUpdated;
+        }
+
+        private void OnCarsUpdated(object sender, CarsService.CarsList e)
+        {
+            RaisePropertyChanged(nameof(RequiredInspectionCars));
         }
 
         private void InspectionPass()
         {
             using (var db = new WarehouseContext())
             {
-                var carInDb = db.Cars.First(x => x.Id == inspectionSelectedCar.Id);
+                var carInDb = db.Cars.First(x => x.Id == selectedCar.Id);
                 carInDb.IsInspectionRequired = false;
-
-                var barrier = db.BarrierInfos.First(x => x.Area.Id == areaService.SelectedArea.Id);
-                barrierService.Switch(barrier, SimpleBarrierService.BarrierCommand.Open);
                 db.SaveChanges();
+
+                OpenBarrier(db);
             }
 
-            InspectionPassReason = null;
-            InspectionSelectedCar = null;
-            logger.Warn($"Машина с номером {inspectionSelectedCar.PlateNumberForward} была пропущена клиентом КПП (Пользоваатель: {authService.AuthorizedUserLogin}) по причине: {InspectionPassReason}.");
+            logger.Warn($"Машина с номером {selectedCar.PlateNumberForward} была пропущена клиентом КПП (Пользоваатель: {authService.AuthorizedUserLogin}) по причине: {PassReason}.");
+            PassReason = null;
+            SelectedCar = null;
+        }
+        private void OpenBarrier(WarehouseContext db)
+        {
+            var barrier = db.BarrierInfos.Include(x => x.Area).FirstOrDefault(x => x.Area.Id == areaService.SelectedArea.Id);
+            if (barrier == null)
+                logger.Error($"Не удалось открыть шлагбаум на территории {areaService.SelectedArea.Name}. Шлагбаум не найден.");
+            else
+                barrierService.Switch(barrier, SimpleBarrierService.BarrierCommand.Open);
         }
     }
 }

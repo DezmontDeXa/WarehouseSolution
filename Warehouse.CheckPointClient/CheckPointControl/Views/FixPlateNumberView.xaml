@@ -85,7 +85,7 @@
                     VerticalContentAlignment="Center"
                     Content="Выберите машину для исправления" />
             </Grid>
-            
+
             <!--  Has Selected Car  -->
             <Grid>
                 <Grid.Style>
@@ -123,7 +123,7 @@
                     <Button
                         Margin="5"
                         Command="{Binding FixNumberCommand}"
-                        Content="Исправить" />
+                        Content="Исправить и открыть шлагбаум" />
                 </StackPanel>
             </Grid>
         </Grid>

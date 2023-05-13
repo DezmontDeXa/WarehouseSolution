@@ -16,7 +16,6 @@ namespace CheckPointControl.ViewModels
         public List<Car> OnAreaCars => carsService.Cars.ByArea(areaService.SelectedArea);
         public List<Car> OnLoadingCars => carsService.Cars.ByArea(areaService.SelectedArea).ByState<LoadingState, UnloadingState>();
         public List<Car> ExitPassGrantedCars => carsService.Cars.ByArea(areaService.SelectedArea).ByState<ExitPassGrantedState, ExitingForChangeAreaState>();
-        public List<Car> RequiredInspectionCars => carsService.Cars.ByArea(areaService.SelectedArea).WithInspectionRequired();
                         
         private readonly AreaService areaService;
         private readonly CarsService carsService;
@@ -39,7 +38,6 @@ namespace CheckPointControl.ViewModels
             RaisePropertyChanged(nameof(OnAreaCars));
             RaisePropertyChanged(nameof(OnLoadingCars));
             RaisePropertyChanged(nameof(ExitPassGrantedCars));
-            RaisePropertyChanged(nameof(RequiredInspectionCars));
         }
 
 
