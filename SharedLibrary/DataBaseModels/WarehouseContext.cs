@@ -17,6 +17,20 @@ public partial class WarehouseContext : DbContext
     {
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        IConfiguration config = new ConfigurationBuilder()
+            .AddJsonFile("AppSettings.json")
+            .Build();
+
+        // Get values from the config given their key and their target type.
+        var settings = config.GetSection("Settings").Get<Settings>();
+        //"Server=COMPUTER;Database=Warehouse;Trusted_Connection=True;TrustServerCertificate=true;MultipleActiveResultSets=True;"
+        optionsBuilder
+        .UseSqlServer(settings.ConnectionString)
+        .UseLazyLoadingProxies();
+    }
+
     public DbSet<User> Users { get; set; }
 
     public DbSet<Area> Areas { get; set; }
@@ -39,19 +53,6 @@ public partial class WarehouseContext : DbContext
 
     public DbSet<TimeControledState> TimeControledStates { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        IConfiguration config = new ConfigurationBuilder()
-            .AddJsonFile("AppSettings.json")
-            .Build();
-
-        // Get values from the config given their key and their target type.
-        var settings = config.GetSection("Settings").Get<Settings>();
-        //"Server=COMPUTER;Database=Warehouse;Trusted_Connection=True;TrustServerCertificate=true;MultipleActiveResultSets=True;"
-        optionsBuilder
-        .UseSqlServer(settings.ConnectionString)
-        .UseLazyLoadingProxies();
-    }
 
     //protected override void OnModelCreating(ModelBuilder modelBuilder)
     //{
