@@ -29,9 +29,9 @@ namespace Warehouse.Models.CameraRoles.Implements
             }
         }
 
-        protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)
+        protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock)
         {
-            base.OnCarWithTempAccess(camera, car, list);
+            base.OnCarWithTempAccess(camera, car, list, pictureBlock);
 
             if (car.CarStateId == new AwaitingState().Id)
             {
@@ -50,24 +50,24 @@ namespace Warehouse.Models.CameraRoles.Implements
             }
         }
 
-        protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)
+        protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock)
         {
-            base.OnCarWithFreeAccess(camera, car, list);
+            base.OnCarWithFreeAccess(camera, car, list, pictureBlock);
 
             ChangeStatus(camera, car, _onEnterState);
             SetCarArea(camera, car, camera.Area);
             OpenBarrier(camera, car);
         }
 
-        protected override void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, string plateNumber, string direction)
+        protected override void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, CameraNotifyBlock pictureBlock, string plateNumber, string direction)
         {
-            base.OnCarNotFound(camera, notifyBlock, plateNumber, direction);
+            base.OnCarNotFound(camera, notifyBlock, pictureBlock, plateNumber, direction);
             //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
         }
 
-        protected override void OnCarNotInLists(Camera camera, CameraNotifyBlock notifyBlock, Car car, string plateNumber, string direction)
+        protected override void OnCarNotInLists(Camera camera, CameraNotifyBlock notifyBlock, CameraNotifyBlock pictureBlock, Car car, string plateNumber, string direction)
         {
-            base.OnCarNotInLists(camera, notifyBlock, car, plateNumber, direction);
+            base.OnCarNotInLists(camera, notifyBlock, pictureBlock, car, plateNumber, direction);
             //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
         }
     }

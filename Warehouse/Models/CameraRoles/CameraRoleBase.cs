@@ -16,6 +16,9 @@ namespace Warehouse.Models.CameraRoles
         protected List<CarState> ExpectedStates { get; set; }
 
         private readonly WaitingListsService _waitingListsService;
+        private bool _awaitNextBlock = false;
+        private CameraNotifyBlock _anprBlock;
+        private CameraNotifyBlock _pictureBlock;
 
 
         public CameraRoleBase(ILogger logger, WaitingListsService waitingListsService)
@@ -35,12 +38,24 @@ namespace Warehouse.Models.CameraRoles
         {
             try
             {
-                // Skip all events,except Car detected
-                if (notifyBlock.EventType != "ANPR")
+
+                if (IsAnprEvent(notifyBlock))
+                {
+                    _awaitNextBlock = true;
+                    _anprBlock = notifyBlock;
+                    return;
+                }
+
+                if (_awaitNextBlock)
+                {
+                    _awaitNextBlock = false;
+                    _pictureBlock = notifyBlock;
+                }
+                else
                     return;
 
-                var plateNumber = GetPlateNumber(notifyBlock);
-                var direction = GetDirection(notifyBlock);
+                var plateNumber = GetPlateNumber(_anprBlock);
+                var direction = GetDirection(_anprBlock);
                 Logger.Info($"{camera.Name}: Обнаружена машина ({plateNumber}). Направление: {direction}");
 
                 if (!IsAvailableDirection(camera, direction)) return;
@@ -49,13 +64,13 @@ namespace Warehouse.Models.CameraRoles
 
                 if (carAccessInfo.Car == null)
                 {
-                    OnCarNotFound(camera, notifyBlock, plateNumber, direction);
+                    OnCarNotFound(camera, _anprBlock, _pictureBlock, plateNumber, direction);
                     return;
                 }
 
                 if (carAccessInfo.List == null)
                 {
-                    OnCarNotInLists(camera, notifyBlock, carAccessInfo.Car, plateNumber, direction);
+                    OnCarNotInLists(camera, _anprBlock, _pictureBlock, carAccessInfo.Car, plateNumber, direction);
                     return;
                 }
 
@@ -68,10 +83,10 @@ namespace Warehouse.Models.CameraRoles
                 switch (carAccessInfo.AccessType)
                 {
                     case AccessGrantType.Free:
-                        OnCarWithFreeAccess(camera, carAccessInfo.Car, carAccessInfo.List);
+                        OnCarWithFreeAccess(camera, carAccessInfo.Car, carAccessInfo.List, _pictureBlock);
                         break;
                     case AccessGrantType.Tracked:
-                        OnCarWithTempAccess(camera, carAccessInfo.Car, carAccessInfo.List);
+                        OnCarWithTempAccess(camera, carAccessInfo.Car, carAccessInfo.List, _pictureBlock);
                         break;
                 }
             }
@@ -82,23 +97,32 @@ namespace Warehouse.Models.CameraRoles
             }
         }
 
+        private bool IsAnprEvent(CameraNotifyBlock notifyBlock)
+        {
+            if (notifyBlock.Headers["Content-Type"] == "application/xml" || notifyBlock.Headers["Content-Type"] == "text/xml")
+                // Skip all events,except Car detected
+                if (notifyBlock.EventType == "ANPR")
+                    return true;
 
-        protected virtual void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, string plateNumber, string direction)
+            return false;
+        }
+
+        protected virtual void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, CameraNotifyBlock _pictureBlock, string plateNumber, string direction)
         {
             Logger.Warn($"{camera.Name}:\t Обнаружена неизвестная машина с номером ({plateNumber}).");
         }
 
-        protected virtual void OnCarNotInLists(Camera camera, CameraNotifyBlock notifyBlock, Car car, string plateNumber, string direction)
+        protected virtual void OnCarNotInLists(Camera camera, CameraNotifyBlock notifyBlock, CameraNotifyBlock _pictureBlock, Car car, string plateNumber, string direction)
         {
             Logger.Warn($"{camera.Name}:\t Обнаружена машина с номером ({plateNumber}) не из списков.");
         }
 
-        protected virtual void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)
+        protected virtual void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock _pictureBlock)
         {
             Logger.Info($"{camera.Name}:\t Прибыла машина из постоянного списка \"{list.Name}\" с номером ({car.PlateNumberForward}).");
         }
 
-        protected virtual void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)
+        protected virtual void OnCarWithTempAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock _pictureBlock)
         {
             Logger.Info($"{camera.Name}:\t Прибыла машина из временного списка \"{list.Name}\" с номером ({car.PlateNumberForward}).");
         }

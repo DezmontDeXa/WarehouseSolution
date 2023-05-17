@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using SharedLibrary.Extensions;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace CameraListenerService
@@ -34,7 +35,7 @@ namespace CameraListenerService
                 try
                 {
                     using (var stream = _http.GetStreamAsync(_uri).Result)
-                    using (var reader = new StreamReader(stream))
+                    using (var reader = new BinaryReader(stream))
                         Listening(reader);
                 }
                 catch (Exception ex)
@@ -46,70 +47,29 @@ namespace CameraListenerService
             }
         }
 
-        private void Listening(StreamReader reader)
+        private void Listening(BinaryReader reader)
         {
             while (!_cts.IsCancellationRequested)
             {
-                if (reader.ReadLine() == "--boundary")
+                StringBuilder contentBuilder = new StringBuilder();
+                var line = reader.ReadLine();
+                if (line.StartsWith("Content-Type:"))
                 {
-                    CameraNotifyBlock e = ReadBlock(reader);
+                    //contentBuilder.AppendLine(line);
+                    //while(line != "--boundary")
+                    //{
+                    //    line = reader.ReadLine();
+                    //    contentBuilder.AppendLine(line);
+                    //}
+
+                    //var content = contentBuilder.ToString();
+
+                    var e = new CameraNotifyBlock(reader, line);
                     if (e == null) continue;
                     OnNotification?.Invoke(this, e);
                 }
             }
         }
-
-        private CameraNotifyBlock ReadBlock(StreamReader reader)
-        {
-            Dictionary<string, string> headers = ReadHeaders(reader);
-            if (headers["Content-Type"] != "application/xml" && headers["Content-Type"] != "text/xml")
-                return null;
-            int result;
-            if (!int.TryParse(headers["Content-Length"], out result))
-                throw new Exception("Пустой блок даннных.");
-            var chArray = new char[result];
-
-            reader.ReadBlock(chArray, 0, result);
-            var content = string.Join("", chArray).TrimStart();
-
-            try
-            {
-                return new CameraNotifyBlock(headers, content);
-            }
-            catch (Exception ex)
-            {
-                OnError?.Invoke(this, ex);
-                return null;
-            }
-        }
-
-        private Dictionary<string, string> ReadHeaders(StreamReader reader)
-        {
-            var dictionary = new Dictionary<string, string>();
-            var line = "";
-            while (!line.StartsWith("Content-Length"))
-            {
-                line = reader.ReadLine();
-                var strArray = line?.Split(":;".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                if (strArray != null && strArray.Length >= 2)
-                    dictionary.Add(strArray[0].Trim(), strArray[1].Trim());
-            }
-            return dictionary;
-        }
-
-#if DEBUG
-
-        public void SendTestData()
-        {
-            OnNotification?.Invoke(this,
-                new CameraNotifyBlock(
-                    new Dictionary<string, string>()
-                    {
-                        { "Content-Type", "TestContent" }
-                    },
-                    File.ReadAllText("TestData/TestCameraNotifyBlock.xml")));
-        }
-#endif
 
         public void Dispose()
         {
@@ -117,4 +77,5 @@ namespace CameraListenerService
         }
 
     }
+
 }

@@ -16,6 +16,7 @@ namespace Warehouse.Services
             using (var db = new WarehouseContext())
             {
                 var allCars = db.Cars.ToList();
+                if (allCars.Count == 0) return null;
                 var extractedResult = Process.ExtractOne(plateNumber.ToUpper(), allCars.Select(x=>x.PlateNumberForward), s => s.ToUpper(), ScorerCache.Get<DefaultRatioScorer>());
                 if (extractedResult.Score < MinScore) return null;
                 return allCars[extractedResult.Index];

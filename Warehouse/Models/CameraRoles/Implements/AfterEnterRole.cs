@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using CameraListenerService;
+using NLog;
 using SharedLibrary.DataBaseModels;
 using Warehouse.Models.CarStates;
 using Warehouse.Models.CarStates.Implements;
@@ -24,16 +25,16 @@ namespace Warehouse.Models.CameraRoles.Implements
             }
         }
 
-        protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list)
+        protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock _pictureBlock)
         {
-            base.OnCarWithTempAccess(camera, car, list);
+            base.OnCarWithTempAccess(camera, car, list, _pictureBlock);
             SetCarArea(camera, car, camera.Area);
             ChangeStatus(camera, car, _weighingState);
         }
 
-        protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list)
+        protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock _pictureBlock)
         {
-            base.OnCarWithFreeAccess(camera, car, list);
+            base.OnCarWithFreeAccess(camera, car, list, _pictureBlock);
             SetCarArea(camera, car, camera.Area);
             ChangeStatus(camera, car, _canExitState);
         }

@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using SharedLibrary.Extensions;
+using System;
+using System.Text;
 using System.Xml;
 
 namespace CameraListenerService
@@ -6,27 +8,62 @@ namespace CameraListenerService
 
     public class CameraNotifyBlock
     {
-        public IReadOnlyDictionary<string, string> Headers { get; }
+        public IReadOnlyDictionary<string, string> Headers { get; private set; }
 
-        public string Content { get; }
+        public string Content { get; private set; }
 
-        public byte[] ContentBytes { get; }
+        public byte[] ContentBytes { get; private set; }
 
-        public string ContentType { get; }
+        public string ContentType { get; private set; }
 
-        public XmlDocument XmlDocument { get; }
+        public int ContentLength { get; private set; }
 
-        public XmlElement XmlDocumentRoot { get; }
+        public XmlDocument XmlDocument { get; private set; }
 
-        public string? EventType { get; }
+        public XmlElement XmlDocumentRoot { get; private set; }
 
-        public CameraNotifyBlock(IReadOnlyDictionary<string, string> headers, string content)
+        public string? EventType { get; private set; }
+
+        public CameraNotifyBlock(BinaryReader reader, string contentType)
         {
-            Headers = headers;
-            ContentBytes = Encoding.UTF8.GetBytes(content);
-            Content = content;
-            ContentType = headers["Content-Type"];
+            ReadHeaders(reader, contentType);
 
+            ContentBytes = reader.ReadBytes(ContentLength);
+
+            switch (ContentType)
+            {
+                case "application/xml":
+                    Content = Encoding.UTF8.GetString(ContentBytes).Trim();
+                    CreateXMLDocument();
+                    return;
+                case "text/xml":
+                    Content = Encoding.UTF8.GetString(ContentBytes).Trim();
+                    CreateXMLDocument();
+                    return;
+                case "image/jpeg":
+                    ContentBytes = ContentBytes.Skip(2).ToArray();
+                    return;
+                case "application/json":
+                    return;
+            }
+
+            return;
+
+        }
+
+        private void ReadHeaders(BinaryReader reader, string contentType)
+        {
+            ContentType = contentType.Split(":;".ToCharArray())[1].Trim();
+            ContentLength = int.Parse(reader.ReadLine().Split(":")[1].Trim());
+            Headers = new Dictionary<string, string>()
+            {
+                { "Content-Type", ContentType },
+                { "Content-Length", ContentLength.ToString() }
+            };
+        }
+
+        private void CreateXMLDocument()
+        {
             XmlDocument = new XmlDocument();
             XmlDocument.LoadXml(Content);
             XmlDocumentRoot = XmlDocument.DocumentElement;

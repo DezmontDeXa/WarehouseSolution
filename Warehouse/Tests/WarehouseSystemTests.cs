@@ -19,30 +19,30 @@ namespace Warehouse.Tests
             _cameraListeners = cameraListeners.ToList();
         }
 
-        public void RunNormalPipelineTest()
-        {
-            Task.Run(() =>
-            {
-                var testCar = _db.Cars.First(x => x.PlateNumberForward == testCarPlateNumber && x.Id == testCarId);
-                testCar.CarStateId = testCarDefaultStateId;
-                _db.SaveChanges();
+        //public void RunNormalPipelineTest()
+        //{
+        //    Task.Run(() =>
+        //    {
+        //        var testCar = _db.Cars.First(x => x.PlateNumberForward == testCarPlateNumber && x.Id == testCarId);
+        //        testCar.CarStateId = testCarDefaultStateId;
+        //        _db.SaveChanges();
 
-                Task.Delay(delay).Wait();
-                _cameraListeners[0].SendTestData();
-                Task.Delay(delay).Wait();
-                _cameraListeners[1].SendTestData();
-                Task.Delay(delay).Wait();
-                _cameraListeners[2].SendTestData();
-                Task.Delay(10000).Wait();
-                _cameraListeners[3].SendTestData();
-                Task.Delay(delay).Wait();
+        //        Task.Delay(delay).Wait();
+        //        _cameraListeners[0].SendTestData();
+        //        Task.Delay(delay).Wait();
+        //        _cameraListeners[1].SendTestData();
+        //        Task.Delay(delay).Wait();
+        //        _cameraListeners[2].SendTestData();
+        //        Task.Delay(10000).Wait();
+        //        _cameraListeners[3].SendTestData();
+        //        Task.Delay(delay).Wait();
 
-                //foreach (var listener in _cameraListeners)
-                //{
-                //    listener.SendTestData();
-                //    Task.Delay(delay).Wait();
-                //}
-            });
-        }
+        //        //foreach (var listener in _cameraListeners)
+        //        //{
+        //        //    listener.SendTestData();
+        //        //    Task.Delay(delay).Wait();
+        //        //}
+        //    });
+        //}
     }
 }

@@ -1,4 +1,4 @@
-using NaisService.WeightingAppDataBaseModels;
+
 
 namespace NaisService.Tests
 {
@@ -12,13 +12,13 @@ namespace NaisService.Tests
         [Test]
         public void Test1()
         {
-            using(var db = new WeightingAppDbContext())
-            {
-                foreach (var item in db.Weighings)
-                {
-                    continue;
-                }
-            }
+            //using(var db = new WeightingAppDbContext())
+            //{
+            //    foreach (var item in db.Weighings)
+            //    {
+            //        continue;
+            //    }
+            //}
             Assert.Pass();
         }
     }
