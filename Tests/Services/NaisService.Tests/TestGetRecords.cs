@@ -12,13 +12,10 @@ namespace NaisService.Tests
         [Test]
         public void Test1()
         {
-            //using(var db = new WeightingAppDbContext())
-            //{
-            //    foreach (var item in db.Weighings)
-            //    {
-            //        continue;
-            //    }
-            //}
+            using(var db = new NaisDataBase())
+            {
+                var records = db.GetRecordsAsync(DateTime.Now).Result;
+            }
             Assert.Pass();
         }
     }

@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\SharedLibrary\SharedLibrary.csproj" />
-    <ProjectReference Include="..\..\..\Utilities\WaitingListXMLParser\WaitingListXMLParser.csproj" />
   </ItemGroup>
 
   <ItemGroup>
