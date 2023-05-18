@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\SharedLibrary\SharedLibrary.csproj" />
+    <ProjectReference Include="..\AdminClient.Services.Interfaces\AdminClient.Services.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>
