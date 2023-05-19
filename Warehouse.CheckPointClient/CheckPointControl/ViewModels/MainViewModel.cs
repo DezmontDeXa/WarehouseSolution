@@ -12,15 +12,17 @@ namespace CheckPointControl.ViewModels
 {
     public class MainViewModel : BindableBase
     {
-        public List<Car> AwaitingCars => carsService.Cars.ByArea(areaService.SelectedArea).ByState<AwaitingState>();
-        public List<Car> OnAreaCars => carsService.Cars.ByArea(areaService.SelectedArea);
-        public List<Car> OnLoadingCars => carsService.Cars.ByArea(areaService.SelectedArea).ByState<LoadingState, UnloadingState>();
-        public List<Car> ExitPassGrantedCars => carsService.Cars.ByArea(areaService.SelectedArea).ByState<ExitPassGrantedState, ExitingForChangeAreaState>();
-                        
+        public CarsList AwaitingCars => carsService.Cars.ByArea(areaService.SelectedArea).ByState<AwaitingState>();
+        public CarsList OnAreaCars => carsService.Cars.ByArea(areaService.SelectedArea);
+        public CarsList OnLoadingCars => carsService.Cars.ByArea(areaService.SelectedArea).ByState<LoadingState, UnloadingState>();
+        public CarsList ExitPassGrantedCars => carsService.Cars.ByArea(areaService.SelectedArea).ByState<ExitPassGrantedState, ExitingForChangeAreaState>();
+        public Car SelectedCar { get => selectedCar; set => SetProperty(ref selectedCar, value); }
+
         private readonly AreaService areaService;
         private readonly CarsService carsService;
         private readonly AutorizationService authorizationService;
         private readonly ILogger logger;
+        private Car selectedCar;
 
         public MainViewModel(AreaService areaService, AutorizationService authorizationService, CarsService carsService, ILogger logger)
         {
@@ -39,7 +41,5 @@ namespace CheckPointControl.ViewModels
             RaisePropertyChanged(nameof(OnLoadingCars));
             RaisePropertyChanged(nameof(ExitPassGrantedCars));
         }
-
-
     }
 }

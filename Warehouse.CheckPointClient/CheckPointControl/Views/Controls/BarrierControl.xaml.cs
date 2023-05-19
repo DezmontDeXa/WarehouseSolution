@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace CheckPointControl.Views
 {
     /// <summary>
-    /// Логика взаимодействия для FixPlateNumberView.xaml
+    /// Логика взаимодействия для BarrierControl.xaml
     /// </summary>
-    public partial class FixPlateNumberView : UserControl
+    public partial class BarrierControl : UserControl
     {
-        public FixPlateNumberView()
+        public BarrierControl()
         {
             InitializeComponent();
         }

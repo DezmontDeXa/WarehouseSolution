@@ -41,7 +41,7 @@ namespace CheckPointControl.ViewModels
             carsService.CarsUpdated += OnCarsUpdated;
         }
 
-        private void OnCarsUpdated(object sender, CarsService.CarsList e)
+        private void OnCarsUpdated(object sender, CarsList e)
         {
             RaisePropertyChanged(nameof(RequiredInspectionCars));
         }

@@ -2,7 +2,6 @@
 using Services;
 using SharedLibrary.DataBaseModels;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,19 +42,30 @@ namespace CheckPointControl.Services
                     foreach (var car in allCars)
                     {
                         var existCar = _cars.FirstOrDefault(x => x.Id == car.Id);
+                        //Add car
                         if (existCar == null)
                         {
                             _cars.Add(car);
-                            existCar = car;
                         }
-
-                        if (existCar.CarState.Id != car.CarState.Id)
-                            existCar.CarState = car.CarState;
-
-                        if (existCar.IsInspectionRequired != car.IsInspectionRequired)
-                            existCar.IsInspectionRequired = car.IsInspectionRequired;
+                        // Update Car
+                        else
+                        {
+                            if (existCar.AreaId != car.AreaId)
+                            {
+                                existCar.Area = car.Area;
+                                existCar.AreaId = car.AreaId;
+                            }
+                            if (existCar.CarState.Id != car.CarState.Id)
+                            {
+                                existCar.CarState = car.CarState;
+                                existCar.CarState.Id = car.CarState.Id;
+                            }
+                            if (existCar.IsInspectionRequired != car.IsInspectionRequired)
+                                existCar.IsInspectionRequired = car.IsInspectionRequired;
+                        }
                     }
 
+                    // Remove not exist car
                     foreach (var car in _cars.ToArray())
                         if (!allCars.Any(x => x.Id == car.Id))
                             _cars.Remove(car);
@@ -66,41 +76,5 @@ namespace CheckPointControl.Services
             }
         }
 
-        public class CarsList : List<Car>
-        {
-            public CarsList(IEnumerable<Car> cars) : base(cars)
-            {
-                
-            }
-
-            public CarsList()
-            {
-            }
-
-            public CarsList FilterCars()
-            {
-                return this;
-            }
-
-            public CarsList ByState<T>()
-            {
-                return new CarsList(this.Where(x => x.CarState.TypeName == typeof(T).Name));
-            }
-
-            public CarsList ByState<T1, T2>()
-            {
-                return new CarsList(this.Where(x => x.CarState.TypeName == typeof(T1).Name || x.CarState.TypeName == typeof(T2).Name));
-            }
-
-            public CarsList ByArea( Area area)
-            {
-                return new CarsList(this.Where(x => x.Area?.Id == area?.Id));
-            }
-
-            public CarsList WithInspectionRequired()
-            {
-                return new CarsList(this.Where(x => x.IsInspectionRequired));
-            }
-        }
     }
 }

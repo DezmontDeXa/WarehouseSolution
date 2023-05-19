@@ -20,12 +20,14 @@
                             <Run Text="{Binding Driver}" />
                         </TextBlock>
                     </DataTemplate>
+                    <!--
                     <Style BasedOn="{StaticResource MahApps.Styles.TextBlock}" TargetType="TextBlock">
                         <Setter Property="FontSize" Value="20" />
                     </Style>
                     <Style BasedOn="{StaticResource MahApps.Styles.TextBox}" TargetType="TextBox">
                         <Setter Property="FontSize" Value="20" />
                     </Style>
+                    -->
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

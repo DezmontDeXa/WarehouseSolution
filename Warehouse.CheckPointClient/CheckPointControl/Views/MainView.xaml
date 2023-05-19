@@ -2,6 +2,7 @@
     x:Class="CheckPointControl.Views.MainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:CheckPointControl.Views.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:CheckPointControl.Views"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
@@ -18,21 +19,19 @@
             <Setter Property="ItemTemplate" Value="{StaticResource CarItemTemplate}" />
             <Setter Property="Margin" Value="5" />
         </Style>
+        <Style x:Key="HeaderlabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="40" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
     </UserControl.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="5" />
-            <RowDefinition Height="1*" />
-        </Grid.RowDefinitions>
+        <Grid.RowDefinitions />
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="5" />
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="5" />
-            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-
         <GridSplitter
             Grid.RowSpan="3"
             Grid.Column="1"
@@ -40,53 +39,69 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Stretch"
             ShowsPreview="False" />
-        <GridSplitter
-            Grid.RowSpan="3"
-            Grid.Column="3"
-            Width="5"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Stretch"
-            ShowsPreview="False" />
-        <GridSplitter
-            Grid.Row="1"
-            Grid.Column="0"
-            Grid.ColumnSpan="5"
-            Height="5"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Center"
-            ShowsPreview="False" />
 
-        <!--  Ожидаются  -->
-        <local:HeaderedListView
-            Grid.Column="0"
-            Header="Ожидаются"
-            ItemsSource="{Binding AwaitingCars}" />
+        <!--  Списки  -->
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="43*" />
+            </Grid.RowDefinitions>
+            <Label Content="Списки машин" Style="{StaticResource HeaderlabelStyle}" />
 
-        <!--  На Территории  -->
-        <local:HeaderedListView
-            Grid.Column="2"
-            Header="На территории"
-            ItemsSource="{Binding OnAreaCars}" />
+            <mah:MetroAnimatedTabControl
+                Grid.Row="1"
+                mah:HeaderedControlHelper.HeaderFontSize="35"
+                mah:HeaderedControlHelper.HeaderFontWeight="DemiBold">
+                <mah:MetroTabItem mah:Header="Ожидаются">
+                    <controls:CarsListControl
+                        HeaderFontSize="30"
+                        ItemsSource="{Binding AwaitingCars}"
+                        SelectedCar="{Binding SelectedCar}" />
+                </mah:MetroTabItem>
+                <mah:MetroTabItem Header="На территории">
+                    <controls:CarsListControl
+                        HeaderFontSize="30"
+                        ItemsSource="{Binding OnAreaCars}"
+                        SelectedCar="{Binding SelectedCar}" />
+                </mah:MetroTabItem>
+                <mah:MetroTabItem Header="Выгружаются">
+                    <controls:CarsListControl
+                        HeaderFontSize="30"
+                        ItemsSource="{Binding OnLoadingCars}"
+                        SelectedCar="{Binding SelectedCar}" />
+                </mah:MetroTabItem>
+                <mah:MetroTabItem Header="Выезжают">
+                    <controls:CarsListControl
+                        HeaderFontSize="30"
+                        ItemsSource="{Binding ExitPassGrantedCars}"
+                        SelectedCar="{Binding SelectedCar}" />
+                </mah:MetroTabItem>
+            </mah:MetroAnimatedTabControl>
+        </Grid>
 
-        <!--  На выгрузке  -->
-        <local:HeaderedListView
-            Grid.Row="2"
-            Grid.Column="0"
-            Header="На выгрузке"
-            ItemsSource="{Binding OnLoadingCars}" />
+        <!--  Рабочее место  -->
+        <Grid Grid.Column="2" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
 
-        <!--  На выезд  -->
-        <local:HeaderedListView
-            Grid.Row="2"
-            Grid.Column="2"
-            Header="На выезд"
-            ItemsSource="{Binding ExitPassGrantedCars}" />
+            <Label Content="Рабочее место" Style="{StaticResource HeaderlabelStyle}" />
 
-        <!--  Исправление номера  -->
-        <local:FixPlateNumberView Grid.Column="4" />
+            <mah:MetroAnimatedTabControl
+                Grid.Row="1"
+                mah:HeaderedControlHelper.HeaderFontSize="35"
+                mah:HeaderedControlHelper.HeaderFontWeight="DemiBold">
+                <mah:MetroTabItem Header="Шлагбаум">
+                    <local:BarrierControl />
+                </mah:MetroTabItem>
+                <mah:MetroTabItem Header="Досмотр">
+                    <local:InspectionView />
+                </mah:MetroTabItem>
+                <mah:MetroTabItem Header="История" IsEnabled="False" />
+            </mah:MetroAnimatedTabControl>
 
-        <!--  Досмотр  -->
-        <local:InspectionView Grid.Row="2" Grid.Column="5" />
+        </Grid>
 
     </Grid>
 </UserControl>
