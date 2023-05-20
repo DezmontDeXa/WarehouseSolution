@@ -13,9 +13,15 @@ namespace Services
         public void ImportTest()
         {
             var importerService = new WaitingListImporterService();
-            importerService.ImportList( 
-                SharedLibrary.DataBaseModels.AccessGrantType.Tracked, 
-                new FileInfo("TestData/СписокПогрузкиРазгрузки (3).xml"));
+
+            foreach (var file in Directory.GetFiles("TestData"))
+            {
+                importerService.ImportList(
+                    SharedLibrary.DataBaseModels.AccessGrantType.Tracked,
+                    new FileInfo(file));
+
+            }
+
             Assert.Pass();
         }
     }

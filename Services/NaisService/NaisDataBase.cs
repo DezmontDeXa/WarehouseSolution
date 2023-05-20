@@ -6,11 +6,10 @@ namespace NaisService
 {
     public class NaisDataBase : IDisposable
     {
-        private const string GetWeightsRecordsCommand = "select FIRST_WEIGHT, SECOND_WEIGHT, NETTO, STORAGENAME, TRANSPORT_NUMBER, INVOICE_DATE from WEIGHTS_BOOK where INVOICE_DATE like '[DATE]'";
+        private const string GetWeightsRecordsCommand = "select ID, FIRST_WEIGHT, SECOND_WEIGHT, NETTO, STORAGENAME, TRANSPORT_NUMBER, INVOICE_DATE from WEIGHTS_BOOK where INVOICE_DATE like '[DATE]'";
         private FbConnection _conNAIS;
 
         public bool IsOpen { get; private set; }
-
 
         public NaisDataBase()
         {
@@ -18,15 +17,6 @@ namespace NaisService
             _conNAIS = new FbConnection(connectionString);
             _conNAIS.StateChange += ConNAIS_StateChange;
             _conNAIS.OpenAsync();
-        }
-
-        private string GetConnectionString()
-        {
-            IConfiguration config = new ConfigurationBuilder()
-           .AddJsonFile("AppSettings.json")
-           .Build();
-            var settings = config.GetSection("Settings").Get<Settings>();
-            return settings.NaisConnectionString;
         }
 
         public async Task<List<WeightsRecord>> GetRecordsAsync(DateTime date)
@@ -46,11 +36,12 @@ namespace NaisService
                         {
                             var record = new WeightsRecord()
                             {
-                                FirstWeighting = GetDbValue<float?>(reader, 0),
-                                SecondWeighting = GetDbValue<float?>(reader, 1),
-                                Netto = GetDbValue<float?>(reader, 2),
-                                StorageName = GetDbValue<string>(reader,3),
-                                PlateNumber = GetDbValue<string>(reader, 4)
+                                Id = GetDbValue<int>(reader, 0),
+                                FirstWeighting = GetDbValue<float?>(reader, 1),
+                                SecondWeighting = GetDbValue<float?>(reader,2),
+                                Netto = GetDbValue<float?>(reader, 3),
+                                StorageName = GetDbValue<string>(reader,4),
+                                PlateNumber = GetDbValue<string>(reader, 5)
                             };
 
                             result.Add(record);
@@ -60,6 +51,15 @@ namespace NaisService
             }
 
             return result;
+        }
+
+        private string GetConnectionString()
+        {
+            IConfiguration config = new ConfigurationBuilder()
+           .AddJsonFile("AppSettings.json")
+           .Build();
+            var settings = config.GetSection("Settings").Get<Settings>();
+            return settings.NaisConnectionString;
         }
 
         private static T GetDbValue<T>(FbDataReader reader, int column)

@@ -12,6 +12,7 @@
     <DataGrid
         Margin="5"
         AutoGenerateColumns="False"
+        FontSize="18"
         IsReadOnly="True"
         ItemsSource="{Binding ElementName=_This, Path=ItemsSource, Mode=TwoWay}"
         SelectedItem="{Binding ElementName=_This, Path=SelectedCar, Mode=TwoWay}"

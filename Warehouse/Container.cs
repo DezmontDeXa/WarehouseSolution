@@ -1,4 +1,5 @@
-﻿using Ninject.Activation;
+﻿using NaisService;
+using Ninject.Activation;
 using Ninject.Modules;
 using NLog;
 using SharedLibrary.DataBaseModels;
@@ -18,6 +19,9 @@ namespace Warehouse
             LoggingConfigurator.ConfigureLogger();
             Bind<ILogger>().ToMethod(GetLoggerDelegate());
             Bind<WarehouseContext>().ToSelf().InSingletonScope();
+            Bind<NaisDataBase>().ToSelf().InSingletonScope();
+            Bind<Nais>().ToSelf().InSingletonScope();
+            Bind<NaisRole>().ToSelf().InSingletonScope();
             BindCameraRoles();
             BindCarStates();
             Bind<SimpleBarrierService>().ToSelf().InSingletonScope();

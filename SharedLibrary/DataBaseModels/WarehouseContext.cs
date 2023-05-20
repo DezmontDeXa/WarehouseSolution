@@ -43,6 +43,10 @@ public partial class WarehouseContext : DbContext
 
     public DbSet<Car> Cars { get; set; }
 
+    //public DbSet<CarStateContext> CarStateContexts { get; set; }
+
+    public DbSet<Storage> Storages { get; set; }
+
     public DbSet<CarState> CarStates { get; set; }
 
     public DbSet<Config> Configs { get; set; }

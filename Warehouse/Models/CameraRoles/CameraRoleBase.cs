@@ -3,6 +3,7 @@ using Warehouse.Services;
 using SharedLibrary.DataBaseModels;
 using CameraListenerService;
 using Warehouse.Models.CarStates;
+using Warehouse.Models.CarStates.Implements;
 
 namespace Warehouse.Models.CameraRoles
 {
@@ -19,6 +20,7 @@ namespace Warehouse.Models.CameraRoles
         private bool _awaitNextBlock = false;
         private CameraNotifyBlock _anprBlock;
         private CameraNotifyBlock _pictureBlock;
+        private CarState _errorState;
 
 
         public CameraRoleBase(ILogger logger, WaitingListsService waitingListsService)
@@ -26,6 +28,9 @@ namespace Warehouse.Models.CameraRoles
             RoleName = GetType().Name;
             Logger = logger;
             _waitingListsService = waitingListsService;
+
+            using (var db = new WarehouseContext())
+                _errorState = db.CarStates.First(x => x.TypeName == nameof(ErrorState));
         }
 
         public void AddThatRoleToDB(WarehouseContext db)
@@ -56,7 +61,7 @@ namespace Warehouse.Models.CameraRoles
 
                 var plateNumber = GetPlateNumber(_anprBlock);
                 var direction = GetDirection(_anprBlock);
-                Logger.Info($"{camera.Name}: Обнаружена машина ({plateNumber}). Направление: {direction}");
+                Logger.Trace($"{camera.Name}: Обнаружена машина ({plateNumber}). Направление: {direction}");
 
                 if (!IsAvailableDirection(camera, direction)) return;
 
@@ -119,12 +124,12 @@ namespace Warehouse.Models.CameraRoles
 
         protected virtual void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock _pictureBlock)
         {
-            Logger.Info($"{camera.Name}:\t Прибыла машина из постоянного списка \"{list.Name}\" с номером ({car.PlateNumberForward}).");
+            Logger.Trace($"{camera.Name}:\t Прибыла машина из постоянного списка \"{list.Name}\" с номером ({car.PlateNumberForward}).");
         }
 
         protected virtual void OnCarWithTempAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock _pictureBlock)
         {
-            Logger.Info($"{camera.Name}:\t Прибыла машина из временного списка \"{list.Name}\" с номером ({car.PlateNumberForward}).");
+            Logger.Trace($"{camera.Name}:\t Прибыла машина из временного списка \"{list.Name}\" с номером ({car.PlateNumberForward}).");
         }
 
 
@@ -132,28 +137,44 @@ namespace Warehouse.Models.CameraRoles
         {
             using (var db = new WarehouseContext())
             {
-                Logger.Info($"{camera.Name}:\t Для машины ({car.PlateNumberForward}) сменить статус на \"{status.Name}\"");
                 var carInDb = db.Cars.First(x => x.Id == car.Id);
                 carInDb.CarStateId = status.Id;
                 db.SaveChanges();
+                Logger.Trace($"{camera.Name}:\t Для машины ({car.PlateNumberForward}) сменить статус на \"{status.Name}\"");
             }
+        }
+
+        protected void SetErrorStatus(Camera camera, Car car)
+        {
+            ChangeStatus(camera, car, _errorState);
         }
 
         protected void SetCarArea(Camera camera, Car car, Area area)
         {
             using (var db = new WarehouseContext())
             {
-                Logger.Info($"{camera.Name}:\t Для машины ({car.PlateNumberForward}) сменить территорию на \"{area.Name}\"");
                 var carInDb = db.Cars.First(x => x.Id == car.Id);
-                carInDb.AreaId = area.Id;
+                carInDb.AreaId = area?.Id;
                 db.SaveChanges();
+                Logger.Trace($"{camera.Name}:\t Для машины ({car.PlateNumberForward}) сменить территорию на \"{area?.Name ?? "Вне системы"}\"");
             }
         }
 
+        protected void SetCarTargetArea(Camera camera, Car car, Area area)
+        {
+            using (var db = new WarehouseContext())
+            {
+                var carInDb = db.Cars.First(x => x.Id == car.Id);
+                carInDb.TargetAreaId = area.Id;
+                db.SaveChanges();
+                Logger.Trace($"{camera.Name}:\t Для машины ({car.PlateNumberForward}) сменить целевую территорию на \"{area.Name}\"");
+            }
+        }        
+
         protected void OpenBarrier(Camera camera, Car car)
         {
-            Logger.Info($"{camera.Name}:\t Для машины ({car.PlateNumberForward}) открыть шлагбаум");
             //TODO: Открыть шлагбаум
+            Logger.Trace($"{camera.Name}:\t Для машины ({car.PlateNumberForward}) открыть шлагбаум");
         }
 
         protected static CarState GetDbCarStateByType<T>(WarehouseContext db) where T : CarStateBase
@@ -166,7 +187,7 @@ namespace Warehouse.Models.CameraRoles
         {
             if (camera.Direction != MoveDirection.Both && direction.ToLower() != camera.Direction.ToString().ToLower())
             {
-                Logger.Warn($"{camera.Name}:\t Направление: {direction}. Ожидалось \"{camera.Direction}\". Без действий.");
+                Logger.Trace($"{camera.Name}:\t Направление: {direction}. Ожидалось \"{camera.Direction}\". Без действий.");
                 return false;
             }
             return true;

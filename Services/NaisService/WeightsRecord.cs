@@ -2,10 +2,11 @@
 {
     public record WeightsRecord
     {
-        public float? FirstWeighting { get; init; }
-        public float? SecondWeighting { get; init; }
-        public float? Netto { get; init; }
-        public string? StorageName { get; init; }
+        public int Id { get; init; }
+        public float? FirstWeighting { get; set; }
+        public float? SecondWeighting { get; set; }
+        public float? Netto { get; set; }
+        public string? StorageName { get; set; }
         public string? PlateNumber { get; init; }
     }
 }

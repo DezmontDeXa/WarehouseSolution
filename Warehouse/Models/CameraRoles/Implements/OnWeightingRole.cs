@@ -38,6 +38,8 @@ namespace Warehouse.Models.CameraRoles.Implements
             {
                 SetCarArea(camera, car, camera.Area);
                 ChangeStatus(camera, car, _weighingState);
+
+                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) заехала на весы. Статус машины изменен на \"{_weighingState.Name}\".");
             }
         }
     }

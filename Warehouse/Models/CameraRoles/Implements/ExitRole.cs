@@ -36,8 +36,10 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithFreeAccess(camera, car, list, pictureBlock);
             ChangeStatus(camera, car, _awaitingState);
-            SetCarArea(camera, car, camera.Area);
+            SetCarArea(camera, car, null);
             OpenBarrier(camera, car);
+
+            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) покинула территорию {camera.Area.Name}. Статус машины изменен на \"{_awaitingState.Name}\".");
         }
 
         protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock)
@@ -46,8 +48,8 @@ namespace Warehouse.Models.CameraRoles.Implements
 
             if (car.IsInspectionRequired)
             {
-                Logger.Info($"{camera.Name}: Для машины ({car.PlateNumberForward}) требуется провести досмотр. Уведомляем КПП.");
                 // TODO: Уведомить КПП
+                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) требует провести досмотр. Уведомляем КПП.");
                 return;
             }
 
@@ -55,29 +57,49 @@ namespace Warehouse.Models.CameraRoles.Implements
             if (car.CarStateId == new ExitingForChangeAreaState().Id)
             {
                 ChangeStatus(camera, car, _changingAreaState);
-                SetCarArea(camera, car, camera.Area);
+                SetCarArea(camera, car, null);
                 OpenBarrier(camera, car);
+
+                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) меняет территорию с {camera.Area.Name} на {car.TargetArea.Name}. Статус машины изменен на \"{_changingAreaState.Name}\".");
                 return;
             }
 
-            // Для выездас концами
+            // Для выезда с концами
             if (car.CarStateId == new ExitPassGrantedState().Id)
             {
                 ChangeStatus(camera, car, _finishState);
-                SetCarArea(camera, car, camera.Area);
+                SetCarArea(camera, car, null);
                 OpenBarrier(camera, car);
+                
+                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) уезжает. Статус машины изменен на \"{_finishState.Name}\".");
+
                 return;
             }
 
-            // Для выезда с другой территории
+            // Для выезда после разгрузки на другой территории
             if (car.CarStateId == new LoadingState().Id)
             {
-                ChangeStatus(camera, car, _changingAreaState);
-                SetCarArea(camera, car, camera.Area);
-                OpenBarrier(camera, car);
+                if (car.TargetAreaId == camera.AreaId)
+                {
+                    ChangeStatus(camera, car, _changingAreaState);
+                    SetCarArea(camera, car, null);
+                    SetCarTargetArea(camera, car, GetNaisArea());
+                    OpenBarrier(camera, car);
+
+                    Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) меняет территорию с {camera.Area.Name} на {car.TargetArea.Name}. Статус машины изменен на \"{_changingAreaState.Name}\".");
+                }
                 return;
             }
 
+        }
+
+        private Area GetNaisArea()
+        {
+            using(var db = new WarehouseContext())
+            {
+                var areaId = int.Parse( db.Configs.First(x => x.Key == "NaisAreaId").Value);
+                return db.Areas.First(x => x.Id == areaId);
+            }
         }
     }
 }

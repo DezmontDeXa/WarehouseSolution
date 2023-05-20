@@ -1,5 +1,6 @@
 ﻿using CheckPointControl.Services;
 using CheckPointControl.Views;
+using CheckPointControl.Views.Popups;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -40,6 +41,8 @@ namespace CheckPointControl
             containerRegistry.RegisterSingleton<CarsService>();
             containerRegistry.RegisterForNavigation<MainView>();
             containerRegistry.RegisterForNavigation<SelectAreaView>();
+            containerRegistry.RegisterForNavigation<UnknownCarPopup>();
+            containerRegistry.RegisterForNavigation<InspectionRequiredPopup>();
         }
 
         private void OnAuthorized(object sender, EventArgs e)
@@ -63,6 +66,8 @@ namespace CheckPointControl
         private void ShowMainView()
         {
             _regionManager.RequestNavigate(RegionNames.ContentRegion, nameof(MainView));
+            //_regionManager.RequestNavigate(RegionNames.PopupRegion, nameof(UnknownCarPopup));
+            //_regionManager.RequestNavigate(RegionNames.PopupRegion, nameof(InspectionRequiredPopup));
         }
     }
 }

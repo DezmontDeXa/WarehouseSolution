@@ -38,14 +38,27 @@ namespace Warehouse.Models.CameraRoles.Implements
                 ChangeStatus(camera, car, _onEnterState);
                 SetCarArea(camera, car, camera.Area);
                 OpenBarrier(camera, car);
+
+                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {camera.Area.Name}. Статус машины изменен на \"{_onEnterState.Name}\".");
+
                 return;
             }
             
             if (car.CarStateId == new ChangingAreaState().Id)
             {
+                if (car.TargetAreaId != camera.AreaId)
+                {
+                    SetErrorStatus(camera, car);
+                    Logger.Warn($"{camera.Name}:\t Машина ({car.PlateNumberForward}) ожидалась на {car.TargetArea.Name}, но подъехала к {camera.Area.Name}. Статус машины изменен на \"Ошибка\".");
+                    return;
+                }
+
                 ChangeStatus(camera, car, _loagingState);
                 SetCarArea(camera, car, camera.Area);
                 OpenBarrier(camera, car);
+
+                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {camera.Area.Name}. Статус машины изменен на \"{_loagingState.Name}\".");
+
                 return;
             }
         }
@@ -57,6 +70,8 @@ namespace Warehouse.Models.CameraRoles.Implements
             ChangeStatus(camera, car, _onEnterState);
             SetCarArea(camera, car, camera.Area);
             OpenBarrier(camera, car);
+
+            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {camera.Area.Name}. Статус машины изменен на \"{_onEnterState.Name}\".");
         }
 
         protected override void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, CameraNotifyBlock pictureBlock, string plateNumber, string direction)

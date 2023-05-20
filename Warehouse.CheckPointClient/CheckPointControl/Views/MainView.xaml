@@ -54,25 +54,25 @@
                 mah:HeaderedControlHelper.HeaderFontWeight="DemiBold">
                 <mah:MetroTabItem mah:Header="Ожидаются">
                     <controls:CarsListControl
-                        HeaderFontSize="30"
+                        HeaderFontSize="20"
                         ItemsSource="{Binding AwaitingCars}"
                         SelectedCar="{Binding SelectedCar}" />
                 </mah:MetroTabItem>
                 <mah:MetroTabItem Header="На территории">
                     <controls:CarsListControl
-                        HeaderFontSize="30"
+                        HeaderFontSize="20"
                         ItemsSource="{Binding OnAreaCars}"
                         SelectedCar="{Binding SelectedCar}" />
                 </mah:MetroTabItem>
                 <mah:MetroTabItem Header="Выгружаются">
                     <controls:CarsListControl
-                        HeaderFontSize="30"
+                        HeaderFontSize="20"
                         ItemsSource="{Binding OnLoadingCars}"
                         SelectedCar="{Binding SelectedCar}" />
                 </mah:MetroTabItem>
                 <mah:MetroTabItem Header="Выезжают">
                     <controls:CarsListControl
-                        HeaderFontSize="30"
+                        HeaderFontSize="20"
                         ItemsSource="{Binding ExitPassGrantedCars}"
                         SelectedCar="{Binding SelectedCar}" />
                 </mah:MetroTabItem>
@@ -104,4 +104,7 @@
         </Grid>
 
     </Grid>
+
+
+
 </UserControl>

@@ -27,5 +27,5 @@ public partial class WaitingList
 
     public AccessGrantType AccessGrantType { get; set; }
 
-    public virtual List<Car> Cars { get; set; }
+    public virtual ICollection<Car> Cars { get; set; }
 }

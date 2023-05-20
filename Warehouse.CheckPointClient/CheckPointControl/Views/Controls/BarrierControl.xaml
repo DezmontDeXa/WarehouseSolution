@@ -18,8 +18,9 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <TextBox
@@ -30,39 +31,41 @@
                 Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
             <controls:CarsListControl
-                    Grid.Row="2"
-                    HeaderFontSize="20"
-                    ItemsSource="{Binding FilteredCars}"
-                    SelectedCar="{Binding SelectedCar, Mode=TwoWay}" />
+                Grid.Row="1"
+                HeaderFontSize="20"
+                ItemsSource="{Binding FilteredCars}"
+                SelectedCar="{Binding SelectedCar, Mode=TwoWay}" />
 
-            <Grid Grid.Row="1">
-                <StackPanel Margin="5">
-                    <ComboBox
-                        mah:TextBoxHelper.UseFloatingWatermark="True"
-                        mah:TextBoxHelper.Watermark="Причина открытия"
-                        FontSize="20"
-                        ItemsSource="{Binding PassReasons}"
-                        SelectedIndex="{Binding SelectedReasonIndex}">
-                        <ComboBox.Style>
-                            <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="ComboBox">
-                                <Setter Property="IsEnabled" Value="False" />
-                                <Setter Property="SelectedIndex" Value="0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.RequiredReason}" Value="True">
-                                        <Setter Property="IsEnabled" Value="True" />
-                                        <Setter Property="SelectedIndex" Value="0"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ComboBox.Style>
-                    </ComboBox>
-                    <Button
-                        Margin="0,5"
-                        Command="{Binding OpenCommand}"
-                        Content="Открыть шлагбаум"
-                        FontSize="20" />
-                </StackPanel>
-            </Grid>
+            <ComboBox
+                Grid.Row="2"
+                Margin="5"
+                mah:TextBoxHelper.UseFloatingWatermark="True"
+                mah:TextBoxHelper.Watermark="Причина открытия"
+                FontSize="20"
+                ItemsSource="{Binding PassReasons}"
+                SelectedIndex="{Binding SelectedReasonIndex}">
+                <ComboBox.Style>
+                    <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="ComboBox">
+                        <Setter Property="IsEnabled" Value="False" />
+                        <Setter Property="SelectedIndex" Value="0" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Grid}, Path=DataContext.RequiredReason}" Value="True">
+                                <Setter Property="IsEnabled" Value="True" />
+                                <Setter Property="SelectedIndex" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
+
+            <Button
+                Grid.Row="3"
+                Height="80"
+                Margin="0,5"
+                Background="{StaticResource MahApps.Brushes.Accent}"
+                Command="{Binding OpenCommand}"
+                Content="Открыть шлагбаум"
+                FontSize="20" />
 
         </Grid>
 

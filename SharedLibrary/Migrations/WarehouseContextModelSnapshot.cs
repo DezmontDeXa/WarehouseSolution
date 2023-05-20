@@ -153,10 +153,6 @@ namespace SharedLibrary.Migrations
                     b.Property<int?>("AreaId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CarStateContext")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("CarStateId")
                         .HasColumnType("int");
 
@@ -183,11 +179,21 @@ namespace SharedLibrary.Migrations
                     b.Property<bool>("SecondWeighingCompleted")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("StorageId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TargetAreaId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AreaId");
 
                     b.HasIndex("CarStateId");
+
+                    b.HasIndex("StorageId");
+
+                    b.HasIndex("TargetAreaId");
 
                     b.ToTable("Cars");
                 });
@@ -264,6 +270,32 @@ namespace SharedLibrary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Logs");
+                });
+
+            modelBuilder.Entity("SharedLibrary.DataBaseModels.Storage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AreaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NaisCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
+
+                    b.ToTable("Storages");
                 });
 
             modelBuilder.Entity("SharedLibrary.DataBaseModels.TimeControledState", b =>
@@ -431,9 +463,30 @@ namespace SharedLibrary.Migrations
                         .WithMany()
                         .HasForeignKey("CarStateId");
 
+                    b.HasOne("SharedLibrary.DataBaseModels.Storage", "Storage")
+                        .WithMany()
+                        .HasForeignKey("StorageId");
+
+                    b.HasOne("SharedLibrary.DataBaseModels.Area", "TargetArea")
+                        .WithMany()
+                        .HasForeignKey("TargetAreaId");
+
                     b.Navigation("Area");
 
                     b.Navigation("CarState");
+
+                    b.Navigation("Storage");
+
+                    b.Navigation("TargetArea");
+                });
+
+            modelBuilder.Entity("SharedLibrary.DataBaseModels.Storage", b =>
+                {
+                    b.HasOne("SharedLibrary.DataBaseModels.Area", "Area")
+                        .WithMany()
+                        .HasForeignKey("AreaId");
+
+                    b.Navigation("Area");
                 });
 
             modelBuilder.Entity("SharedLibrary.DataBaseModels.TimeControledState", b =>
