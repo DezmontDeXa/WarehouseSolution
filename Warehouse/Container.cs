@@ -23,7 +23,7 @@ namespace Warehouse
             Bind<NaisDataBase>().ToSelf().InSingletonScope();
             Bind<Nais>().ToSelf().InSingletonScope();
             Bind<NaisService>().ToSelf().InSingletonScope();
-            Bind<DummyBarrierService>().ToSelf().InSingletonScope();
+            Bind<IBarriersService>().To<DummyBarrierService>().InSingletonScope();
             BindCameraRoles();
             BindCarStates();
             Bind<FuzzyFindCarService>().ToSelf().InSingletonScope();
