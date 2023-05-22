@@ -12,7 +12,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         private CarState _changingAreaState;
         private CarState _finishState;
 
-        public ExitRole(ILogger logger, WaitingListsService waitingList) : base(logger, waitingList)
+        public ExitRole(ILogger logger, WaitingListsService waitingList, IBarriersService barriersService) : base(logger, waitingList, barriersService)
         {
             Name = "Выезд";
             Description = "Обнаружение машин на выезд и открытие шлагбаума";

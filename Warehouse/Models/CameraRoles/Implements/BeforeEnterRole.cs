@@ -11,7 +11,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         private CarState _onEnterState;
         private CarState _loagingState;
 
-        public BeforeEnterRole(ILogger logger, WaitingListsService waitingListsService) : base(logger, waitingListsService)
+        public BeforeEnterRole(ILogger logger, WaitingListsService waitingListsService, IBarriersService barriersService) : base(logger, waitingListsService, barriersService)
         {
             Name = "Перед въездом";
             Description = "Обнаружение машины перед шлагбаумом и открытие шлагбаума с подтверждением заезда";

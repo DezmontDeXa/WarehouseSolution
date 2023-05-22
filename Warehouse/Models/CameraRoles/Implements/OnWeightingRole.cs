@@ -12,7 +12,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         private CarState _awaitWeighingState;
         private CarState _weighingState;
 
-        public OnWeightingRole(ILogger logger, WaitingListsService waitingList) : base(logger, waitingList)
+        public OnWeightingRole(ILogger logger, WaitingListsService waitingList, IBarriersService barriersService) : base(logger, waitingList, barriersService)
         {
             Name = "На весовой";
             Description = "Проверка что машина ожидает взвешивание и смена статуса на \"Взвешивание\"";

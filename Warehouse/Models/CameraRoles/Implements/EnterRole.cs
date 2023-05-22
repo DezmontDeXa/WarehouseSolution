@@ -11,7 +11,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         private CarState _loagingState;
         private CarState _changingAreaState;
 
-        public EnterRole(ILogger logger, WaitingListsService waitingListsService) : base(logger, waitingListsService)
+        public EnterRole(ILogger logger, WaitingListsService waitingListsService, IBarriersService barriersService) : base(logger, waitingListsService, barriersService)
         {
             Name = "На въезде";
             Description = "Обнаружение машины перед шлагбаумом и открытие шлагбаума";

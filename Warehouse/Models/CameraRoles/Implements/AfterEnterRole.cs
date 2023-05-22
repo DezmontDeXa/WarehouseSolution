@@ -12,7 +12,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         private CarState _weighingState;
         private CarState _exitPassGrantedState;
 
-        public AfterEnterRole(ILogger logger, WaitingListsService waitingListsService) : base(logger, waitingListsService)
+        public AfterEnterRole(ILogger logger, WaitingListsService waitingListsService, IBarriersService barriersService) : base(logger, waitingListsService, barriersService)
         {
             Name = "После въезда";
             Description = "Подтверждение въезда машины на территорию";
