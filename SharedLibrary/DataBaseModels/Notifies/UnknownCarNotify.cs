@@ -1,16 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace SharedLibrary.DataBaseModels;
 
-namespace SharedLibrary.DataBaseModels;
-
-public partial class UnknownCarNotify
+public partial class UnknownCarNotify : CarNotifyBase
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-
-    public DateTime CreatedOn { get; set; }
-
     public string DetectedPlateNumber { get; set; }
 
     public string Direction { get; set; }

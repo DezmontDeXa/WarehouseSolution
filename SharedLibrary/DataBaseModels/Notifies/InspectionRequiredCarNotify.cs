@@ -1,15 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace SharedLibrary.DataBaseModels;
 
-namespace SharedLibrary.DataBaseModels;
-
-public partial class InspectionRequiredCarNotify
+public partial class InspectionRequiredCarNotify : CarNotifyBase
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
-
-    public DateTime CreatedOn { get; set; }
-
     public virtual Car? Car { get; set; }
 }
