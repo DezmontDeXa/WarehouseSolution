@@ -153,7 +153,7 @@ namespace CheckPointControl.ViewModels
                 OpenBarrier(db);
             }
 
-            logger.Warn($"Для машины с номером {selectedCar.PlateNumberForward} были изменены синонимы номера и открыт шлагбаум на {areaService.SelectedArea.Name}. (Пользователь: {authService.AuthorizedUserLogin}) по причине: {PassReasons[selectedReasonIndex]}.");
+            logger.Warn($"КПП: Для машины {selectedCar.PlateNumberForward} открыт шлагбаум на {areaService.SelectedArea.Name} по причине: {PassReasons[selectedReasonIndex]}. (Пользователь: {authService.AuthorizedUserLogin}).");
 
             SelectedCar = null;
         }

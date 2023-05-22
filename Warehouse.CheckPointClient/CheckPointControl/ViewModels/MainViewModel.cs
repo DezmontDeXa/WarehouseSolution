@@ -23,15 +23,13 @@ namespace CheckPointControl.ViewModels
         private readonly AreaService areaService;
         private readonly CarsService carsService;
         private readonly AutorizationService authorizationService;
-        private readonly ILogger logger;
         private Car selectedCar;
 
-        public MainViewModel(AreaService areaService, AutorizationService authorizationService, CarsService carsService, ILogger logger)
+        public MainViewModel(AreaService areaService, AutorizationService authorizationService, CarsService carsService)
         {
             this.areaService = areaService;
             this.authorizationService = authorizationService;
             this.carsService = carsService;
-            this.logger = logger;
 
             carsService.CarsUpdated += OnCarsUpdated;
         }

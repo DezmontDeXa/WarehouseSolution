@@ -5,6 +5,7 @@ using Prism.Modularity;
 using Services;
 using SharedLibrary.Logging;
 using System.Windows;
+using System.Windows.Threading;
 using Warehouse.CheckPointClient.Services;
 using Warehouse.CheckPointClient.Services.Interfaces;
 using Warehouse.CheckPointClient.Views;
@@ -32,6 +33,7 @@ namespace Warehouse.CheckPointClient
             containerRegistry.RegisterSingleton<AutorizationService>();
             containerRegistry.RegisterSingleton<AreaService>();
             containerRegistry.RegisterSingleton<CarNotifierService>();
+            containerRegistry.RegisterInstance(Dispatcher.CurrentDispatcher);
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)

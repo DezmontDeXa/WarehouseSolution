@@ -234,7 +234,6 @@ namespace Warehouse.Models.CameraRoles
         {
             var notify = new UnknownCarNotify()
             {
-                Camera = camera,
                 CreatedOn = DateTime.Now,
                 DetectedPlateNumber = plateNumber,
                 Direction = direction,
@@ -243,6 +242,8 @@ namespace Warehouse.Models.CameraRoles
 
             using (var db = new WarehouseContext())
             {
+                notify.Camera = db.Cameras.First(x => x.Id == camera.Id);
+
                 var cameraRole = db.CameraRoles.First(x => x.TypeName == this.GetType().Name);
                 notify.Role = cameraRole;
 
@@ -301,11 +302,11 @@ namespace Warehouse.Models.CameraRoles
             var notify = new InspectionRequiredCarNotify()
             {                
                 CreatedOn = DateTime.Now,
-                Car = car,
             };
 
             using (var db = new WarehouseContext())
             {
+                notify.Car = db.Cars.First(x=>x.Id == car.Id);
                 db.InspectionRequiredCarNotifies.Add(notify);
                 db.SaveChanges();
             }

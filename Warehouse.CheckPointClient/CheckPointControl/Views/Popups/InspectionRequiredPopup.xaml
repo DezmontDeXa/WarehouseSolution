@@ -6,30 +6,39 @@
     xmlns:local="clr-namespace:CheckPointControl.Views.Popups"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:popups="clr-namespace:CheckPointControl.ViewModels.Popups"
     xmlns:prism="http://prismlibrary.com/"
-    xmlns:views="clr-namespace:CheckPointControl.Views" xmlns:popups="clr-namespace:CheckPointControl.ViewModels.Popups" d:DataContext="{d:DesignInstance Type=popups:InspectionRequiredPopupViewModel}"
-    d:DesignHeight="500"
-    d:DesignWidth="800"
+    xmlns:views="clr-namespace:CheckPointControl.Views"
+    d:DataContext="{d:DesignInstance Type=popups:InspectionRequiredPopupViewModel}"
+    d:DesignHeight="1080"
+    d:DesignWidth="1920"
     prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
+    <Grid>
 
-    <Grid Background="{DynamicResource MahApps.Brushes.Accent3}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="1*" />
-        </Grid.RowDefinitions>
+        <Grid Background="{StaticResource MahApps.Brushes.Accent3}">
+            <Grid.Effect>
+                <BlurEffect/>
+            </Grid.Effect>
+        </Grid>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <Label
+        <Grid Background="#F20078D7" Width="800" Height="500">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label
                 HorizontalContentAlignment="Center"
                 VerticalContentAlignment="Center"
                 Content="Требуется досмотр"
                 FontSize="30" />
-            <Button
+                <Button
                 Grid.Column="1"
                 Width="50"
                 Height="50"
@@ -37,29 +46,33 @@
                 mah:ControlsHelper.FocusBorderBrush="{StaticResource MahApps.Brushes.Button.CleanWindow.Close.Background.MouseOver}"
                 Command="{Binding ClosePopupCommand}"
                 Content="X" />
-        </Grid>
+            </Grid>
 
-        <StackPanel Grid.Row="1" Margin="5" VerticalAlignment="Center">
-            <Button
+            <StackPanel
+            Grid.Row="1"
+            Margin="5"
+            VerticalAlignment="Center">
+                <Button
+                Width="260"
+                Height="80"
+                Margin="0,10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Height="80"
-                Width="260"
-                Margin="0,10"
                 Background="{StaticResource MahApps.Brushes.Accent}"
                 Command="{Binding InspectionPassGrantedCommand}"
-                FontSize="20"
-                Content="Досмотр произведен" />
-            <Button
+                Content="Досмотр произведен"
+                FontSize="20" />
+                <Button
+                Width="260"
+                Height="80"
+                Margin="0,10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Height="80"
-                Width="260"
-                Margin="0,10"
                 Background="{DynamicResource MahApps.Brushes.Button.CleanWindow.Close.Background.Pressed}"
                 Command="{Binding InspectionFailedCommand}"
-                FontSize="20"
-                Content="Отмена выезда" />
-        </StackPanel>
+                Content="Отмена выезда"
+                FontSize="20" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

@@ -1,4 +1,5 @@
-﻿using SharedLibrary.DataBaseModels;
+﻿using Microsoft.EntityFrameworkCore;
+using SharedLibrary.DataBaseModels;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,33 +20,37 @@ namespace Services
 
         private void Working()
         {
-            using (var db = new WarehouseContext())
+            while(true)
             {
-                foreach (var notify in db.UnknownCarNotifies.Where(x => !x.IsProcessed))
+                using (var db = new WarehouseContext())
                 {
-                    NewUnknownCarNotify?.Invoke(this, notify);
-                    notify.IsProcessed = true;
-                }
-                foreach (var notify in db.NotInListCarNotifies.Where(x => !x.IsProcessed))
-                {
-                    NewNotInListCarNotify?.Invoke(this, notify);
-                    notify.IsProcessed = true;
-                }
-                foreach (var notify in db.InspectionRequiredCarNotifies.Where(x => !x.IsProcessed))
-                {
-                    NewInspectionRequiredCarNotify?.Invoke(this, notify);
-                    notify.IsProcessed = true;
-                }
-                foreach (var notify in db.ExpiredListCarNotifies.Where(x => !x.IsProcessed))
-                {
-                    NewExpiredListCarNotify?.Invoke(this, notify);
-                    notify.IsProcessed = true;
+                    foreach (var notify in db.UnknownCarNotifies.Where(x => !x.IsProcessed).Include(x => x.Camera).Include(x => x.Role))
+                    {
+                        NewUnknownCarNotify?.Invoke(this, notify);
+                        notify.IsProcessed = true;
+                    }
+                    foreach (var notify in db.NotInListCarNotifies.Where(x => !x.IsProcessed).Include(x => x.Camera).Include(x => x.Role).Include(x => x.Car))
+                    {
+                        NewNotInListCarNotify?.Invoke(this, notify);
+                        notify.IsProcessed = true;
+                    }
+                    foreach (var notify in db.InspectionRequiredCarNotifies.Where(x => !x.IsProcessed).Include(x => x.Car))
+                    {
+                        NewInspectionRequiredCarNotify?.Invoke(this, notify);
+                        notify.IsProcessed = true;
+                    }
+                    foreach (var notify in db.ExpiredListCarNotifies.Where(x => !x.IsProcessed).Include(x => x.Camera).Include(x => x.Role).Include(x => x.Car))
+                    {
+                        NewExpiredListCarNotify?.Invoke(this, notify);
+                        notify.IsProcessed = true;
+                    }
+
+                    db.SaveChanges();
                 }
 
-                db.SaveChanges();
+                Task.Delay(1000).Wait();
             }
 
-            Task.Delay(1000).Wait();
         }
     }
 }

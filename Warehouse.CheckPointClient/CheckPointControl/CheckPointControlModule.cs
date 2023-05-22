@@ -19,17 +19,11 @@ namespace CheckPointControl
         private readonly AreaService areaService;
         private readonly CarNotifierService carNotifierService;
 
-        public CheckPointControlModule(IRegionManager regionManager, AutorizationService authService, AreaService areaService, CarNotifierService carNotifierService)
+        public CheckPointControlModule(IRegionManager regionManager, AutorizationService authService, AreaService areaService)
         {
             _regionManager = regionManager;
             this.authService = authService;
             this.areaService = areaService;
-            this.carNotifierService = carNotifierService;
-
-            carNotifierService.NewNotInListCarNotify += OnNewNotInListCarNotify;
-            carNotifierService.NewUnknownCarNotify += OnNewUnknownCarNotify; ;
-            carNotifierService.NewExpiredListCarNotify += OnNewExpiredListCarNotify; ;
-            carNotifierService.NewInspectionRequiredCarNotify += OnNewInspectionRequiredCarNotify;
         }
 
         public void OnInitialized(IContainerProvider containerProvider)
@@ -42,32 +36,14 @@ namespace CheckPointControl
                 areaService.SelectedArea = areaService.Areas[0];
                 ShowMainView();
             }
-        }
-
-
-        private void OnNewInspectionRequiredCarNotify(object sender, InspectionRequiredCarNotify e)
-        {
-            _regionManager.RequestNavigate(RegionNames.PopupRegion, nameof(InspectionRequiredPopup));
-        }
-
-        private void OnNewExpiredListCarNotify(object sender, ExpiredListCarNotify e)
-        {
-            //_regionManager.RequestNavigate(RegionNames.PopupRegion, nameof(UnknownCarPopup));
-        }
-
-        private void OnNewUnknownCarNotify(object sender, UnknownCarNotify e)
-        {
-            _regionManager.RequestNavigate(RegionNames.PopupRegion, nameof(UnknownCarPopup));
-        }
-
-        private void OnNewNotInListCarNotify(object sender, NotInListCarNotify e)
-        {
-            _regionManager.RequestNavigate(RegionNames.PopupRegion, nameof(UnknownCarPopup));
+            containerProvider.Resolve<NotifiesViewShowerService>();
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<CarsService>();
+            containerRegistry.RegisterSingleton<NotifiesQueueService>();
+            containerRegistry.RegisterSingleton<NotifiesViewShowerService>();
             containerRegistry.RegisterForNavigation<MainView>();
             containerRegistry.RegisterForNavigation<SelectAreaView>();
             containerRegistry.RegisterForNavigation<UnknownCarPopup>();
