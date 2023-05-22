@@ -45,7 +45,7 @@ namespace CheckPointControl.ViewModels.Popups
                 var car = db.Cars.First(x => x.Id == _notify.Car.Id);
                 car.IsInspectionRequired = true;
                 OpenBarrier(db);
-                logger.Warn($"КПП ({areaService.SelectedArea.Name}):\t Машина ({car.PlateNumberForward}) провалила прошла инспецию.");
+                logger.Warn($"КПП ({areaService.SelectedArea.Name}):\t Машина ({car.PlateNumberForward}) провалила досмотр.");
             }
 
             ClosePopup();
@@ -58,7 +58,7 @@ namespace CheckPointControl.ViewModels.Popups
                 var car = db.Cars.First(x => x.Id == _notify.Car.Id);
                 car.IsInspectionRequired = false;
                 OpenBarrier(db);
-                logger.Info($"КПП ({areaService.SelectedArea.Name}):\t Машина ({car.PlateNumberForward}) успешно прошла инспецию. Открыть шлагбаум.");
+                logger.Info($"КПП ({areaService.SelectedArea.Name}):\t Машина ({car.PlateNumberForward}) успешно прошла досмотр. Открыть шлагбаум.");
             }
             ClosePopup();
         }

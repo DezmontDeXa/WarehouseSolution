@@ -72,7 +72,6 @@ namespace CheckPointControl.ViewModels
         private void InspectionCancel()
         {
             SelectedCar = null;
-
         }
 
         private void OpenBarrier(WarehouseContext db)
