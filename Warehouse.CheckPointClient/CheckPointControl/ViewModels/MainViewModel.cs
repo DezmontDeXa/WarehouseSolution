@@ -1,6 +1,7 @@
 ﻿using CheckPointControl.Services;
 using NLog;
 using Prism.Mvvm;
+using Prism.Regions;
 using Services;
 using SharedLibrary.DataBaseModels;
 using System.Collections.Generic;

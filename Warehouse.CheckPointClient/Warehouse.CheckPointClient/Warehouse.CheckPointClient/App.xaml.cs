@@ -31,6 +31,7 @@ namespace Warehouse.CheckPointClient
             containerRegistry.RegisterSingleton<IBarriersService, DummyBarrierService>();
             containerRegistry.RegisterSingleton<AutorizationService>();
             containerRegistry.RegisterSingleton<AreaService>();
+            containerRegistry.RegisterSingleton<CarNotifierService>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
