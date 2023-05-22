@@ -48,7 +48,8 @@ namespace Warehouse.Models.CameraRoles.Implements
 
             if (car.IsInspectionRequired)
             {
-                // TODO: Уведомить КПП
+                SendInspectionRequiredCarNotify(car);
+
                 Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) требует провести досмотр. Уведомляем КПП.");
                 return;
             }

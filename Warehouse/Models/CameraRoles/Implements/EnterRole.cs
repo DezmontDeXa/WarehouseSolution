@@ -65,13 +65,13 @@ namespace Warehouse.Models.CameraRoles.Implements
         protected override void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, CameraNotifyBlock pictureBlock, string plateNumber, string direction)
         {
             base.OnCarNotFound(camera, notifyBlock, pictureBlock, plateNumber, direction);
-            //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
+            SendUnknownCarNotify(camera, pictureBlock, plateNumber);
         }
 
         protected override void OnCarNotInLists(Camera camera, CameraNotifyBlock notifyBlock, CameraNotifyBlock pictureBlock, Car car, string plateNumber, string direction)
         {
             base.OnCarNotInLists(camera, notifyBlock, pictureBlock, car, plateNumber, direction);
-            //TODO: Отправить распознаный номер в специальную таблицу БД для дальнейшей обработки охранником.
+            SendNotInListCarNotify(camera, car, pictureBlock, plateNumber);
         }
     }
 }

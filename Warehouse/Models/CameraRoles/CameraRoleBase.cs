@@ -228,7 +228,87 @@ namespace Warehouse.Models.CameraRoles
         private static string GetDirection(CameraNotifyBlock block)
         {
             return block.XmlDocumentRoot["ANPR"]["direction"]?.InnerText;
-            //return block.XmlDocument.SelectSingleNode("//EventNotificationAlert/ANPR/direction")?.InnerText;
+        }
+
+        protected void SendUnknownCarNotify(Camera camera, CameraNotifyBlock pictureBlock, string plateNumber, string direction)
+        {
+            var notify = new UnknownCarNotify()
+            {
+                Camera = camera,
+                CreatedOn = DateTime.Now,
+                DetectedPlateNumber = plateNumber,
+                Direction = direction,
+                PlateNumberPicture = pictureBlock.ContentBytes,
+            };
+
+            using (var db = new WarehouseContext())
+            {
+                var cameraRole = db.CameraRoles.First(x => x.TypeName == this.GetType().Name);
+                notify.Role = cameraRole;
+
+                db.UnknownCarNotifies.Add(notify);
+                db.SaveChanges();
+            }
+        }
+
+        protected void SendNotInListCarNotify(Camera camera, Car car, CameraNotifyBlock pictureBlock, string plateNumber, string direction)
+        {
+            var notify = new NotInListCarNotify()
+            {
+                Camera = camera,
+                CreatedOn = DateTime.Now,
+                DetectedPlateNumber = plateNumber,
+                Direction = direction,
+                PlateNumberPicture = pictureBlock.ContentBytes,
+                Car = car,
+            };
+
+            using (var db = new WarehouseContext())
+            {
+                var cameraRole = db.CameraRoles.First(x => x.TypeName == this.GetType().Name);
+                notify.Role = cameraRole;
+
+                db.NotInListCarNotifies.Add(notify);
+                db.SaveChanges();
+            }
+        }
+
+        protected void SendExpriredListCarNotify(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock, string plateNumber, string direction)
+        {
+            var notify = new ExpiredListCarNotify()
+            {
+                Camera = camera,
+                CreatedOn = DateTime.Now,
+                WaitingList = list,
+                DetectedPlateNumber = plateNumber,
+                Direction = direction,
+                PlateNumberPicture = pictureBlock.ContentBytes,
+                Car = car,
+            };
+
+            using (var db = new WarehouseContext())
+            {
+                var cameraRole = db.CameraRoles.First(x => x.TypeName == this.GetType().Name);
+                notify.Role = cameraRole;
+
+                db.ExpiredListCarNotifies.Add(notify);
+                db.SaveChanges();
+            }
+        }
+
+        protected void SendInspectionRequiredCarNotify(Car car)
+        {
+            var notify = new InspectionRequiredCarNotify()
+            {                
+                CreatedOn = DateTime.Now,
+                Car = car,
+            };
+
+            using (var db = new WarehouseContext())
+            {
+                db.InspectionRequiredCarNotifies.Add(notify);
+                db.SaveChanges();
+            }
         }
     }
 }

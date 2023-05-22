@@ -13,7 +13,7 @@ public partial class NotInListCarNotify
 
     public string DetectedPlateNumber { get; set; }
 
-    public int Direction { get; set; }
+    public string Direction { get; set; }
 
     public byte[] PlateNumberPicture { get; set; }
 

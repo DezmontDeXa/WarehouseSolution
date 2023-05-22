@@ -50,7 +50,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{50
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NaisService.Tests", "Tests\Services\NaisService.Tests\NaisService.Tests.csproj", "{EA38E7DA-2515-4081-9930-C3AB8B9488E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeControlService", "Services\TimeConrolService\TimeControlService.csproj", "{5C34324A-50B3-443F-B466-76E192A86339}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeControlService", "Services\TimeConrolService\TimeControlService.csproj", "{5C34324A-50B3-443F-B466-76E192A86339}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
