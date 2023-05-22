@@ -1,4 +1,4 @@
-﻿namespace NaisService
+﻿namespace NaisServiceLibrary
 {
     public record WeightsRecord
     {

@@ -216,6 +216,40 @@ namespace SharedLibrary.Migrations
                     b.ToTable("CarStates");
                 });
 
+            modelBuilder.Entity("SharedLibrary.DataBaseModels.CarStateTimer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CarStateId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsAlive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TimeControledStateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("CarStateId");
+
+                    b.HasIndex("TimeControledStateId");
+
+                    b.ToTable("CarStateTimers");
+                });
+
             modelBuilder.Entity("SharedLibrary.DataBaseModels.Config", b =>
                 {
                     b.Property<int>("Id")
@@ -478,6 +512,27 @@ namespace SharedLibrary.Migrations
                     b.Navigation("Storage");
 
                     b.Navigation("TargetArea");
+                });
+
+            modelBuilder.Entity("SharedLibrary.DataBaseModels.CarStateTimer", b =>
+                {
+                    b.HasOne("SharedLibrary.DataBaseModels.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId");
+
+                    b.HasOne("SharedLibrary.DataBaseModels.CarState", "CarState")
+                        .WithMany()
+                        .HasForeignKey("CarStateId");
+
+                    b.HasOne("SharedLibrary.DataBaseModels.TimeControledState", "TimeControledState")
+                        .WithMany()
+                        .HasForeignKey("TimeControledStateId");
+
+                    b.Navigation("Car");
+
+                    b.Navigation("CarState");
+
+                    b.Navigation("TimeControledState");
                 });
 
             modelBuilder.Entity("SharedLibrary.DataBaseModels.Storage", b =>

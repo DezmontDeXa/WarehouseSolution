@@ -14,7 +14,7 @@ namespace Warehouse.Models.CameraRoles.Implements
         public BeforeEnterRole(ILogger logger, WaitingListsService waitingListsService) : base(logger, waitingListsService)
         {
             Name = "Перед въездом";
-            Description = "Обнаружение машины перед шлагбаумом и открытие шлагбаума";
+            Description = "Обнаружение машины перед шлагбаумом и открытие шлагбаума с подтверждением заезда";
 
             using (var db = new WarehouseContext())
             {

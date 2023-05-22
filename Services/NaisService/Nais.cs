@@ -1,6 +1,6 @@
 ﻿using NLog;
 
-namespace NaisService
+namespace NaisServiceLibrary
 {
     public class Nais
     {

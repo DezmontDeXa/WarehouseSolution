@@ -1,6 +1,6 @@
 
 
-namespace NaisService.Tests
+namespace NaisServiceLibrary.Tests
 {
     public class Tests
     {

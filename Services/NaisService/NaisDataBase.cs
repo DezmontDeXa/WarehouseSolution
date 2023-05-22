@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using SharedLibrary.AppSettings;
 
-namespace NaisService
+namespace NaisServiceLibrary
 {
     public class NaisDataBase : IDisposable
     {

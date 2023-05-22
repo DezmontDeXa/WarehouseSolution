@@ -17,26 +17,32 @@ namespace Warehouse.Models.CameraRoles
         protected List<CarState> ExpectedStates { get; set; }
 
         private readonly WaitingListsService _waitingListsService;
+        private readonly IBarriersService barriersService;
         private bool _awaitNextBlock = false;
         private CameraNotifyBlock _anprBlock;
         private CameraNotifyBlock _pictureBlock;
         private CarState _errorState;
 
-
-        public CameraRoleBase(ILogger logger, WaitingListsService waitingListsService)
+        public CameraRoleBase(ILogger logger, WaitingListsService waitingListsService, IBarriersService barriersService)
         {
             RoleName = GetType().Name;
             Logger = logger;
             _waitingListsService = waitingListsService;
-
+            this.barriersService = barriersService;
             using (var db = new WarehouseContext())
                 _errorState = db.CarStates.First(x => x.TypeName == nameof(ErrorState));
         }
 
         public void AddThatRoleToDB(WarehouseContext db)
         {
-            if (!db.CameraRoles.Any(x => x.TypeName == RoleName))
+            var existRole = db.CameraRoles.FirstOrDefault(x => x.TypeName == RoleName);
+            if (existRole == null)
                 db.CameraRoles.Add(new CameraRole() { Name = Name, Description = Description, TypeName = RoleName });
+            else
+            {
+                existRole.Description = Description;
+                existRole.Name = Name;
+            }
         }
 
         public void Execute(Camera camera, CameraNotifyBlock notifyBlock)
@@ -59,7 +65,9 @@ namespace Warehouse.Models.CameraRoles
                 else
                     return;
 
+
                 var plateNumber = GetPlateNumber(_anprBlock);
+                plateNumber = TransliterateToRu(plateNumber);
                 var direction = GetDirection(_anprBlock);
                 Logger.Trace($"{camera.Name}: Обнаружена машина ({plateNumber}). Направление: {direction}");
 
@@ -102,15 +110,6 @@ namespace Warehouse.Models.CameraRoles
             }
         }
 
-        private bool IsAnprEvent(CameraNotifyBlock notifyBlock)
-        {
-            if (notifyBlock.Headers["Content-Type"] == "application/xml" || notifyBlock.Headers["Content-Type"] == "text/xml")
-                // Skip all events,except Car detected
-                if (notifyBlock.EventType == "ANPR")
-                    return true;
-
-            return false;
-        }
 
         protected virtual void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, CameraNotifyBlock _pictureBlock, string plateNumber, string direction)
         {
@@ -144,9 +143,10 @@ namespace Warehouse.Models.CameraRoles
             }
         }
 
-        protected void SetErrorStatus(Camera camera, Car car)
+        protected CarState SetErrorStatus(Camera camera, Car car)
         {
             ChangeStatus(camera, car, _errorState);
+            return _errorState;
         }
 
         protected void SetCarArea(Camera camera, Car car, Area area)
@@ -169,11 +169,12 @@ namespace Warehouse.Models.CameraRoles
                 db.SaveChanges();
                 Logger.Trace($"{camera.Name}:\t Для машины ({car.PlateNumberForward}) сменить целевую территорию на \"{area.Name}\"");
             }
-        }        
+        }
 
         protected void OpenBarrier(Camera camera, Car car)
         {
             //TODO: Открыть шлагбаум
+            //barriersService.Switch()
             Logger.Trace($"{camera.Name}:\t Для машины ({car.PlateNumberForward}) открыть шлагбаум");
         }
 
@@ -181,7 +182,6 @@ namespace Warehouse.Models.CameraRoles
         {
             return db.CarStates.ToList().First(x => CarStateBase.Equals<T>(x));
         }
-
 
         private bool IsAvailableDirection(Camera camera, string direction)
         {
@@ -193,16 +193,42 @@ namespace Warehouse.Models.CameraRoles
             return true;
         }
 
-        private string GetPlateNumber(CameraNotifyBlock block)
+
+        private static string TransliterateToRu(string input)
+        {
+            var ru = "АВЕКМНОРСТУХ";
+            var en = "ABEKMHOPCTYX";
+
+            var inputArray = input.ToCharArray();
+            for (var i = 0; i < inputArray.Length; i++)
+            {
+                var ch = input[i];
+                if (en.Contains(ch))
+                    inputArray[i] = ru[en.IndexOf(ch)];
+            }
+
+            return string.Join("", inputArray);
+        }
+
+        private static bool IsAnprEvent(CameraNotifyBlock notifyBlock)
+        {
+            if (notifyBlock.Headers["Content-Type"] == "application/xml" || notifyBlock.Headers["Content-Type"] == "text/xml")
+                // Skip all events,except Car detected
+                if (notifyBlock.EventType == "ANPR")
+                    return true;
+
+            return false;
+        }
+
+        private static string GetPlateNumber(CameraNotifyBlock block)
         {
             return block.XmlDocumentRoot["ANPR"]["licensePlate"]?.InnerText;
         }
 
-        private string GetDirection(CameraNotifyBlock block)
+        private static string GetDirection(CameraNotifyBlock block)
         {
             return block.XmlDocumentRoot["ANPR"]["direction"]?.InnerText;
             //return block.XmlDocument.SelectSingleNode("//EventNotificationAlert/ANPR/direction")?.InnerText;
         }
-
     }
 }

@@ -37,7 +37,7 @@ namespace CheckPointControl.Services
 
                 using (var db = new WarehouseContext())
                 {
-                    var allCars = db.Cars.Include(x => x.Area).Include(x => x.CarState).ToList();
+                    var allCars = db.Cars.Include(x => x.Area).Include(x => x.CarState).Include(x=>x.TargetArea).ToList();
 
                     foreach (var car in allCars)
                     {

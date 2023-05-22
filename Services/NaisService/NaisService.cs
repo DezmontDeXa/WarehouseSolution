@@ -3,14 +3,14 @@ using SharedLibrary.DataBaseModels;
 using System.Collections.Generic;
 using Warehouse.Models.CarStates.Implements;
 
-namespace NaisService
+namespace NaisServiceLibrary
 {
-    public class NaisRole
+    public class NaisService
     {
         private readonly Nais _nais;
         private readonly ILogger _logger;
 
-        public NaisRole(Nais nais, ILogger logger)
+        public NaisService(Nais nais, ILogger logger)
         {
             _nais = nais;
             _logger = logger;
@@ -18,10 +18,13 @@ namespace NaisService
             _nais.RecordModified += OnRecordModified;
         }
 
-        public void Run()
+        public async void RunAsync()
         {
-            _nais.Run();
-            ApplyExistRecords();
+            await Task.Run(() =>
+            {
+                _nais.Run();
+                ApplyExistRecords();
+            });
         }
 
         private void OnRecordAdded(object? sender, WeightsRecord e)
@@ -55,7 +58,7 @@ namespace NaisService
                         continue;
                     }
 
-                    if(record.FirstWeighting != null)
+                    if (record.FirstWeighting != null)
                     {
                         ApplyFirstWeighting(record, existCar, db);
                         continue;
@@ -161,6 +164,14 @@ namespace NaisService
         {
             if (existCar.CarState.TypeName == nameof(AwaitingWeighingState)) return true;
             if (existCar.CarState.TypeName == nameof(WeighingState)) return true;
+
+            // Нужно ли уточнять что погрузка на территории весовой?
+            if (existCar.CarState.TypeName == nameof(LoadingState)) return true;
+
+            // Если AfterEnter камера не отработала по машине
+            if (existCar.CarState.TypeName == nameof(OnEnterState)) return true;
+
+
             return false;
         }
 

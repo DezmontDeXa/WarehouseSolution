@@ -11,8 +11,6 @@ namespace Warehouse.Services
 
         public Car FindCar(string plateNumber)
         {
-            plateNumber = TransliterateToRu(plateNumber);
-
             using (var db = new WarehouseContext())
             {
                 var allCars = db.Cars.ToList();
@@ -25,20 +23,5 @@ namespace Warehouse.Services
             // А, В, Е, К, М, Н, О, Р, С, Т, У и Х
         }
 
-        private string TransliterateToRu(string input)
-        {
-            var ru = "АВЕКМНОРСТУХ";
-            var en = "ABEKMHOPCTYX";
-
-            var inputArray = input.ToCharArray();
-            for (var i = 0; i < inputArray.Length; i++)
-            {
-                var ch = input[i];
-                if (en.Contains(ch))
-                    inputArray[i] = ru[en.IndexOf(ch)];
-            }
-
-            return string.Join("", inputArray);
-        }
     }
 }

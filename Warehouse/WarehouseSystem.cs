@@ -2,7 +2,7 @@
 using SharedLibrary.DataBaseModels;
 using Warehouse.Models.CameraRoles;
 using CameraListenerService;
-using NaisService;
+using NaisServiceLibrary;
 
 namespace Warehouse
 {
@@ -12,34 +12,27 @@ namespace Warehouse
         private readonly WarehouseContext _db;
         private readonly List<CameraListener> _cameraListeners;
         private readonly List<CameraRoleBase> _cameraRoles;
-        private readonly NaisRole _naisRole;
+        private readonly NaisService _naisRole;
         private readonly Dictionary<CameraListener, CameraRoleBase> _cameraRolesMap;
         private readonly Dictionary<CameraListener, Camera> _listenersToCameraMap;
 
-        public WarehouseSystem(ILogger logger, WarehouseContext db, List<CameraRoleBase> cameraRoles, NaisRole naisRole)
+        public WarehouseSystem(ILogger logger, WarehouseContext db, List<CameraRoleBase> cameraRoles)
         {
             _logger = logger;
             _db = db;
             _cameraRoles = cameraRoles;
-            _naisRole = naisRole;
             _cameraListeners = new List<CameraListener>();
             _cameraRolesMap = new Dictionary<CameraListener, CameraRoleBase>();
             _listenersToCameraMap = new Dictionary<CameraListener, Camera>();
         }
 
-        public void Run()
+        public async void RunAsync()
         {
-            RunCameras();
-            RunNaisAsync();
+            await Task.Run(RunCameras);
 #if DEBUG
             //var tests = new WarehouseSystemTests(_db, _cameraListeners);
             //tests.RunNormalPipelineTest();
 #endif
-        }
-
-        private async Task RunNaisAsync()
-        {
-            await Task.Run(_naisRole.Run);
         }
 
         private void RunCameras()

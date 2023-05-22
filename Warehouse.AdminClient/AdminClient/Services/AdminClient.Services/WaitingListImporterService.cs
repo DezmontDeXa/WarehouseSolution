@@ -91,6 +91,9 @@ namespace AdminClient.Services
         {
             using (var db = new WarehouseContext())
             {
+                if (db.WaitingLists.Any(x => x.Number == result.WaitingList.Number))
+                    return;
+
                 foreach (var car in result.ExistCars)
                 {
                     var carInDb = db.Cars.First(x => x.Id == car.Id);

@@ -50,6 +50,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{50
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NaisService.Tests", "Tests\Services\NaisService.Tests\NaisService.Tests.csproj", "{EA38E7DA-2515-4081-9930-C3AB8B9488E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeControlService", "Services\TimeConrolService\TimeControlService.csproj", "{5C34324A-50B3-443F-B466-76E192A86339}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -96,6 +98,10 @@ Global
 		{EA38E7DA-2515-4081-9930-C3AB8B9488E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA38E7DA-2515-4081-9930-C3AB8B9488E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA38E7DA-2515-4081-9930-C3AB8B9488E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C34324A-50B3-443F-B466-76E192A86339}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C34324A-50B3-443F-B466-76E192A86339}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C34324A-50B3-443F-B466-76E192A86339}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C34324A-50B3-443F-B466-76E192A86339}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +119,7 @@ Global
 		{924FC07F-B848-44B3-A0BB-A3D43E446296} = {EA06F083-2637-488A-A506-15C70E19AEA2}
 		{505E5CF0-0E3A-4258-8A92-6184A350F8A6} = {EA06F083-2637-488A-A506-15C70E19AEA2}
 		{EA38E7DA-2515-4081-9930-C3AB8B9488E6} = {505E5CF0-0E3A-4258-8A92-6184A350F8A6}
+		{5C34324A-50B3-443F-B466-76E192A86339} = {DA36D013-8D53-46AB-9C57-15F928D21474}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC663EF5-B8BD-453E-9574-7A8375B37941}

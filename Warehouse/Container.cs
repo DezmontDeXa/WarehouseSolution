@@ -1,9 +1,10 @@
-﻿using NaisService;
+﻿using NaisServiceLibrary;
 using Ninject.Activation;
 using Ninject.Modules;
 using NLog;
 using SharedLibrary.DataBaseModels;
 using SharedLibrary.Logging;
+using TimeControlService;
 using Warehouse.Models.CameraRoles;
 using Warehouse.Models.CameraRoles.Implements;
 using Warehouse.Models.CarStates;
@@ -21,13 +22,13 @@ namespace Warehouse
             Bind<WarehouseContext>().ToSelf().InSingletonScope();
             Bind<NaisDataBase>().ToSelf().InSingletonScope();
             Bind<Nais>().ToSelf().InSingletonScope();
-            Bind<NaisRole>().ToSelf().InSingletonScope();
+            Bind<NaisService>().ToSelf().InSingletonScope();
             BindCameraRoles();
             BindCarStates();
             Bind<SimpleBarrierService>().ToSelf().InSingletonScope();
             Bind<FuzzyFindCarService>().ToSelf().InSingletonScope();
             Bind<WaitingListsService>().ToSelf().InSingletonScope();
-            Bind<TimeControlService>().ToSelf().InSingletonScope();
+            Bind<TimeControl>().ToSelf().InSingletonScope();
             Bind<WarehouseSystem>().ToSelf().InSingletonScope();
         }
 
@@ -43,6 +44,7 @@ namespace Warehouse
             Bind<CameraRoleBase>().To<AfterEnterRole>(); 
             Bind<CameraRoleBase>().To<OnWeightingRole>();
             Bind<CameraRoleBase>().To<ExitRole>();
+            Bind<CameraRoleBase>().To<EnterRole>();
             // TODO: Add other camera roles and run app for add to database
             Bind<CameraRolesToDB>().ToSelf().InSingletonScope();
         }

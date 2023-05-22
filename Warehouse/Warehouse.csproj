@@ -25,6 +25,7 @@
     <ProjectReference Include="..\Services\CameraListenerService\CameraListenerService.csproj" />
     <ProjectReference Include="..\Services\FindCarService\FindCarService.csproj" />
     <ProjectReference Include="..\Services\NaisService\NaisService.csproj" />
+    <ProjectReference Include="..\Services\TimeConrolService\TimeControlService.csproj" />
     <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
   </ItemGroup>
 
