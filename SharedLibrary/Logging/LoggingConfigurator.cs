@@ -19,9 +19,9 @@ namespace SharedLibrary.Logging
             var dbTarget = BuildDatabaseTarget();
 
             // Rules for mapping loggers to targets            
+            config.AddRule(LogLevel.Trace, LogLevel.Fatal, dbTarget);
             config.AddRule(LogLevel.Info, LogLevel.Fatal, logconsole);
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
-            config.AddRule(LogLevel.Trace, LogLevel.Fatal, dbTarget);
 
             // Apply config           
             LogManager.Configuration = config;
@@ -30,6 +30,9 @@ namespace SharedLibrary.Logging
         private static DatabaseTarget BuildDatabaseTarget()
         {
             var target = new DatabaseTarget();
+            target.Name = "logDb";
+
+            target.KeepConnection = false;
 
             IConfiguration config = new ConfigurationBuilder()
                 .AddJsonFile("AppSettings.json")
