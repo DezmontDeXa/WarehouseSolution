@@ -65,13 +65,13 @@ namespace Warehouse.Models.CameraRoles.Implements
         protected override void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, CameraNotifyBlock pictureBlock, string plateNumber, string direction)
         {
             base.OnCarNotFound(camera, notifyBlock, pictureBlock, plateNumber, direction);
-            SendUnknownCarNotify(camera, pictureBlock, plateNumber);
+            SendUnknownCarNotify(camera, pictureBlock, plateNumber, direction);
         }
 
         protected override void OnCarNotInLists(Camera camera, CameraNotifyBlock notifyBlock, CameraNotifyBlock pictureBlock, Car car, string plateNumber, string direction)
         {
             base.OnCarNotInLists(camera, notifyBlock, pictureBlock, car, plateNumber, direction);
-            SendNotInListCarNotify(camera, car, pictureBlock, plateNumber);
+            SendNotInListCarNotify(camera, car, pictureBlock, plateNumber, direction);
         }
     }
 }
