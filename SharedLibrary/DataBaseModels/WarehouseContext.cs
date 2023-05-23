@@ -62,4 +62,6 @@ public partial class WarehouseContext : DbContext
 
     public DbSet<UnknownCarNotify> UnknownCarNotifies { get; set; }
 
+    public DbSet<CarDetectedNotify> CarDetectedNotifies { get; set; }
+
 }

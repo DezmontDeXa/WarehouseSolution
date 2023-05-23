@@ -12,7 +12,6 @@ namespace Warehouse
         private readonly WarehouseContext _db;
         private readonly List<CameraListener> _cameraListeners;
         private readonly List<CameraRoleBase> _cameraRoles;
-        private readonly NaisService _naisRole;
         private readonly Dictionary<CameraListener, CameraRoleBase> _cameraRolesMap;
         private readonly Dictionary<CameraListener, Camera> _listenersToCameraMap;
 

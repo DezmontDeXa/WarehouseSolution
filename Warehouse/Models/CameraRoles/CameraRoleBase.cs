@@ -93,6 +93,8 @@ namespace Warehouse.Models.CameraRoles
                     return;
                 }
 
+                SendCarDetectedNotify(camera, carAccessInfo);
+
                 switch (carAccessInfo.AccessType)
                 {
                     case AccessGrantType.Free:
@@ -228,6 +230,21 @@ namespace Warehouse.Models.CameraRoles
         private static string GetDirection(CameraNotifyBlock block)
         {
             return block.XmlDocumentRoot["ANPR"]["direction"]?.InnerText;
+        }
+
+
+        private void SendCarDetectedNotify(Camera camera, CarAccessInfo carAccessInfo)
+        {
+            using(var db = new WarehouseContext())
+            {
+                db.CarDetectedNotifies.Add(new CarDetectedNotify()
+                {
+                    Camera = camera,
+                    Car = carAccessInfo.Car,
+                    CreatedOn = DateTime.Now,
+                });
+                db.SaveChanges();
+            }
         }
 
         protected void SendUnknownCarNotify(Camera camera, CameraNotifyBlock pictureBlock, string plateNumber, string direction)
