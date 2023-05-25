@@ -30,7 +30,7 @@ namespace Warehouse.Models.CameraRoles
             _waitingListsService = waitingListsService;
             this.barriersService = barriersService;
             using (var db = new WarehouseContext())
-                _errorState = db.CarStates.First(x => x.TypeName == nameof(ErrorState));
+                _errorState = db.CarStates.FirstOrDefault(x => x.TypeName == nameof(ErrorState));
         }
 
         public void AddThatRoleToDB(WarehouseContext db)
@@ -182,7 +182,7 @@ namespace Warehouse.Models.CameraRoles
 
         protected static CarState GetDbCarStateByType<T>(WarehouseContext db) where T : CarStateBase
         {
-            return db.CarStates.ToList().First(x => CarStateBase.Equals<T>(x));
+            return db.CarStates.ToList().FirstOrDefault(x => CarStateBase.Equals<T>(x));
         }
 
         private bool IsAvailableDirection(Camera camera, string direction)
@@ -239,8 +239,8 @@ namespace Warehouse.Models.CameraRoles
             {
                 db.CarDetectedNotifies.Add(new CarDetectedNotify()
                 {
-                    Camera = camera,
-                    Car = carAccessInfo.Car,
+                    Camera = db.Cameras.First(x=>x.Id == camera.Id),
+                    Car = db.Cars.First(x=>x.Id == carAccessInfo.Car.Id),
                     CreatedOn = DateTime.Now,
                 });
                 db.SaveChanges();

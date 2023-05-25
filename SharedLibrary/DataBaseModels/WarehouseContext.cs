@@ -24,7 +24,8 @@ public partial class WarehouseContext : DbContext
             .Build();
         var settings = config.GetSection("Settings").Get<Settings>();
         optionsBuilder
-        .UseSqlServer(settings.ConnectionString)
+        .UseNpgsql(settings.ConnectionString)
+        .UseSnakeCaseNamingConvention()
         .UseLazyLoadingProxies();
     }
 

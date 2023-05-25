@@ -19,8 +19,8 @@ namespace Warehouse.Models.CameraRoles.Implements
 
             using (var db = new WarehouseContext())
             {
-                _awaitWeighingState = db.CarStates.ToList().First(x => CarStateBase.Equals<AwaitingWeighingState>(x));
-                _weighingState = db.CarStates.ToList().First(x => CarStateBase.Equals<WeighingState>(x));
+                _awaitWeighingState = db.CarStates.ToList().FirstOrDefault(x => CarStateBase.Equals<AwaitingWeighingState>(x));
+                _weighingState = db.CarStates.ToList().FirstOrDefault(x => CarStateBase.Equals<WeighingState>(x));
 
                 ExpectedStates = new List<CarState>()
                 {
