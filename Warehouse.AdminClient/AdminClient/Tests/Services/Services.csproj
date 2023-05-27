@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Services\AdminClient.Services\AdminClient.Services.csproj" />
+    <ProjectReference Include="..\..\..\..\Services\WaitingListImporterService\WaitingListImporterService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

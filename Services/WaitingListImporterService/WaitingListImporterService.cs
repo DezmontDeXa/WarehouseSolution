@@ -1,9 +1,5 @@
-﻿using AdminClient.Services.Interfaces;
-using SharedLibrary.DataBaseModels;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using SharedLibrary.DataBaseModels;
+using SharedLibrary.Interfaces.Services;
 using System.Xml;
 
 namespace AdminClient.Services

@@ -1,0 +1,407 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Services\WaitingListImporterService\WaitingListImporterService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2810%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28100%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28101%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28102%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28103%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28104%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28105%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28106%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28107%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28108%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28109%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2811%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28110%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28111%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28112%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28113%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28114%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28115%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28116%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28117%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28118%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28119%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2812%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28120%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28121%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28124%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28125%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28126%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28127%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28128%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28129%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2813%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28130%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28131%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28132%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2814%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2815%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2816%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2817%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2818%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2819%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %282%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2820%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2821%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2822%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2823%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2824%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2825%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2826%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2827%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2828%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2829%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %283%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2830%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2831%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2832%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2833%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2834%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2835%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2836%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2837%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2838%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2839%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %284%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2840%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2841%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2842%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2843%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2844%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2845%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2846%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2847%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2848%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2849%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %285%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2850%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2851%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2852%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2853%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2854%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2855%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2856%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2857%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2858%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2859%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %286%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2860%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2861%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2862%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2863%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2864%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2865%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2866%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2867%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2868%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2869%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %287%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2870%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2871%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2872%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2873%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2874%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2875%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2876%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2877%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2878%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2879%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %288%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2880%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2881%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2882%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2883%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2884%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2885%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2886%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2887%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2888%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2889%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %289%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2890%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2891%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2892%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2893%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2894%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2895%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2896%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2897%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2898%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2899%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -27,6 +27,8 @@ public partial class WarehouseContext : DbContext
         .UseNpgsql(settings.ConnectionString)
         .UseSnakeCaseNamingConvention()
         .UseLazyLoadingProxies();
+        
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }
 
     public DbSet<User> Users { get; set; }

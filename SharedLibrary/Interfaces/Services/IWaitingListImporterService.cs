@@ -1,7 +1,6 @@
 ﻿using SharedLibrary.DataBaseModels;
-using System.IO;
 
-namespace AdminClient.Services.Interfaces
+namespace SharedLibrary.Interfaces.Services
 {
     public interface IWaitingListImporterService
     {

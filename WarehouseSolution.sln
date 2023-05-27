@@ -52,6 +52,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NaisService.Tests", "Tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeControlService", "Services\TimeConrolService\TimeControlService.csproj", "{5C34324A-50B3-443F-B466-76E192A86339}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportWaitingLists", "Utilities\ImportWaitingLists\ImportWaitingLists.csproj", "{9372B9DD-D71E-497B-8A75-5072ED8E105D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaitingListImporterService", "Services\WaitingListImporterService\WaitingListImporterService.csproj", "{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -102,6 +106,14 @@ Global
 		{5C34324A-50B3-443F-B466-76E192A86339}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C34324A-50B3-443F-B466-76E192A86339}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C34324A-50B3-443F-B466-76E192A86339}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9372B9DD-D71E-497B-8A75-5072ED8E105D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9372B9DD-D71E-497B-8A75-5072ED8E105D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9372B9DD-D71E-497B-8A75-5072ED8E105D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9372B9DD-D71E-497B-8A75-5072ED8E105D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -120,6 +132,8 @@ Global
 		{505E5CF0-0E3A-4258-8A92-6184A350F8A6} = {EA06F083-2637-488A-A506-15C70E19AEA2}
 		{EA38E7DA-2515-4081-9930-C3AB8B9488E6} = {505E5CF0-0E3A-4258-8A92-6184A350F8A6}
 		{5C34324A-50B3-443F-B466-76E192A86339} = {DA36D013-8D53-46AB-9C57-15F928D21474}
+		{9372B9DD-D71E-497B-8A75-5072ED8E105D} = {C5447726-2D22-40F1-B3D7-96D03BD33658}
+		{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE} = {DA36D013-8D53-46AB-9C57-15F928D21474}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC663EF5-B8BD-453E-9574-7A8375B37941}
