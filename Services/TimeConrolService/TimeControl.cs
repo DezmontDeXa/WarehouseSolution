@@ -72,20 +72,9 @@ namespace TimeControlService
             {
                 existTimer.IsAlive = false;
                 car.IsInspectionRequired = true;
+                logger.Debug($"StartTime ({startTime}) + Duration ({duration}) < {DateTime.Now}");
                 logger.Warn($"Машине ({car.PlateNumberForward}) требуется провести досмотр на следующем КПП. Причина: Истек таймер по статусу {controlledState.Name}.");
             }
-        }
-
-        private CarState GetCarState(Car car)
-        {
-            using (var db = new WarehouseContext())
-                return db.CarStates.First(x => x.Id == car.CarStateId);
-        }
-
-        private CarState GetControlledCarState(TimeControledState controlledState)
-        {
-            using (var db = new WarehouseContext())
-                return db.CarStates.First(x => x.Id == controlledState.Id);
         }
 
         private void CreateNewTimer(WarehouseContext db, Car car, TimeControledState controlledState)
@@ -101,6 +90,18 @@ namespace TimeControlService
             var controlledCarState = GetControlledCarState(controlledState);
             db.CarStateTimers.Add(timer);
             logger.Info($"Машине ({car.PlateNumberForward}) запущен таймер по статусу {controlledCarState.Name}.");
+        }
+
+        private CarState GetCarState(Car car)
+        {
+            using (var db = new WarehouseContext())
+                return db.CarStates.First(x => x.Id == car.CarStateId);
+        }
+
+        private CarState GetControlledCarState(TimeControledState controlledState)
+        {
+            using (var db = new WarehouseContext())
+                return db.CarStates.First(x => x.Id == controlledState.CarStateId);
         }
     }
 }
