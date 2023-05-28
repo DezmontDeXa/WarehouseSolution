@@ -11,8 +11,5 @@ public partial class TimeControledState
 
     public int? CarStateId { get; set; }
 
-    [ForeignKey(nameof(CarStateId))]
-    public virtual CarState? CarState { get; set; }
-
     public int Timeout { get; set; }
 }

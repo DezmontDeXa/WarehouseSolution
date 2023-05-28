@@ -17,10 +17,6 @@ public partial class BarrierInfo
 
     public int AreaId { get; set; }
 
-
-    [ForeignKey(nameof(AreaId))]
-    public virtual Area Area { get; set; }
-
     public string? Login { get; set; }
 
     public string? Password { get; set; }

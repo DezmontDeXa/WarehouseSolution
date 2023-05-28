@@ -15,7 +15,4 @@ public class Storage
 
     public int? AreaId { get; set; }
 
-    [ForeignKey(nameof(AreaId))]
-    public virtual Area? Area { get; set; }
-
 }

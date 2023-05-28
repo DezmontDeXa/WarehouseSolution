@@ -31,21 +31,23 @@ namespace Warehouse.Models.CameraRoles.Implements
         protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock)
         {
             base.OnCarWithTempAccess(camera, car, list, pictureBlock);
-                        
+            var cameraArea = GetCameraArea(camera);
+
             if (car.CarStateId == _changingAreaState.Id)
             {
                 if (car.TargetAreaId != camera.AreaId)
                 {
                     var errroState = SetErrorStatus(camera, car);
-                    Logger.Warn($"{camera.Name}:\t Машина ({car.PlateNumberForward}) ожидалась на {car.TargetArea.Name}, но подъехала к {camera.Area.Name}. Статус машины изменен на \"{errroState.Name}\".");
+                    var targetArea = GetCarTargetArea(car);
+                    Logger.Warn($"{camera.Name}:\t Машина ({car.PlateNumberForward}) ожидалась на {targetArea.Name}, но подъехала к {cameraArea.Name}. Статус машины изменен на \"{errroState.Name}\".");
                     return;
                 }
 
                 ChangeStatus(camera, car, _loagingState);
-                SetCarArea(camera, car, camera.Area);
+                SetCarArea(camera, car, cameraArea.Id);
                 OpenBarrier(camera, car);
 
-                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {camera.Area.Name}. Статус машины изменен на \"{_loagingState.Name}\".");
+                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {cameraArea.Name}. Статус машины изменен на \"{_loagingState.Name}\".");
 
                 return;
             }
@@ -56,10 +58,12 @@ namespace Warehouse.Models.CameraRoles.Implements
             base.OnCarWithFreeAccess(camera, car, list, pictureBlock);
 
             ChangeStatus(camera, car, _loagingState);
-            SetCarArea(camera, car, camera.Area);
+            SetCarArea(camera, car, camera.AreaId);
             OpenBarrier(camera, car);
 
-            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {camera.Area.Name} по постоянному списку. Статус машины изменен на \"{_loagingState.Name}\".");
+            var cameraArea = GetCameraArea(camera);
+
+            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {cameraArea.Name} по постоянному списку. Статус машины изменен на \"{_loagingState.Name}\".");
         }
 
         protected override void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, CameraNotifyBlock pictureBlock, string plateNumber, string direction)

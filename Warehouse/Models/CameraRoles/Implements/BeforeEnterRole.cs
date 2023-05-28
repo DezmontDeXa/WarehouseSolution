@@ -33,34 +33,43 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithTempAccess(camera, car, list, pictureBlock);
 
+            var cameraArea = GetCameraArea(camera);
+
             if (car.CarStateId == new AwaitingState().Id)
             {
-                ChangeStatus(camera, car, _onEnterState);
-                SetCarArea(camera, car, camera.Area);
-                OpenBarrier(camera, car);
+                PassCar(camera, car);
 
-                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {camera.Area.Name}. Статус машины изменен на \"{_onEnterState.Name}\".");
-
+                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {cameraArea.Name}. Статус машины изменен на \"{_onEnterState.Name}\".");
                 return;
             }
-            
+
             if (car.CarStateId == new ChangingAreaState().Id)
             {
+                var targetArea = GetCarTargetArea(car);
+
                 if (car.TargetAreaId != camera.AreaId)
                 {
-                    SetErrorStatus(camera, car);
-                    Logger.Warn($"{camera.Name}:\t Машина ({car.PlateNumberForward}) ожидалась на {car.TargetArea.Name}, но подъехала к {camera.Area.Name}. Статус машины изменен на \"Ошибка\".");
-                    return;
+                    var state = SetErrorStatus(camera, car);
+
+                    using (var db = new WarehouseContext())
+                    {
+                        Logger.Warn($"{camera.Name}:\t Машина ({car.PlateNumberForward}) ожидалась на {targetArea.Name}, но подъехала к {cameraArea.Name}. Статус машины изменен на \"{state.Name}\".");
+                        return;
+                    }                    
                 }
 
-                ChangeStatus(camera, car, _loagingState);
-                SetCarArea(camera, car, camera.Area);
-                OpenBarrier(camera, car);
+                PassCar(camera, car);
 
-                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {camera.Area.Name}. Статус машины изменен на \"{_loagingState.Name}\".");
-
+                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) вернулась на {cameraArea.Name}. Статус машины изменен на \"{_onEnterState.Name}\".");
                 return;
             }
+        }
+
+        private void PassCar(Camera camera, Car car)
+        {
+            ChangeStatus(camera, car, _onEnterState);
+            SetCarArea(camera, car, camera.AreaId);
+            OpenBarrier(camera, car);
         }
 
         protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock)
@@ -68,10 +77,12 @@ namespace Warehouse.Models.CameraRoles.Implements
             base.OnCarWithFreeAccess(camera, car, list, pictureBlock);
 
             ChangeStatus(camera, car, _onEnterState);
-            SetCarArea(camera, car, camera.Area);
+            SetCarArea(camera, car, camera.AreaId);
             OpenBarrier(camera, car);
 
-            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {camera.Area.Name}. Статус машины изменен на \"{_onEnterState.Name}\".");
+            var cameraArea = GetCameraArea(camera);
+
+            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {cameraArea.Name}. Статус машины изменен на \"{_onEnterState.Name}\".");
         }
 
         protected override void OnCarNotFound(Camera camera, CameraNotifyBlock notifyBlock, CameraNotifyBlock pictureBlock, string plateNumber, string direction)

@@ -3,6 +3,7 @@ using SharedLibrary.DataBaseModels;
 using Warehouse.Models.CameraRoles;
 using CameraListenerService;
 using NaisServiceLibrary;
+using Microsoft.EntityFrameworkCore;
 
 namespace Warehouse
 {
@@ -36,21 +37,21 @@ namespace Warehouse
 
         private void RunCameras()
         {
-            foreach (var cameraEntity in _db.Cameras)
+            foreach (var cameraEntity in _db.Cameras.ToList())
             {
                 if (cameraEntity == null) continue;
                 var listener = new CameraListener(new Uri(cameraEntity.Link));
                 _cameraListeners.Add(listener);
-                _cameraRolesMap.Add(listener, GetCameraRole(cameraEntity.CameraRole));
+                _cameraRolesMap.Add(listener, GetCameraRole(cameraEntity.RoleId));
                 _listenersToCameraMap.Add(listener, cameraEntity);
                 listener.OnNotification += Listener_OnNotification;
                 listener.OnError += Listener_OnError;
-
             }
         }
 
-        private CameraRoleBase GetCameraRole(CameraRole role)
+        private CameraRoleBase GetCameraRole(int roleId)
         {
+            var role = _db.CameraRoles.First(x => x.Id == roleId);
             return _cameraRoles.FirstOrDefault(x => x.GetType().Name == role.TypeName);
         }
 

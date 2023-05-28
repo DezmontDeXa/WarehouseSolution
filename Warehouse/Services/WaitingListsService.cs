@@ -27,7 +27,9 @@ namespace Warehouse.Services
                     return new CarAccessInfo(null, null);
 
                 using(var db  = new WarehouseContext())
-                    car = db.Cars.Include(x => x.CarState).Include(x => x.WaitingLists).Include(x => x.TargetArea).First(x => x.Id == car.Id);
+                    car = db.Cars
+                        .Include(x => x.WaitingLists)
+                        .First(x => x.Id == car.Id);
 
                 var includs = car.WaitingLists.OrderByDescending(x=>x.AccessGrantType).ToList();
 
@@ -49,7 +51,7 @@ namespace Warehouse.Services
             {
                 //var cars = db.Cars.Include(x => x.WaitingLists).Include(x => x.CarState);
 
-                foreach (var car in db.Cars.Include(x => x.WaitingLists).Include(x=>x.CarState))
+                foreach (var car in db.Cars.Include(x => x.WaitingLists))
                 {
                     if (car == null) continue;
                     if (car.PlateNumberForward.ToLower() == plateNumber.ToLower())

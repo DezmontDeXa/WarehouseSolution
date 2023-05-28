@@ -13,9 +13,5 @@ public partial class CarStateContext
 
     public int? CarStateId { get; set; }
 
-    [ForeignKey(nameof(CarStateId))]
-    public virtual CarState? CarState { get; set; }
-
-
     public string Value { get; set; }
 }

@@ -55,10 +55,7 @@ namespace NaisServiceLibrary
 
         private string GetConnectionString()
         {
-            IConfiguration config = new ConfigurationBuilder()
-           .AddJsonFile("AppSettings.json")
-           .Build();
-            var settings = config.GetSection("Settings").Get<Settings>();
+            var settings = Settings.Load();
             return settings.NaisConnectionString;
         }
 

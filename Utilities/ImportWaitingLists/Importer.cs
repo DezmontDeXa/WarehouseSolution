@@ -15,9 +15,15 @@ namespace ImportWaitingLists
 
             foreach (var file in Directory.GetFiles("XmlWaitingLists"))
             {
-                importerService.ImportList(
-                    SharedLibrary.DataBaseModels.AccessGrantType.Tracked,
-                    new FileInfo(file));
+                try
+                {
+                    importerService.ImportList(
+                        SharedLibrary.DataBaseModels.AccessGrantType.Tracked,
+                        new FileInfo(file));
+                }catch(Exception ex)
+                {
+                    Console.WriteLine(  ex);
+                }
             }
         }
     }

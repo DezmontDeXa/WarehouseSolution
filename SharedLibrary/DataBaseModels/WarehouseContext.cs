@@ -19,14 +19,12 @@ public partial class WarehouseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        IConfiguration config = new ConfigurationBuilder()
-            .AddJsonFile("AppSettings.json")
-            .Build();
-        var settings = config.GetSection("Settings").Get<Settings>();
+        var settings = Settings.Load();
+
         optionsBuilder
         .UseNpgsql(settings.ConnectionString)
-        .UseSnakeCaseNamingConvention()
-        .UseLazyLoadingProxies();
+        .UseSnakeCaseNamingConvention();
+        //.UseLazyLoadingProxies();
         
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
     }

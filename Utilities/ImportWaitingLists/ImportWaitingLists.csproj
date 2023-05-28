@@ -87,6 +87,12 @@
     <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28121%29.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28122%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28123%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28124%29.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -115,6 +121,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28132%29.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %28133%29.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="XmlWaitingLists\СписокПогрузкиРазгрузки %2814%29.xml">

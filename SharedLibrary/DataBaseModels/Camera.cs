@@ -22,14 +22,7 @@ public partial class Camera
 
     public int RoleId { get; set; }
 
-
-    [ForeignKey(nameof(RoleId))]
-    public virtual CameraRole CameraRole { get; set; }
-
     public int AreaId { get; set; }
-
-    [ForeignKey(nameof(AreaId))]
-    public virtual Area Area { get; set; }
 }
 
 public enum MoveDirection

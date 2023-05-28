@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using NLog;
+using NLog.Common;
 using NLog.Targets;
 using SharedLibrary.AppSettings;
+using System.Text.Json.Serialization;
 
 namespace SharedLibrary.Logging
 {
@@ -10,6 +13,8 @@ namespace SharedLibrary.Logging
         public static void ConfigureLogger()
         {
             var config = new NLog.Config.LoggingConfiguration();
+
+
 
             // Targets where to log to: File and Console
             var logfile = new FileTarget("logfile") { FileName = $"logs/{DateTime.Now.ToString("yyyy-MM-dd")}.log" };
@@ -23,8 +28,29 @@ namespace SharedLibrary.Logging
             config.AddRule(LogLevel.Info, LogLevel.Fatal, logconsole);
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
 
+            BuildInternalLogger();
+
             // Apply config           
             LogManager.Configuration = config;
+
+            var logger = LogManager.GetCurrentClassLogger();
+            logger.Info("Logger configured");
+        }
+
+        private static void BuildInternalLogger()
+        {
+            InternalLogger.LogLevel = LogLevel.Trace;
+
+            // enable one of the targets: file, console, logwriter:
+
+            //  enable internal logging to a file (absolute or relative path. Don't use layout renderers)
+            InternalLogger.LogFile = "logs/internal/log.txt";
+
+            // enable internal logging to the console
+            //InternalLogger.LogToConsole = true;
+
+            InternalLogger.LogWriter = new StreamWriter(File.Open("logs/internal/log.txt", FileMode.Append));
+
         }
 
         private static DatabaseTarget BuildDatabaseTarget()
@@ -34,16 +60,10 @@ namespace SharedLibrary.Logging
 
             target.KeepConnection = false;
 
-            IConfiguration config = new ConfigurationBuilder()
-                .AddJsonFile("AppSettings.json")
-                .Build();
-
-            // Get values from the config given their key and their target type.
-            var settings = config.GetSection("Settings").Get<Settings>();
-
-            target.DBProvider = "System.Data.SqlClient";
+            var settings = Settings.Load();
+            target.DBProvider = "Npgsql.NpgsqlConnection, Npgsql";
             target.ConnectionString = settings.ConnectionString;
-            target.CommandText = "INSERT INTO Logs(CreatedOn,Message,Level,Exception,StackTrace,Logger) VALUES (@datetime,@message,@level,@exception,@trace,@logger)";
+            target.CommandText = "insert into logs(created_on,message,level,exception,stack_trace,logger) values (CAST(@datetime AS timestamp),@message,@level,@exception,@trace,@logger)";
 
             var param = new DatabaseParameterInfo();
             param.Name = "@datetime";

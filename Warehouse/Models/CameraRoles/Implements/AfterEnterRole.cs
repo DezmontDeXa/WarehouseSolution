@@ -28,19 +28,21 @@ namespace Warehouse.Models.CameraRoles.Implements
         protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock _pictureBlock)
         {
             base.OnCarWithTempAccess(camera, car, list, _pictureBlock);
-            SetCarArea(camera, car, camera.Area);
+            SetCarArea(camera, car, camera.AreaId);
             ChangeStatus(camera, car, _weighingState);
 
-            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) заехала на территорию {camera.Area.Name}. Статус машины изменен на \"{_weighingState.Name}\".");
+            var area = GetCameraArea(camera);
+            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) заехала на территорию {area.Name}. Статус машины изменен на \"{_weighingState.Name}\".");
         }
 
         protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock _pictureBlock)
         {
             base.OnCarWithFreeAccess(camera, car, list, _pictureBlock);
-            SetCarArea(camera, car, camera.Area);
+            SetCarArea(camera, car, camera.AreaId);
             ChangeStatus(camera, car, _exitPassGrantedState);
 
-            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) заехала на территорию {camera.Area.Name}. Статус машины изменен на \"{_exitPassGrantedState.Name}\".");
+            var area = GetCameraArea(camera);
+            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) заехала на территорию {area.Name}. Статус машины изменен на \"{_exitPassGrantedState.Name}\".");
         }
     }
 }

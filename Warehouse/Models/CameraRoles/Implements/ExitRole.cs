@@ -39,12 +39,16 @@ namespace Warehouse.Models.CameraRoles.Implements
             SetCarArea(camera, car, null);
             OpenBarrier(camera, car);
 
-            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) покинула территорию {camera.Area.Name}. Статус машины изменен на \"{_awaitingState.Name}\".");
+            var cameraArea = GetCameraArea(camera);
+            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) покинула территорию {cameraArea.Name}. Статус машины изменен на \"{_awaitingState.Name}\".");
         }
 
         protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock)
         {
             base.OnCarWithTempAccess(camera, car, list, pictureBlock);
+
+            var cameraArea = GetCameraArea(camera);
+            var targetArea = GetCarTargetArea(car);
 
             if (car.IsInspectionRequired)
             {
@@ -61,7 +65,7 @@ namespace Warehouse.Models.CameraRoles.Implements
                 SetCarArea(camera, car, null);
                 OpenBarrier(camera, car);
 
-                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) меняет территорию с {camera.Area.Name} на {car.TargetArea.Name}. Статус машины изменен на \"{_changingAreaState.Name}\".");
+                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) меняет территорию с {cameraArea.Name} на {targetArea.Name}. Статус машины изменен на \"{_changingAreaState.Name}\".");
                 return;
             }
 
@@ -87,7 +91,9 @@ namespace Warehouse.Models.CameraRoles.Implements
                     SetCarTargetArea(camera, car, GetNaisArea());
                     OpenBarrier(camera, car);
 
-                    Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) меняет территорию с {camera.Area.Name} на {car.TargetArea.Name}. Статус машины изменен на \"{_changingAreaState.Name}\".");
+                    targetArea = GetCarTargetArea(car);
+
+                    Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) меняет территорию с {cameraArea.Name} на {targetArea.Name}. Статус машины изменен на \"{_changingAreaState.Name}\".");
                 }
                 return;
             }

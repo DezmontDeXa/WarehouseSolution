@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Warehouse": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false,
+      "authenticationMode": "None",
+      "remoteDebugMachine": "25.43.199.157:4026"
+    }
+  }
+}

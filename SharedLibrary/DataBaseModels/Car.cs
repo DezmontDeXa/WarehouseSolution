@@ -20,12 +20,6 @@ public partial class Car
     public string? Driver { get; set; }
 
     public int? TargetAreaId { get; set; }
-    [ForeignKey(nameof(TargetAreaId))]
-    public virtual Area? TargetArea { get; set; }
-
-    //public int? CarStateContextId { get; set; }
-    //[ForeignKey(nameof(CarStateContextId))]
-    //public virtual CarStateContext? CarStateContext { get; set; }
 
     public virtual ICollection<WaitingList> WaitingLists { get; set; }
 
@@ -37,19 +31,8 @@ public partial class Car
 
     public int? StorageId { get; set; }
 
-    [ForeignKey(nameof(StorageId))]
-    public virtual Storage? Storage { get; set; }
-
-
     public int? CarStateId { get; set; }
 
-    [ForeignKey(nameof(CarStateId))]
-    public virtual CarState? CarState { get; set; }
-
-
     public int? AreaId { get; set; }
-
-    [ForeignKey(nameof(AreaId))]
-    public virtual Area? Area { get; set; }
 
 }

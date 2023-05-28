@@ -87,10 +87,14 @@ namespace Warehouse.Models.CameraRoles
                     return;
                 }
 
-                if (ExpectedStates != null && ExpectedStates.Count > 0 && !ExpectedStates.Exists(x => x.Id == carAccessInfo.Car?.CarState?.Id))
+                if (ExpectedStates != null && ExpectedStates.Count > 0 && !ExpectedStates.Exists(x => x.Id == carAccessInfo.Car?.CarStateId))
                 {
-                    Logger.Warn($"{camera.Name}:\t Машина ({carAccessInfo.Car.PlateNumberForward}) имела неожиданный статус. Текущий статус: \"{carAccessInfo.Car.CarState.Name} на {camera.Area.Name}\". Без действий.");
-                    return;
+                    using (var db = new WarehouseContext())
+                    {
+                        var state = GetCarState(carAccessInfo.Car);
+                        Logger.Warn($"{camera.Name}:\t Машина ({carAccessInfo.Car.PlateNumberForward}) имела неожиданный статус. Текущий статус: \"{state.Name}\". Без действий.");
+                        return;
+                    }
                 }
 
                 SendCarDetectedNotify(camera, carAccessInfo);
@@ -151,12 +155,13 @@ namespace Warehouse.Models.CameraRoles
             return _errorState;
         }
 
-        protected void SetCarArea(Camera camera, Car car, Area area)
+        protected void SetCarArea(Camera camera, Car car, int? areaId)
         {
             using (var db = new WarehouseContext())
             {
                 var carInDb = db.Cars.First(x => x.Id == car.Id);
-                carInDb.AreaId = area?.Id;
+                carInDb.AreaId = areaId;
+                var area = areaId != null ? db.Areas.First(x => x.Id == areaId) : null;
                 db.SaveChanges();
                 Logger.Trace($"{camera.Name}:\t Для машины ({car.PlateNumberForward}) сменить территорию на \"{area?.Name ?? "Вне системы"}\"");
             }
@@ -168,6 +173,7 @@ namespace Warehouse.Models.CameraRoles
             {
                 var carInDb = db.Cars.First(x => x.Id == car.Id);
                 carInDb.TargetAreaId = area.Id;
+                car.TargetAreaId = area.Id;
                 db.SaveChanges();
                 Logger.Trace($"{camera.Name}:\t Для машины ({car.PlateNumberForward}) сменить целевую территорию на \"{area.Name}\"");
             }
@@ -235,12 +241,12 @@ namespace Warehouse.Models.CameraRoles
 
         private void SendCarDetectedNotify(Camera camera, CarAccessInfo carAccessInfo)
         {
-            using(var db = new WarehouseContext())
+            using (var db = new WarehouseContext())
             {
                 db.CarDetectedNotifies.Add(new CarDetectedNotify()
                 {
-                    Camera = db.Cameras.First(x=>x.Id == camera.Id),
-                    Car = db.Cars.First(x=>x.Id == carAccessInfo.Car.Id),
+                    Camera = db.Cameras.First(x => x.Id == camera.Id),
+                    Car = db.Cars.First(x => x.Id == carAccessInfo.Car.Id),
                     CreatedOn = DateTime.Now,
                 });
                 db.SaveChanges();
@@ -317,15 +323,40 @@ namespace Warehouse.Models.CameraRoles
         protected void SendInspectionRequiredCarNotify(Car car)
         {
             var notify = new InspectionRequiredCarNotify()
-            {                
+            {
                 CreatedOn = DateTime.Now,
             };
 
             using (var db = new WarehouseContext())
             {
-                notify.Car = db.Cars.First(x=>x.Id == car.Id);
+                notify.Car = db.Cars.First(x => x.Id == car.Id);
                 db.InspectionRequiredCarNotifies.Add(notify);
                 db.SaveChanges();
+            }
+        }
+
+        protected Area GetCameraArea(Camera camera)
+        {
+            using (var db = new WarehouseContext())
+            {
+                var cameraArea = db.Areas.First(x => x.Id == camera.AreaId);
+                return cameraArea;
+            }
+        }
+
+        protected Area? GetCarTargetArea(Car car)
+        {
+            using (var db = new WarehouseContext())
+            {
+                return db.Areas.First(x => x.Id == car.TargetAreaId);
+            }
+        }
+
+        protected CarState? GetCarState(Car car)
+        {
+            using (var db = new WarehouseContext())
+            {
+                return db.CarStates.First(x => x.Id == car.CarStateId);
             }
         }
     }

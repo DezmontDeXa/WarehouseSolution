@@ -88,7 +88,8 @@ namespace NaisServiceLibrary
 
             if (!IsExpectedState(existCar, db))
             {
-                _logger.Error($"Машина ({platenumber}) имела не ожиданный статус. Статус: {existCar.CarState.Name}. Продолжаем.");
+                var state = db.CarStates.First(x => x.Id == existCar.CarStateId);
+                _logger.Error($"Машина ({platenumber}) имела не ожиданный статус. Статус: {state.Name}. Продолжаем.");
                 return;
             }
 
@@ -114,23 +115,23 @@ namespace NaisServiceLibrary
 
             if (storage == null)
             {
-                existCar.CarState = errorState;
+                existCar.CarStateId = errorState.Id;
                 _logger.Warn($"Склад c обозначением {record.StorageName} не реализован. Статус машины изменен на \"{errorState.Name}\".");
                 return;
             }
 
-            existCar.Storage = storage;
+            existCar.StorageId = storage.Id;
 
             var naisAreaId = int.Parse(db.Configs.First(x => x.Key == "NaisAreaId").Value);
-            if (storage.Area.Id == naisAreaId)
+            if (storage.AreaId == naisAreaId)
             {
-                existCar.CarState = loadingState;
+                existCar.CarStateId = loadingState.Id;
                 _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}. Статус машины изменен на \"{loadingState.Name}\".");
             }
             else
             {
-                existCar.CarState = exitingForChangeAreaState;
-                existCar.TargetArea = storage.Area;
+                existCar.CarStateId = exitingForChangeAreaState.Id;
+                existCar.TargetAreaId = storage.AreaId;
                 _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}. Статус машины изменен на \"{exitingForChangeAreaState.Name}\".");
             }
         }
@@ -162,18 +163,27 @@ namespace NaisServiceLibrary
 
         private bool IsExpectedState(Car existCar, WarehouseContext db)
         {
-            if (existCar.CarState.TypeName == nameof(AwaitingWeighingState)) return true;
-            if (existCar.CarState.TypeName == nameof(WeighingState)) return true;
+            var state = GetCarState(existCar);
+
+            if (state.TypeName == nameof(AwaitingWeighingState)) return true;
+            if (state.TypeName == nameof(WeighingState)) return true;
 
             // Нужно ли уточнять что погрузка на территории весовой?
-            if (existCar.CarState.TypeName == nameof(LoadingState)) return true;
+            if (state.TypeName == nameof(LoadingState)) return true;
 
             // Если AfterEnter камера не отработала по машине
-            if (existCar.CarState.TypeName == nameof(OnEnterState)) return true;
+            if (state.TypeName == nameof(OnEnterState)) return true;
 
 
             return false;
         }
 
+        private CarState GetCarState(Car car)
+        {
+            using(var db = new WarehouseContext())
+            {
+                return db.CarStates.FirstOrDefault(x=>x.Id == car.CarStateId);
+            }
+        }
     }
 }
