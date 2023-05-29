@@ -55,13 +55,13 @@ namespace CheckPointControl.ViewModels
             {
                 if (SelectedCar == null) 
                     return true;
-                if (SelectedCar.Area == null) 
+                if (SelectedCar.AreaId == null) 
                     return true;
-                if (SelectedCar.Area.Id != areaService.SelectedArea.Id) 
+                if (SelectedCar.AreaId != areaService.SelectedArea.Id) 
                     return true;
-                if (SelectedCar.CarState == null)
+                if (SelectedCar.CarStateId == null)
                     return true;
-                if (SelectedCar.CarState.TypeName != typeof(AwaitingState).Name && SelectedCar.CarState.TypeName != typeof(ExitPassGrantedState).Name) 
+                if (SelectedCar.CarStateId != new AwaitingState().Id && SelectedCar.CarStateId != new ExitPassGrantedState().Id) 
                     return true;
 
                 return false;
@@ -185,7 +185,7 @@ namespace CheckPointControl.ViewModels
 
         private void OpenBarrier(WarehouseContext db)
         {
-            var barrier = db.BarrierInfos.Include(x => x.Area).FirstOrDefault(x => x.Area.Id == areaService.SelectedArea.Id);
+            var barrier = db.BarrierInfos.FirstOrDefault(x => x.AreaId == areaService.SelectedArea.Id);
             if (barrier == null)
                 logger.Error($"Не удалось открыть шлагбаум на территории {areaService.SelectedArea.Name}. Шлагбаум не найден.");
             else

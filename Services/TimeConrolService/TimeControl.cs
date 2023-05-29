@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NLog;
 using SharedLibrary.DataBaseModels;
+using SharedLibrary.Extensions;
 
 namespace TimeControlService
 {
@@ -66,13 +67,13 @@ namespace TimeControlService
                 return;
             }
 
-            var startTime = existTimer.StartTime;
+            var startTime = new DateTime( existTimer.StartTimeTicks);
             var duration = new TimeSpan(0, 0, timeControlledState.Timeout);
             if (startTime + duration < DateTime.Now)
             {
                 existTimer.IsAlive = false;
                 car.IsInspectionRequired = true;
-                logger.Debug($"StartTime ({startTime}) + Duration ({duration}) < {DateTime.Now}");
+                logger.Debug($"StartTime ({startTime}) + Duration ({duration}) <  DateTime({DateTime.UtcNow.SetKindUtc()})");
                 logger.Warn($"Машине ({car.PlateNumberForward}) требуется провести досмотр на следующем КПП. Причина: Истек таймер по статусу {controlledState.Name}.");
             }
         }
@@ -85,7 +86,7 @@ namespace TimeControlService
                 CarId = car.Id,
                 TimeControledStateId = controlledState.Id,
                 CarStateId = controlledState.CarStateId,
-                StartTime = DateTime.Now,
+                StartTimeTicks = DateTime.Now.Ticks,
             };
             var controlledCarState = GetControlledCarState(controlledState);
             db.CarStateTimers.Add(timer);

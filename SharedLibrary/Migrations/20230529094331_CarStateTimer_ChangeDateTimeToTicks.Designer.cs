@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SharedLibrary.DataBaseModels;
@@ -11,9 +12,11 @@ using SharedLibrary.DataBaseModels;
 namespace SharedLibrary.Migrations
 {
     [DbContext(typeof(WarehouseContext))]
-    partial class WarehouseContextModelSnapshot : ModelSnapshot
+    [Migration("20230529094331_CarStateTimer_ChangeDateTimeToTicks")]
+    partial class CarStateTimer_ChangeDateTimeToTicks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,6 +302,10 @@ namespace SharedLibrary.Migrations
                     b.Property<bool>("IsAlive")
                         .HasColumnType("boolean")
                         .HasColumnName("is_alive");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("start_time");
 
                     b.Property<long>("StartTimeTicks")
                         .HasColumnType("bigint")

@@ -17,5 +17,5 @@ public partial class CarStateTimer
 
     public int? TimeControledStateId { get; set; }
 
-    public DateTime StartTime { get; set; }
+    public long StartTimeTicks { get; set; }
 }

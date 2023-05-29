@@ -14,10 +14,10 @@ namespace CheckPointControl.ViewModels
 {
     public class MainViewModel : BindableBase
     {
-        public CarsList AwaitingCars => carsService.Cars.ByTargetArea(areaService.SelectedArea).ByState<AwaitingState>();
+        public CarsList AwaitingCars => carsService.Cars.ByTargetArea(areaService.SelectedArea).ByState(new AwaitingState().Id);
         public CarsList OnAreaCars => carsService.Cars.ByArea(areaService.SelectedArea);
-        public CarsList OnLoadingCars => carsService.Cars.ByArea(areaService.SelectedArea).ByState<LoadingState, UnloadingState>();
-        public CarsList ExitPassGrantedCars => carsService.Cars.ByArea(areaService.SelectedArea).ByState<ExitPassGrantedState, ExitingForChangeAreaState>();
+        public CarsList OnLoadingCars => carsService.Cars.ByArea(areaService.SelectedArea).ByState(new LoadingState().Id, new UnloadingState().Id);
+        public CarsList ExitPassGrantedCars => carsService.Cars.ByArea(areaService.SelectedArea).ByState(new ExitPassGrantedState().Id, new ExitingForChangeAreaState().Id);
         public Car SelectedCar { get => selectedCar; set => SetProperty(ref selectedCar, value); }
 
         private readonly AreaService areaService;

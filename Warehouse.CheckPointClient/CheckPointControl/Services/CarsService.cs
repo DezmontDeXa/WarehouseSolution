@@ -12,10 +12,10 @@ namespace CheckPointControl.Services
     {
         public CarsList Cars
         {
-            get => _cars; 
+            get => _cars;
             private set
             {
-                _cars = value; 
+                _cars = value;
             }
         }
 
@@ -37,7 +37,7 @@ namespace CheckPointControl.Services
 
                 using (var db = new WarehouseContext())
                 {
-                    var allCars = db.Cars.Include(x => x.Area).Include(x => x.CarState).Include(x=>x.TargetArea).ToList();
+                    var allCars = db.Cars.ToList();
 
                     foreach (var car in allCars)
                     {
@@ -51,15 +51,11 @@ namespace CheckPointControl.Services
                         else
                         {
                             if (existCar.AreaId != car.AreaId)
-                            {
-                                existCar.Area = car.Area;
                                 existCar.AreaId = car.AreaId;
-                            }
-                            if (existCar.CarState.Id != car.CarState.Id)
-                            {
-                                existCar.CarState = car.CarState;
-                                existCar.CarState.Id = car.CarState.Id;
-                            }
+
+                            if (existCar.CarStateId != car.CarStateId)
+                                existCar.CarStateId = car.CarStateId;
+
                             if (existCar.IsInspectionRequired != car.IsInspectionRequired)
                                 existCar.IsInspectionRequired = car.IsInspectionRequired;
                         }

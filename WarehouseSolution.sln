@@ -52,7 +52,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NaisService.Tests", "Tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimeControlService", "Services\TimeConrolService\TimeControlService.csproj", "{5C34324A-50B3-443F-B466-76E192A86339}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportWaitingLists", "Utilities\ImportWaitingLists\ImportWaitingLists.csproj", "{9372B9DD-D71E-497B-8A75-5072ED8E105D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImportWaitingLists", "Utilities\ImportWaitingLists\ImportWaitingLists.csproj", "{9372B9DD-D71E-497B-8A75-5072ED8E105D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaitingListImporterService", "Services\WaitingListImporterService\WaitingListImporterService.csproj", "{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE}"
 EndProject

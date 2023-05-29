@@ -29,7 +29,7 @@ namespace Warehouse.CheckPointClient
             containerRegistry.Register<ILogger>(LogManager.GetCurrentClassLogger);
             containerRegistry.RegisterSingleton<IMessageService, MessageService>();
             // DummyBarrierService for development
-            containerRegistry.RegisterSingleton<IBarriersService, DummyBarrierService>();
+            containerRegistry.RegisterSingleton<IBarriersService, SimpleBarrierService>();
             containerRegistry.RegisterSingleton<AutorizationService>();
             containerRegistry.RegisterSingleton<AreaService>();
             containerRegistry.RegisterSingleton<CarNotifierService>();

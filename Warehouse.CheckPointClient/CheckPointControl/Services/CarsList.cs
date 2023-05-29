@@ -20,19 +20,24 @@ namespace CheckPointControl.Services
             return this;
         }
 
-        public CarsList ByState<T>()
+        public CarsList ByState(params int[] stateIds)
         {
-            return new CarsList(this.Where(x => x.CarState.TypeName == typeof(T).Name));
-        }
-
-        public CarsList ByState<T1, T2>()
-        {
-            return new CarsList(this.Where(x => x.CarState.TypeName == typeof(T1).Name || x.CarState.TypeName == typeof(T2).Name));
+            var cars = new List<Car>();
+            foreach (var car in this)
+            {
+                foreach (var id in stateIds)
+                {
+                    if (car.CarStateId == id)
+                        cars.Add(car);
+                }
+            }
+            var list = new CarsList(cars);
+            return list;
         }
 
         public CarsList ByArea(Area area)
         {
-            return new CarsList(this.Where(x => x.Area?.Id == area?.Id));
+            return new CarsList(this.Where(x => x.AreaId == area.Id));
         }
         public CarsList ByTargetArea(Area area)
         {

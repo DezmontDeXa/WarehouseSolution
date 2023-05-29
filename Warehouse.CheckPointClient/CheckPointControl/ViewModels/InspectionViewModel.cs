@@ -76,7 +76,7 @@ namespace CheckPointControl.ViewModels
 
         private void OpenBarrier(WarehouseContext db)
         {
-            var barrier = db.BarrierInfos.Include(x => x.Area).FirstOrDefault(x => x.Area.Id == areaService.SelectedArea.Id);
+            var barrier = db.BarrierInfos.FirstOrDefault(x => x.AreaId == areaService.SelectedArea.Id);
             if (barrier == null)
                 logger.Error($"Не удалось открыть шлагбаум на территории {areaService.SelectedArea.Name}. Шлагбаум не найден.");
             else
