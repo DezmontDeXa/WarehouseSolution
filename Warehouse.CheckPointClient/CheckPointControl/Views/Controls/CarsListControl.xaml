@@ -26,10 +26,10 @@
         <DataGrid.Columns>
             <DataGridTextColumn Binding="{Binding PlateNumberForward}" Header="Номер ТС" />
             <DataGridTextColumn Binding="{Binding PlateNumberBackward}" Header="Номер прицепа" />
-            <DataGridTextColumn
+            <!--<DataGridTextColumn
                 Width="Auto"
                 Binding="{Binding CarState.Name}"
-                Header="Статус" />
+                Header="Статус" />-->
             <DataGridTextColumn
                 Width="1*"
                 Binding="{Binding Driver}"

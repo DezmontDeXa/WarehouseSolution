@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CheckPointControl.ViewModels.Popups;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,11 +24,6 @@ namespace CheckPointControl.Views.Popups
         public UnknownCarPopup()
         {
             InitializeComponent();
-        }
-
-        private void BarrierControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

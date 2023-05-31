@@ -9,6 +9,7 @@
     xmlns:popups="clr-namespace:CheckPointControl.ViewModels.Popups"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:views="clr-namespace:CheckPointControl.Views"
+    x:Name="_this"
     d:DataContext="{d:DesignInstance Type=popups:UnknownCarPopupViewModel}"
     d:DesignHeight="1080"
     d:DesignWidth="1920"
@@ -18,11 +19,14 @@
 
         <Grid Background="{StaticResource MahApps.Brushes.Accent3}">
             <Grid.Effect>
-                <BlurEffect/>
+                <BlurEffect />
             </Grid.Effect>
         </Grid>
-        
-        <Grid Background="#F20078D7" Width="800" Height="500">
+
+        <Grid
+            Width="800"
+            Height="500"
+            Background="#F20078D7">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="1*" />
@@ -34,18 +38,18 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Label
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Content="Неизвестная машина"
-                FontSize="30" />
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Content="Неизвестная машина"
+                    FontSize="30" />
                 <Button
-                Grid.Column="1"
-                Width="50"
-                Height="50"
-                Margin="5"
-                mah:ControlsHelper.FocusBorderBrush="{StaticResource MahApps.Brushes.Button.CleanWindow.Close.Background.MouseOver}"
-                Command="{Binding ClosePopupCommand}"
-                Content="X" />
+                    Grid.Column="1"
+                    Width="50"
+                    Height="50"
+                    Margin="5"
+                    mah:ControlsHelper.FocusBorderBrush="{StaticResource MahApps.Brushes.Button.CleanWindow.Close.Background.MouseOver}"
+                    Command="{Binding ClosePopupCommand}"
+                    Content="X" />
             </Grid>
 
             <Grid Grid.Row="1" Margin="5">
@@ -55,7 +59,7 @@
                 </Grid.ColumnDefinitions>
                 <Image Source="{Binding PlateNumberImage}" Stretch="Uniform" />
 
-                <views:BarrierControl Grid.Column="1" Loaded="BarrierControl_Loaded"/>
+                <views:BarrierControl Grid.Column="1" />
             </Grid>
 
         </Grid>

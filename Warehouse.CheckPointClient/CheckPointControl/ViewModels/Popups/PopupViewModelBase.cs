@@ -23,7 +23,7 @@ namespace CheckPointControl.ViewModels.Popups
             this.viewshowerService = viewshowerService;
         }
 
-        protected void ClosePopup()
+        protected virtual void ClosePopup()
         {
             var region = regionManager.Regions[RegionNames.PopupRegion];
             var thisView = region.Views.First(x => ((UserControl)x).DataContext == this);

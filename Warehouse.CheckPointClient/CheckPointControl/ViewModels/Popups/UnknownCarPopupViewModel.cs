@@ -6,16 +6,27 @@ namespace CheckPointControl.ViewModels.Popups
 {
     public class UnknownCarPopupViewModel : PopupViewModelBase
     {
-        public byte[] PlateNumberImage { get => plateNumberImage; set => SetProperty(ref plateNumberImage, value); }
-
         private byte[] plateNumberImage;
         private UnknownCarNotify _notify;
+        private string detectedPlateNumber;
+        private readonly DetectedPlateNumberService detectedPlateNumberService;
+        public byte[] PlateNumberImage { get => plateNumberImage; set => SetProperty(ref plateNumberImage, value); }
 
-        public UnknownCarPopupViewModel(IRegionManager regionManager, NotifiesViewShowerService notifiesViewShowerService) : base(regionManager, notifiesViewShowerService)
+        public UnknownCarPopupViewModel(
+            IRegionManager regionManager, 
+            NotifiesViewShowerService notifiesViewShowerService, 
+            DetectedPlateNumberService detectedPlateNumberService) : base(regionManager, notifiesViewShowerService)
         {
             _notify = notifiesViewShowerService.CurrentUnknownCarNotify;
             PlateNumberImage = _notify.PlateNumberPicture;
-            //var plateNumber = _notify.DetectedPlateNumber;
+            this.detectedPlateNumberService = detectedPlateNumberService;
+            this.detectedPlateNumberService.DetectedPlateNumber = _notify.DetectedPlateNumber;
+        }
+
+        protected override void ClosePopup()
+        {
+            base.ClosePopup();
+            detectedPlateNumberService.DetectedPlateNumber = null;
         }
     }
 }

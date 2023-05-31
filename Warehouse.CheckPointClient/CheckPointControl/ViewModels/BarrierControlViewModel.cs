@@ -93,6 +93,7 @@ namespace CheckPointControl.ViewModels
         private readonly AutorizationService authService;
         private readonly AreaService areaService;
         private readonly IBarriersService barrierService;
+        private readonly DetectedPlateNumberService detectedPlateNumberService;
         private int selectedReasonIndex;
         private DelegateCommand openCommand;
         private List<string> passReasons = new List<string>()
@@ -101,18 +102,27 @@ namespace CheckPointControl.ViewModels
             "Взвешиванеие", "Разгрузка","Погрузка","Легковая"
         };
 
-        public BarrierControlViewModel(CarsService carService, ILogger logger, AutorizationService authService, AreaService areaService, IBarriersService barrierService)
+        public BarrierControlViewModel(
+            CarsService carService,
+            ILogger logger, 
+            AutorizationService authService, 
+            AreaService areaService, 
+            IBarriersService barrierService, 
+            DetectedPlateNumberService detectedPlateNumberService)
         {
             this.logger = logger;
             this.authService = authService;
             this.areaService = areaService;
             this.barrierService = barrierService;
-
+            this.detectedPlateNumberService = detectedPlateNumberService;
             this.carService = carService;
             this.carService.CarsUpdated += OnCarsUpdated;
 
             FilteredCars = CollectionViewSource.GetDefaultView(carService.Cars);
             FilteredCars.Filter = Filtration;
+
+            if (detectedPlateNumberService.DetectedPlateNumber != null)
+                Filter = detectedPlateNumberService.DetectedPlateNumber;
         }
 
         private void OnCarsUpdated(object sender, CarsList e)
@@ -147,7 +157,7 @@ namespace CheckPointControl.ViewModels
 
         private void Open()
         {
-            OpenBarrier();
+            //OpenBarrier();
 
             var writedNumber = StringExtensions.TransliterateToRu(Filter);
             var plateNumber = selectedCar!=null?selectedCar.PlateNumberForward : writedNumber;

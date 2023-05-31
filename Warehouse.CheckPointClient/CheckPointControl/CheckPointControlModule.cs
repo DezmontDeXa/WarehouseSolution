@@ -44,6 +44,7 @@ namespace CheckPointControl
             containerRegistry.RegisterSingleton<CarsService>();
             containerRegistry.RegisterSingleton<NotifiesQueueService>();
             containerRegistry.RegisterSingleton<NotifiesViewShowerService>();
+            containerRegistry.RegisterSingleton<DetectedPlateNumberService>();
             containerRegistry.RegisterForNavigation<MainView>();
             containerRegistry.RegisterForNavigation<SelectAreaView>();
             containerRegistry.RegisterForNavigation<UnknownCarPopup>();
