@@ -4,6 +4,7 @@ using Prism.Ioc;
 using Prism.Modularity;
 using Services;
 using SharedLibrary.Logging;
+using System;
 using System.Windows;
 using System.Windows.Threading;
 using Warehouse.CheckPointClient.Services;
@@ -18,6 +19,17 @@ namespace Warehouse.CheckPointClient
     /// </summary>
     public partial class App
     {
+        protected override void Initialize()
+        {
+            base.Initialize();
+            AppDomain.CurrentDomain.UnhandledException += AppDomain_UnhandledException;
+        }
+
+        private void AppDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            LogManager.GetCurrentClassLogger().Fatal(e.ExceptionObject);
+        }
+
         protected override Window CreateShell()
         {
             return Container.Resolve<MainWindow>();

@@ -5,6 +5,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Services;
 using SharedLibrary.DataBaseModels;
+using SharedLibrary.Extensions;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -146,14 +147,12 @@ namespace CheckPointControl.ViewModels
 
         private void Open()
         {
-            using (var db = new WarehouseContext())
-            {
-                var car = db.Cars.First(x => x.Id == selectedCar.Id);
-                db.SaveChanges();
-                OpenBarrier(db);
-            }
+            OpenBarrier();
 
-            logger.Warn($"КПП: Для машины {selectedCar.PlateNumberForward} открыт шлагбаум на {areaService.SelectedArea.Name} по причине: {PassReasons[selectedReasonIndex]}. (Пользователь: {authService.AuthorizedUserLogin}).");
+            var writedNumber = StringExtensions.TransliterateToRu(Filter);
+            var plateNumber = selectedCar!=null?selectedCar.PlateNumberForward : writedNumber;
+
+            logger.Warn($"КПП: Для машины {plateNumber} открыт шлагбаум на {areaService.SelectedArea.Name} по причине: {PassReasons[selectedReasonIndex]}. (Пользователь: {authService.AuthorizedUserLogin}).");
 
             SelectedCar = null;
         }
@@ -183,13 +182,16 @@ namespace CheckPointControl.ViewModels
             return false;
         }
 
-        private void OpenBarrier(WarehouseContext db)
+        private void OpenBarrier()
         {
-            var barrier = db.BarrierInfos.FirstOrDefault(x => x.AreaId == areaService.SelectedArea.Id);
-            if (barrier == null)
-                logger.Error($"Не удалось открыть шлагбаум на территории {areaService.SelectedArea.Name}. Шлагбаум не найден.");
-            else
-                barrierService.Switch(barrier, SimpleBarrierService.BarrierCommand.Open);
+            using (var db = new WarehouseContext())
+            {
+                var barrier = db.BarrierInfos.FirstOrDefault(x => x.AreaId == areaService.SelectedArea.Id);
+                if (barrier == null)
+                    logger.Error($"Не удалось открыть шлагбаум на территории {areaService.SelectedArea.Name}. Шлагбаум не найден.");
+                else
+                    barrierService.Open(barrier);
+            }
         }
     }
 }

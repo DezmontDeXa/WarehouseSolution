@@ -80,7 +80,7 @@ namespace CheckPointControl.ViewModels
             if (barrier == null)
                 logger.Error($"Не удалось открыть шлагбаум на территории {areaService.SelectedArea.Name}. Шлагбаум не найден.");
             else
-                barrierService.Switch(barrier, SimpleBarrierService.BarrierCommand.Open);
+                barrierService.Open(barrier);
         }
 
     }

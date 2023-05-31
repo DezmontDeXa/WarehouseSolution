@@ -16,7 +16,17 @@ namespace Warehouse.Services
             _http = new HttpClient(); 
         }
 
-        public void Switch(BarrierInfo barrier, BarrierCommand command)
+        public void Open(BarrierInfo barrier)
+        {
+            Switch(barrier, BarrierCommand.Open);
+            Switch(barrier, BarrierCommand.Close);
+            //Task.Run(() =>
+            //{
+            //    //Task.Delay(3000).Wait();
+            //});
+        }
+
+        private void Switch(BarrierInfo barrier, BarrierCommand command)
         {
             try
             {

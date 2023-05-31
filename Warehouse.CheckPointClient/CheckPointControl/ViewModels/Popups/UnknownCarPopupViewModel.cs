@@ -15,6 +15,7 @@ namespace CheckPointControl.ViewModels.Popups
         {
             _notify = notifiesViewShowerService.CurrentUnknownCarNotify;
             PlateNumberImage = _notify.PlateNumberPicture;
+            //var plateNumber = _notify.DetectedPlateNumber;
         }
     }
 }

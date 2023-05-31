@@ -4,6 +4,7 @@ using SharedLibrary.DataBaseModels;
 using CameraListenerService;
 using Warehouse.Models.CarStates;
 using Warehouse.Models.CarStates.Implements;
+using SharedLibrary.Extensions;
 
 namespace Warehouse.Models.CameraRoles
 {
@@ -67,7 +68,7 @@ namespace Warehouse.Models.CameraRoles
 
 
                 var plateNumber = GetPlateNumber(_anprBlock);
-                plateNumber = TransliterateToRu(plateNumber);
+                plateNumber = StringExtensions.TransliterateToRu(plateNumber);
                 var direction = GetDirection(_anprBlock);
                 Logger.Trace($"{camera.Name}: Обнаружена машина ({plateNumber}). Направление: {direction}");
 
@@ -199,23 +200,6 @@ namespace Warehouse.Models.CameraRoles
                 return false;
             }
             return true;
-        }
-
-
-        private static string TransliterateToRu(string input)
-        {
-            var ru = "АВЕКМНОРСТУХ";
-            var en = "ABEKMHOPCTYX";
-
-            var inputArray = input.ToCharArray();
-            for (var i = 0; i < inputArray.Length; i++)
-            {
-                var ch = input[i];
-                if (en.Contains(ch))
-                    inputArray[i] = ru[en.IndexOf(ch)];
-            }
-
-            return string.Join("", inputArray);
         }
 
         private static bool IsAnprEvent(CameraNotifyBlock notifyBlock)
