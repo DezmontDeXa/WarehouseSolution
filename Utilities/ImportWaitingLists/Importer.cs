@@ -9,27 +9,30 @@ namespace ImportWaitingLists
 {
     public class Importer
     {
-        const string SourceFolder = "C:\\Users\\DezmontDeXa\\Downloads\\Telegram Desktop";
-
-        public static void Import()
+        public static void Import(string sourceFolder)
         {
             var importerService = new WaitingListImporterService();
 
-            foreach (var file in Directory.GetFiles(SourceFolder))
+            foreach (var file in Directory.GetFiles(sourceFolder))
             {
                 try
                 {
                     if (!file.EndsWith(".xml")) continue;
-                    if (!Path.GetFileNameWithoutExtension(file).StartsWith("СписокПогрузкиРазгрузки")) continue;
 
                     importerService.ImportList(
                         SharedLibrary.DataBaseModels.AccessGrantType.Tracked,
                         new FileInfo(file));
                 }catch(Exception ex)
                 {
-                    Console.WriteLine(  ex);
+                    WriteLog($"Не удалось импортировать файл {Path.GetFileName(file)}. {ex.Message}");
+                    continue;
                 }
             }
+        }
+
+        private static void WriteLog(string msg)
+        {
+            Console.WriteLine($"{msg}");
         }
     }
 }
