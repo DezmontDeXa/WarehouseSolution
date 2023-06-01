@@ -38,6 +38,7 @@ namespace Warehouse.Models.CarStates
             var type = typeof(T);
             return type.Name == carState.TypeName;
         }
+
     }
 
     //public class RequiredInspectioState : CarStateBase

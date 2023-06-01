@@ -70,7 +70,7 @@ namespace NaisServiceLibrary
                 }
                 catch (Exception e)
                 {
-                    logger.Error($"Error on NaisRole.Working. Continue.", e);
+                    logger.Error($"Error on NaisRole.Working. {e.Message}. Continue.", e);
                 }
                 Task.Delay(UpdateDelay).Wait();
             }

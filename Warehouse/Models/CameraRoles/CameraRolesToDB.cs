@@ -17,6 +17,7 @@ namespace Warehouse.Models.CameraRoles
             {
                 foreach (var role in cameraRoles)
                     role.AddThatRoleToDB(db);
+                
                 db.SaveChanges();
             }
         }

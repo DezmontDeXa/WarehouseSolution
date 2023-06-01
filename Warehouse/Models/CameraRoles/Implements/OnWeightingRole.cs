@@ -9,24 +9,16 @@ namespace Warehouse.Models.CameraRoles.Implements
 {
     public class OnWeightingRole : CameraRoleBase
     {
-        private CarState _awaitWeighingState;
-        private CarState _weighingState;
-
         public OnWeightingRole(ILogger logger, WaitingListsService waitingList, IBarriersService barriersService) : base(logger, waitingList, barriersService)
         {
+            Id = 3;
             Name = "На весовой";
             Description = "Проверка что машина ожидает взвешивание и смена статуса на \"Взвешивание\"";
 
             using (var db = new WarehouseContext())
             {
-                _awaitWeighingState = db.CarStates.ToList().FirstOrDefault(x => CarStateBase.Equals<AwaitingWeighingState>(x));
-                _weighingState = db.CarStates.ToList().FirstOrDefault(x => CarStateBase.Equals<WeighingState>(x));
-
-                ExpectedStates = new List<CarState>()
-                {
-                    _awaitWeighingState,
-                    _weighingState,
-                };
+                AddExpectedState(new AwaitingWeighingState());
+                AddExpectedState(new WeighingState());
             }
         }
 
@@ -34,12 +26,12 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarWithTempAccess(camera, car, list, pictureBlock);
 
-            if (car.CarStateId == _awaitWeighingState.Id)
+            if (car.CarStateId == new AwaitingWeighingState().Id)
             {
-                SetCarArea(camera, car, camera.AreaId);
-                ChangeStatus(camera, car, _weighingState);
+                SetCarArea(camera, car.Id, camera.AreaId);
+                ChangeStatus(camera, car.Id, new WeighingState().Id);
 
-                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) заехала на весы. Статус машины изменен на \"{_weighingState.Name}\".");
+                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) заехала на весы. Статус машины изменен на \"{new WeighingState().Name}\".");
             }
         }
     }
