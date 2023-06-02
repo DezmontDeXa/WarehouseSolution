@@ -58,6 +58,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaitingListImporterService"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemReset", "Utilities\SystemReset\SystemReset.csproj", "{985CA338-1944-4302-835F-57D5FFA643E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImportFreeAccessList", "Utilities\ImportFreeAccessList\ImportFreeAccessList.csproj", "{B7B7CD9A-1E45-4CC9-A338-6784565513D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -120,6 +122,10 @@ Global
 		{985CA338-1944-4302-835F-57D5FFA643E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{985CA338-1944-4302-835F-57D5FFA643E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{985CA338-1944-4302-835F-57D5FFA643E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7B7CD9A-1E45-4CC9-A338-6784565513D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7B7CD9A-1E45-4CC9-A338-6784565513D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7B7CD9A-1E45-4CC9-A338-6784565513D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7B7CD9A-1E45-4CC9-A338-6784565513D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -141,6 +147,7 @@ Global
 		{9372B9DD-D71E-497B-8A75-5072ED8E105D} = {C5447726-2D22-40F1-B3D7-96D03BD33658}
 		{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE} = {DA36D013-8D53-46AB-9C57-15F928D21474}
 		{985CA338-1944-4302-835F-57D5FFA643E7} = {C5447726-2D22-40F1-B3D7-96D03BD33658}
+		{B7B7CD9A-1E45-4CC9-A338-6784565513D7} = {C5447726-2D22-40F1-B3D7-96D03BD33658}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC663EF5-B8BD-453E-9574-7A8375B37941}
