@@ -23,7 +23,7 @@ namespace NaisServiceLibrary
             await Task.Run(() =>
             {
                 _nais.Run();
-                ApplyExistRecords();
+                //ApplyExistRecords();
             });
         }
 
@@ -173,6 +173,9 @@ namespace NaisServiceLibrary
 
             // Если AfterEnter камера не отработала по машине
             if (state.TypeName == nameof(OnEnterState)) return true;
+
+            // Если на момент инициализации, машина уже вернулась с герцена
+            if (state.TypeName == nameof(ExitingForChangeAreaState)) return true;
 
 
             return false;
