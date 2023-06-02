@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SharedLibrary.DataBaseModels;
 
+[Index(nameof(PlateNumberForward), IsUnique = true)]
 public partial class Car
 {
     [Key]

@@ -15,10 +15,6 @@ try
 
     var watcher = new FileWatcher(sourceFolder, "*.xml");
     watcher.FilesChanged += Watcher_FilesChanged;
-
-    logger.Info("Инициализация - обновляем БД");
-    UpdateDb(sourceFolder);
-
     logger.Info("Ожидаем изменений в файлах...");
 
     var title = Console.Title;
@@ -33,15 +29,18 @@ try
     void Watcher_FilesChanged(object? sender, string e)
     {
         logger.Info("Файлы были изменены - обновляем БД");
-        UpdateDb(sourceFolder);
+        UpdateDb(sourceFolder, e);
         logger.Info("Ожидаем изменений в файлах...");
     }
 
-    void UpdateDb(string sourceFolder)
+    void UpdateDb(string sourceFolder, string file)
     {
         try
         {
-            Importer.Import(sourceFolder);
+            if (file == null)
+                Importer.Import(sourceFolder);
+            else
+                Importer.ImportFile(file);
         }
         catch (Exception ex)
         {

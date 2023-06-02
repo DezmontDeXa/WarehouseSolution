@@ -10,6 +10,9 @@ namespace SharedLibrary.Extensions
     {
         public static string TransliterateToRu(string input)
         {
+            if (input == null) return input;
+            if(input.Length == 0) return input;
+
             var _input = input;
             var ru = "АВЕКМНОРСТУХ";
             var en = "ABEKMHOPCTYX";

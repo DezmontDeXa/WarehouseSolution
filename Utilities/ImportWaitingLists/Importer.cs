@@ -15,18 +15,26 @@ namespace ImportWaitingLists
 
             foreach (var file in Directory.GetFiles(sourceFolder))
             {
-                try
-                {
-                    if (!file.EndsWith(".xml")) continue;
+                ImportFile( file, importerService);
+            }
+        }
 
-                    importerService.ImportList(
-                        SharedLibrary.DataBaseModels.AccessGrantType.Tracked,
-                        new FileInfo(file));
-                }catch(Exception ex)
-                {
-                    WriteLog($"Не удалось импортировать файл {Path.GetFileName(file)}. {ex.Message}");
-                    continue;
-                }
+        public static void ImportFile( string file, WaitingListImporterService importerService=null)
+        {
+            try
+            {
+                importerService ??= new WaitingListImporterService();
+
+                if (!file.EndsWith(".xml")) return;
+
+                importerService.ImportList(
+                    SharedLibrary.DataBaseModels.AccessGrantType.Tracked,
+                    new FileInfo(file));
+            }
+            catch (Exception ex)
+            {
+                WriteLog($"Не удалось импортировать файл {Path.GetFileName(file)}. {ex.Message}");
+                return;
             }
         }
 

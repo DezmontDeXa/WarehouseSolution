@@ -9,6 +9,498 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SharedLibrary\SharedLibrary.csproj" />
+    <ProjectReference Include="..\ImportWaitingLists\ImportWaitingLists.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="AppData\FreeAccess.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\FreeAccess.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\FreeAccessGercena.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001283.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001284.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001285.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001286 %282%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001286.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001287.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001288.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001289.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001290.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001291.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001292.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001293.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001294.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001295.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001296.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001297.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001298.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001299.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\000001300.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2810%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28100%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28101%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28102%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28103%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28104%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28105%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28106%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28107%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28108%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28109%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2811%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28110%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28111%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28112%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28113%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28114%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28115%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28116%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28117%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28118%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28119%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2812%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28120%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28121%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28122%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28123%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28124%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28125%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28126%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28127%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28128%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28129%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2813%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28130%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28131%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28132%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28133%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28134%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28135%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28136%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28137%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %28138%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2814%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2815%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2816%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2817%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2818%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2819%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %282%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2820%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2821%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2822%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2823%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2824%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2825%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2826%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2827%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2828%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2829%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %283%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2830%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2831%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2832%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2833%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2834%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2835%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2836%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2837%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2838%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2839%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %284%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2840%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2841%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2842%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2843%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2844%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2845%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2846%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2847%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2848%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2849%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %285%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2850%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2851%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2852%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2853%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2854%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2855%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2856%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2857%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2858%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2859%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %286%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2860%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2861%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2862%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2863%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2864%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2865%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2866%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2867%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2868%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2869%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %287%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2870%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2871%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2872%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2873%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2874%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2875%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2876%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2877%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2878%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2879%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %288%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2880%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2881%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2882%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2883%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2884%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2885%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2886%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2887%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2888%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2889%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %289%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2890%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2891%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2892%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2893%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2894%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2895%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2896%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2897%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2898%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки %2899%29.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="AppData\TempAccess\СписокПогрузкиРазгрузки.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="AppData\TempAccess\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
   </ItemGroup>
 
 </Project>

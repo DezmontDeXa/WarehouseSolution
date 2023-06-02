@@ -9,7 +9,7 @@
         public event EventHandler<string> FilesChanged;
 
         public FileWatcher(string sourceFolder, string filter)
-        {
+        {        
             Task.Run(Watching);
             this.sourceFolder = sourceFolder;
             this.filter = filter;
@@ -17,6 +17,13 @@
 
         private void Watching()
         {
+            Task.Delay(2000).Wait();
+
+            files = Directory.GetFiles(sourceFolder, filter).ToList();
+            FilesChanged?.Invoke(this, null);
+
+            Task.Delay(1000).Wait();
+
             while (true)
             {
                 foreach (var file in Directory.GetFiles(sourceFolder, filter))
