@@ -56,6 +56,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImportWaitingLists", "Utili
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaitingListImporterService", "Services\WaitingListImporterService\WaitingListImporterService.csproj", "{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemReset", "Utilities\SystemReset\SystemReset.csproj", "{985CA338-1944-4302-835F-57D5FFA643E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,6 +116,10 @@ Global
 		{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{985CA338-1944-4302-835F-57D5FFA643E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{985CA338-1944-4302-835F-57D5FFA643E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{985CA338-1944-4302-835F-57D5FFA643E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{985CA338-1944-4302-835F-57D5FFA643E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -134,6 +140,7 @@ Global
 		{5C34324A-50B3-443F-B466-76E192A86339} = {DA36D013-8D53-46AB-9C57-15F928D21474}
 		{9372B9DD-D71E-497B-8A75-5072ED8E105D} = {C5447726-2D22-40F1-B3D7-96D03BD33658}
 		{DA2A3DDA-81E7-498F-A1C3-69D2644FD5FE} = {DA36D013-8D53-46AB-9C57-15F928D21474}
+		{985CA338-1944-4302-835F-57D5FFA643E7} = {C5447726-2D22-40F1-B3D7-96D03BD33658}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC663EF5-B8BD-453E-9574-7A8375B37941}
