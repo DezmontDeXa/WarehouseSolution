@@ -54,20 +54,11 @@ namespace Warehouse.Models.CameraRoles.Implements
             }
         }
 
-        private void PassCar(Camera camera, Car car)
-        {
-            ChangeStatus(camera, car.Id, new OnEnterState().Id);
-            SetCarArea(camera, car.Id, camera.AreaId);
-            OpenBarrier(camera, car);
-        }
-
         protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock)
         {
             base.OnCarWithFreeAccess(camera, car, list, pictureBlock);
 
-            ChangeStatus(camera, car.Id, new OnEnterState().Id);
-            SetCarArea(camera, car.Id, camera.AreaId);
-            OpenBarrier(camera, car);
+            PassCar(camera, car);
 
             var cameraArea = GetCameraArea(camera);
 
@@ -84,6 +75,13 @@ namespace Warehouse.Models.CameraRoles.Implements
         {
             base.OnCarNotInLists(camera, notifyBlock, pictureBlock, car, plateNumber, direction);
             SendNotInListCarNotify(camera, car, pictureBlock, plateNumber, direction);
+        }
+
+        private void PassCar(Camera camera, Car car)
+        {
+            ChangeStatus(camera, car.Id, new OnEnterState().Id);
+            SetCarArea(camera, car.Id, camera.AreaId);
+            OpenBarrier(camera, car);
         }
     }
 }

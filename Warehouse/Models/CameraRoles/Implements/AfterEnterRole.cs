@@ -15,11 +15,7 @@ namespace Warehouse.Models.CameraRoles.Implements
             Id = 2;
             Name = "После въезда";
             Description = "Подтверждение въезда машины на территорию";
-
-            using (var db = new WarehouseContext())
-            {
-                AddExpectedState(new OnEnterState());                
-            }
+            AddExpectedState(new OnEnterState());
         }
 
         protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock _pictureBlock)

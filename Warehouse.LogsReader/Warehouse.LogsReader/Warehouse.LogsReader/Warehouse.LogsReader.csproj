@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Prism.Unity" Version="8.1.97" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Warehouse.LogsReader.Core\Warehouse.LogsReader.Core.csproj" />
+    <ProjectReference Include="..\Modules\Warehouse.LogsReader.Modules.ModuleName\Warehouse.LogsReader.Modules.ModuleName.csproj" />
+    <ProjectReference Include="..\Services\Warehouse.LogsReader.Services.Interfaces\Warehouse.LogsReader.Services.Interfaces.csproj" />
+    <ProjectReference Include="..\Services\Warehouse.LogsReader.Services\Warehouse.LogsReader.Services.csproj" />
+  </ItemGroup>
+</Project>

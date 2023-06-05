@@ -26,10 +26,10 @@ namespace Warehouse.Services
                 if (car == null)
                     return new CarAccessInfo(null, null);
 
-                using(var db  = new WarehouseContext())
-                    car = db.Cars
-                        .Include(x => x.WaitingLists)
-                        .First(x => x.Id == car.Id);
+                using (var db = new WarehouseContext())
+                {
+                    car = db.Cars.Include(x => x.WaitingLists).First(x => x.Id == car.Id);
+                }
 
                 var includs = car.WaitingLists.OrderByDescending(x=>x.AccessGrantType).ToList();
 

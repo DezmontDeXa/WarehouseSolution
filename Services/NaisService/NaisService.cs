@@ -126,13 +126,14 @@ namespace NaisServiceLibrary
             if (storage.AreaId == naisAreaId)
             {
                 existCar.CarStateId = loadingState.Id;
-                _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}. Статус машины изменен на \"{loadingState.Name}\".");
+                existCar.TargetAreaId = null;
+                _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{loadingState.Name}\".");
             }
             else
             {
                 existCar.CarStateId = exitingForChangeAreaState.Id;
                 existCar.TargetAreaId = storage.AreaId;
-                _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}. Статус машины изменен на \"{exitingForChangeAreaState.Name}\".");
+                _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{exitingForChangeAreaState.Name}\".");
             }
         }
 

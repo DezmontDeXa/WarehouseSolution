@@ -45,6 +45,7 @@ namespace Warehouse
             Bind<CameraRoleBase>().To<OnWeightingRole>();
             Bind<CameraRoleBase>().To<ExitRole>();
             Bind<CameraRoleBase>().To<EnterRole>();
+            Bind<CameraRoleBase>().To<ExitFromAnotherAreaRole>();
             // TODO: Add other camera roles and run app for add to database
             Bind<CameraRolesToDB>().ToSelf().InSingletonScope();
         }

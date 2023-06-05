@@ -18,7 +18,6 @@ namespace Warehouse.Models.CameraRoles.Implements
             {
                 AddExpectedState(new ExitPassGrantedState());
                 AddExpectedState(new ExitingForChangeAreaState());
-                AddExpectedState(new LoadingState());
             }
         }
 
@@ -71,32 +70,6 @@ namespace Warehouse.Models.CameraRoles.Implements
                 return;
             }
 
-            // Для выезда после разгрузки на другой территории
-            if (car.CarStateId == new LoadingState().Id)
-            {
-                if (car.TargetAreaId == camera.AreaId)
-                {
-                    ChangeStatus(camera, car.Id, new ChangingAreaState().Id);
-                    SetCarArea(camera, car.Id, null);
-                    SetCarTargetArea(camera, car.Id, GetNaisArea().Id);
-                    OpenBarrier(camera, car);
-
-                    targetArea = GetCarTargetArea(car);
-
-                    Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) меняет территорию с {cameraArea.Name} на {targetArea.Name}. Статус машины изменен на \"{new ChangingAreaState().Name}\".");
-                }
-                return;
-            }
-
-        }
-
-        private static Area GetNaisArea()
-        {
-            using(var db = new WarehouseContext())
-            {
-                var areaId = int.Parse( db.Configs.FirstOrDefault(x => x.Key == "NaisAreaId")?.Value ?? "1");
-                return db.Areas.First(x => x.Id == areaId);
-            }
         }
     }
 }
