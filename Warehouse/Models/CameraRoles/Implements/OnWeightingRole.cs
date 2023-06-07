@@ -20,6 +20,7 @@ namespace Warehouse.Models.CameraRoles.Implements
                 AddExpectedState(new AwaitingWeighingState());
                 AddExpectedState(new WeighingState());
                 AddExpectedState(new OnEnterState());
+                AddExpectedState(new ExitPassGrantedState());
             }
         }
 
