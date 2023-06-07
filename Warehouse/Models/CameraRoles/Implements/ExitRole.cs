@@ -24,18 +24,17 @@ namespace Warehouse.Models.CameraRoles.Implements
         protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock)
         {
             base.OnCarWithFreeAccess(camera, car, list, pictureBlock);
-            ChangeStatus(camera, car.Id, new AwaitingState().Id);
-            SetCarArea(camera, car.Id, null);
-            OpenBarrier(camera, car);
-
-            var cameraArea = GetCameraArea(camera);
-            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) покинула территорию {cameraArea.Name}. Статус машины изменен на \"{new AwaitingState().Name}\".");
+            ProcessCar(camera, car);
         }
 
         protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock)
         {
             base.OnCarWithTempAccess(camera, car, list, pictureBlock);
+            ProcessCar(camera, car);
+        }
 
+        private void ProcessCar(Camera camera, Car car)
+        {
             var cameraArea = GetCameraArea(camera);
             var targetArea = GetCarTargetArea(car);
 
@@ -64,12 +63,11 @@ namespace Warehouse.Models.CameraRoles.Implements
                 ChangeStatus(camera, car.Id, new FinishState().Id);
                 SetCarArea(camera, car.Id, null);
                 OpenBarrier(camera, car);
-                
+
                 Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) уезжает. Статус машины изменен на \"{new FinishState().Name}\".");
 
                 return;
             }
-
         }
     }
 }
