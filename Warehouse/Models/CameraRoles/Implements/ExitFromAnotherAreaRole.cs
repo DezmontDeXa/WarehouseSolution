@@ -12,7 +12,7 @@ namespace Warehouse.Models.CameraRoles.Implements
 
         public ExitFromAnotherAreaRole(ILogger logger, WaitingListsService waitingListsService, IBarriersService barriersService) : base(logger, waitingListsService, barriersService)
         {
-            Id = 2;
+            Id = 6;
             Name = "Выезд с другой территории";
             Description = "Выезд с териитории без весов и открытие шлагбаума";
             AddExpectedState(new LoadingState());
