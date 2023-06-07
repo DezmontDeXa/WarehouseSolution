@@ -19,20 +19,27 @@ namespace Warehouse.Models.CameraRoles.Implements
             {
                 AddExpectedState(new AwaitingWeighingState());
                 AddExpectedState(new WeighingState());
+                AddExpectedState(new OnEnterState());
             }
+        }
+
+        protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock _pictureBlock)
+        {
+            base.OnCarWithFreeAccess(camera, car, list, _pictureBlock);
+            ProcessCar(camera, car);
         }
 
         protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock)
         {
             base.OnCarWithTempAccess(camera, car, list, pictureBlock);
+            ProcessCar(camera, car);
+        }
 
-            if (car.CarStateId == new AwaitingWeighingState().Id)
-            {
-                SetCarArea(camera, car.Id, camera.AreaId);
-                ChangeStatus(camera, car.Id, new WeighingState().Id);
-
-                Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) заехала на весы. Статус машины изменен на \"{new WeighingState().Name}\".");
-            }
+        private void ProcessCar(Camera camera, Car car)
+        {
+            SetCarArea(camera, car.Id, camera.AreaId);
+            ChangeStatus(camera, car.Id, new WeighingState().Id);
+            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) заехала на весы. Статус машины изменен на \"{new WeighingState().Name}\".");
         }
     }
 }
