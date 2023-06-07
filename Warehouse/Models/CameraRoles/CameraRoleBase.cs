@@ -137,7 +137,7 @@ namespace Warehouse.Models.CameraRoles
 
                 Area? area = null;
                 if (areaId != null)
-                    db.Areas.Find(areaId);
+                    area = db.Areas.Find(areaId);
 
                 db.SaveChanges();
 
