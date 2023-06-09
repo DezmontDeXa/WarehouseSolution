@@ -1,4 +1,5 @@
-﻿using SharedLibrary.DataBaseModels;
+﻿using Microsoft.EntityFrameworkCore;
+using SharedLibrary.DataBaseModels;
 using SharedLibrary.Extensions;
 using SharedLibrary.Interfaces.Services;
 using System.Xml;
@@ -74,23 +75,28 @@ namespace AdminClient.Services
                 if (db.WaitingLists.Any(x => x.Number == list.Number))
                     return;
 
-                var cars = list.Cars;
-                list.Cars.Clear();
-                var waitingListEntity = db.WaitingLists.Add(list);
-
-                foreach (var car in cars)
+                foreach (var car in list.Cars.DistinctBy(x=>x.PlateNumberForward))
                 {
-                    var existCar = db.Cars.FirstOrDefault(x => x.PlateNumberForward == car.PlateNumberForward);
-                    if(existCar==null)
-                    {
-                        waitingListEntity.Entity.Cars.Add(car);
-                    }
-                    else
-                    {
-                        var carEntity = db.Cars.Add(car);
-                        waitingListEntity.Entity.Cars.Add(carEntity.Entity);
-                    }
+                    var existCar = db.Cars.AsNoTracking().FirstOrDefault(x => x.PlateNumberForward == car.PlateNumberForward);
+                    if (existCar != null)
+                        car.Id = existCar.Id;
                 }
+
+                db.WaitingLists.Attach(list);
+
+                //foreach (var car in cars.ToArray())
+                //{
+                //    var existCar = db.Cars.FirstOrDefault(x => x.PlateNumberForward == car.PlateNumberForward);
+                //    if(existCar==null)
+                //    {
+                //        waitingListEntity.Entity.Cars.Add(car);
+                //    }
+                //    else
+                //    {
+                //        var carEntity = db.Cars.Add(car);
+                //        waitingListEntity.Entity.Cars.Attach(carEntity.Entity);
+                //    }
+                //}
 
                 db.SaveChanges();
             }

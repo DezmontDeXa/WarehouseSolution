@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using static System.Net.WebRequestMethods;
-using System.Net.Http.Headers;
-using System.Text;
 
-namespace SharedLibrary.DataBaseModels;
+namespace WarehouseConfgisService.Models;
 
 public partial class Camera
 {

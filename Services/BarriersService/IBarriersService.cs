@@ -1,4 +1,5 @@
 ﻿using SharedLibrary.DataBaseModels;
+using WarehouseConfgisService.Models;
 
 namespace Warehouse.Services
 {

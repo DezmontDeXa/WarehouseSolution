@@ -9,6 +9,12 @@ public partial class WaitingList
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
+    public string Name { get; set; } = null!;
+
+    public AccessGrantType AccessGrantType { get; set; }
+
+    public virtual ICollection<Car> Cars { get; set; }
+
     public int Number { get; set; }
 
     public string? Customer { get; set; }
@@ -23,9 +29,4 @@ public partial class WaitingList
 
     public DateTime? Date { get; set; }
 
-    public string Name { get; set; } = null!;
-
-    public AccessGrantType AccessGrantType { get; set; }
-
-    public virtual ICollection<Car> Cars { get; set; }
 }

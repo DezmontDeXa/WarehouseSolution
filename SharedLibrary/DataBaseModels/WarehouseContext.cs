@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
 using SharedLibrary.AppSettings;
 
 namespace SharedLibrary.DataBaseModels;
@@ -30,31 +27,20 @@ public partial class WarehouseContext : DbContext
         
     }
 
-    public DbSet<User> Users { get; set; }
-
-    public DbSet<Area> Areas { get; set; }
-
-    public DbSet<BarrierInfo> BarrierInfos { get; set; }
-
-    public DbSet<Camera> Cameras { get; set; }
-
-    public DbSet<CameraRole> CameraRoles { get; set; }
-
     public DbSet<Car> Cars { get; set; }
-
-    public DbSet<Storage> Storages { get; set; }
 
     public DbSet<CarState> CarStates { get; set; }
 
-    public DbSet<Config> Configs { get; set; }
-
     public DbSet<Log> Logs { get; set; }
+
+    public DbSet<CameraRole> CameraRoles { get; set; }
 
     public DbSet<WaitingList> WaitingLists { get; set; }
 
-    public DbSet<TimeControledState> TimeControledStates { get; set; }
-
     public DbSet<CarStateTimer> CarStateTimers { get; set; }
+
+
+
 
     public DbSet<ExpiredListCarNotify> ExpiredListCarNotifies { get; set; }
 

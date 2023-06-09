@@ -1,19 +1,39 @@
 ﻿using NLog;
 using SharedLibrary.DataBaseModels;
 using System.Collections.Generic;
+using WaitingListsService;
+using Warehouse.Models.CarStates;
 using Warehouse.Models.CarStates.Implements;
+using Warehouse.Services;
+using WarehouseConfgisService.Models;
+using WarehouseConfigService;
 
 namespace NaisServiceLibrary
 {
     public class NaisService
     {
         private readonly Nais _nais;
+        private readonly WaitingLists waitingListService;
+        private readonly FuzzyFindCarService findCarService;
         private readonly ILogger _logger;
+        private List<CarStateBase> _expectedStates;
 
-        public NaisService(Nais nais, ILogger logger)
+        public NaisService(Nais nais, WaitingLists waitingListService, FuzzyFindCarService findCarService, ILogger logger)
         {
             _nais = nais;
+            this.waitingListService = waitingListService;
+            this.findCarService = findCarService;
             _logger = logger;
+
+            _expectedStates = new List<CarStateBase>()
+            {
+                new AwaitingWeighingState(),
+                new WeighingState(),
+                new LoadingState(),
+                new LoadingState(),
+                new ExitingForChangeAreaState()
+            };
+
             _nais.RecordAdded += OnRecordAdded;
             _nais.RecordModified += OnRecordModified;
         }
@@ -43,7 +63,7 @@ namespace NaisServiceLibrary
             {
                 foreach (var record in _nais.WeightsRecords)
                 {
-                    var platenumber = record.PlateNumber.Replace("|", "").ToUpper();
+                    var platenumber = record.PlateNumber.Replace("|", "").ToUpper().Trim().Replace(" ", "");
                     var existCar = db.Cars.FirstOrDefault(x => x.PlateNumberForward == platenumber);
 
                     if (existCar == null)
@@ -52,15 +72,15 @@ namespace NaisServiceLibrary
                         continue;
                     }
 
-                    if (record.SecondWeighting != null)
+                    if (record.FirstWeighting != null)
                     {
-                        ApplySecondWeightingOnInit(record, existCar);
+                        ApplyFirstWeighting(record, existCar);
                         continue;
                     }
 
-                    if (record.FirstWeighting != null)
+                    if (record.SecondWeighting != null)
                     {
-                        ApplyFirstWeighting(record, existCar, db);
+                        ApplySecondWeightingOnInit(record, existCar);
                         continue;
                     }
                 }
@@ -69,26 +89,18 @@ namespace NaisServiceLibrary
 
         private void ApplyRecord(WeightsRecord record)
         {
-            using (var db = new WarehouseContext())
-            {
-                ApplyRecord(record, db);
-            }
-        }
-
-        private void ApplyRecord(WeightsRecord record, WarehouseContext db)
-        {
             var platenumber = record.PlateNumber.Replace("|", "").ToUpper();
-            var existCar = db.Cars.FirstOrDefault(x => x.PlateNumberForward == platenumber);
+            var existCar = findCarService.FindCar(platenumber);
 
             if (existCar == null)
             {
-                _logger.Error($"Машина ({platenumber}) не найдена в базе. Продолжаем.");
+                _logger.Error($"Машина ({platenumber}) не найдена в базе.");
                 return;
             }
 
-            if (!IsExpectedState(existCar, db))
+            if (!IsExpectedState(existCar))
             {
-                var state = db.CarStates.First(x => x.Id == existCar.CarStateId);
+                var state = GetCarState(existCar);
                 _logger.Error($"Машина ({platenumber}) имела не ожиданный статус. Статус: {state.Name}. Продолжаем.");
                 return;
             }
@@ -99,55 +111,108 @@ namespace NaisServiceLibrary
             var recordHasSecondWeighting = record.SecondWeighting != null;
 
             if (!existCar.FirstWeighingCompleted && recordHasFirstWeighting)
-                ApplyFirstWeighting(record, existCar, db);
+                ApplyFirstWeighting(record, existCar);
             else if (!existCar.SecondWeighingCompleted && recordHasSecondWeighting)
                 ApplySecondWeighting(record, existCar);
-
-            db.SaveChanges();
         }
 
-        private void ApplyFirstWeighting(WeightsRecord record, Car existCar, WarehouseContext db)
+        private void ApplyFirstWeighting(WeightsRecord record, Car car)
         {
-            var exitingForChangeAreaState = db.CarStates.First(x => x.TypeName == nameof(ExitingForChangeAreaState));
-            var errorState = db.CarStates.First(x => x.TypeName == nameof(ErrorState));
-            var loadingState = db.CarStates.First(x => x.TypeName == nameof(LoadingState));
-            var storage = GetStorage(record, db);
+            var exitingForChangeAreaState = new ExitingForChangeAreaState();
+            var errorState = new ErrorState();
+            var loadingState = new LoadingState();
+            var unloadingState = new UnloadingState();
+
+            var storage = GetStorage(record);
 
             if (storage == null)
             {
-                existCar.CarStateId = errorState.Id;
+                car.CarStateId = errorState.Id;
                 _logger.Warn($"Склад c обозначением {record.StorageName} не реализован. Статус машины изменен на \"{errorState.Name}\".");
                 return;
             }
 
-            existCar.StorageId = storage.Id;
-
-            var naisAreaId = int.Parse(db.Configs.First(x => x.Key == "NaisAreaId").Value);
-            if (storage.AreaId == naisAreaId)
+            using (var db = new WarehouseContext())
             {
-                existCar.CarStateId = loadingState.Id;
-                existCar.TargetAreaId = null;
-                _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{loadingState.Name}\".");
+                var existCar = db.Cars.Find(car.Id);
+
+                existCar.StorageId = storage.Id;
+                var naisAreaId = GetNaisAreaId();
+                var accessType = waitingListService.GetAccessTypeInfo(existCar.PlateNumberForward);
+                if (storage.AreaId == naisAreaId)
+                {
+                    SendToNaisAreaStorage(storage, existCar, accessType);
+                }
+                else
+                {
+                    SendToAnotherAreaStorage(storage, existCar, accessType);
+                }
+
+                db.SaveChanges();
+            }
+
+
+        }
+
+        private void SendToAnotherAreaStorage(Storage storage, Car? existCar, CarAccessInfo accessType)
+        {
+            if (accessType.TopPurposeOfArrival == PurposeOfArrival.Loading || accessType.TopPurposeOfArrival == PurposeOfArrival.Unloading)
+            {
+                existCar.CarStateId = new ExitingForChangeAreaState().Id;
+                existCar.TargetAreaId = storage.AreaId;
+                _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{new ExitingForChangeAreaState().Name}\".");
             }
             else
             {
-                existCar.CarStateId = exitingForChangeAreaState.Id;
-                existCar.TargetAreaId = storage.AreaId;
-                _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{exitingForChangeAreaState.Name}\".");
+                existCar.CarStateId = new ErrorState().Id;
+                _logger.Error($"Машина ({existCar.PlateNumberForward}) из списка ({accessType.TopAccessTypeList?.Number}) с целью заезда ({accessType.TopPurposeOfArrival}) была отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{new ErrorState().Name}\".");                
             }
         }
 
-        private static Storage GetStorage(WeightsRecord record, WarehouseContext db)
+        private void SendToNaisAreaStorage(Storage storage, Car? existCar, CarAccessInfo accessType)
         {
-            var storages = db.Storages;
-
-            foreach (var store in storages.OrderByDescending(x => x.NaisCode.Length))
+            switch (accessType.TopPurposeOfArrival)
             {
-                if (record.StorageName.Contains(store.NaisCode))
-                    return store;
-            }
+                case PurposeOfArrival.Loading:
+                    existCar.CarStateId = new LoadingState().Id;
+                    _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{new LoadingState().Name}\".");
 
-            return null;
+                    break;
+                case PurposeOfArrival.Unloading:
+                    existCar.CarStateId = new UnloadingState().Id;
+                    _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{new UnloadingState().Name}\".");
+                    break;
+
+                default:
+                    existCar.CarStateId = new ErrorState().Id;
+                    _logger.Error($"Машина ({existCar.PlateNumberForward}) из списка ({accessType.TopAccessTypeList?.Number}) с целью заезда ({accessType.TopPurposeOfArrival}) была отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{new ErrorState().Name}\".");
+                    break;
+            }
+            existCar.TargetAreaId = null;
+        }
+
+        private static int GetNaisAreaId()
+        {
+            using (var configsDb = new WarehouseConfig())
+            using (var db = new WarehouseContext())
+                return int.Parse(configsDb.Configs.First(x => x.Key == "NaisAreaId").Value);
+        }
+
+        private static Storage GetStorage(WeightsRecord record)
+        {
+            using (var configsDb = new WarehouseConfig())
+            using (var db = new WarehouseContext())
+            {
+                var storages = configsDb.Storages;
+
+                foreach (var store in storages.OrderByDescending(x => x.NaisCode.Length))
+                {
+                    if (record.StorageName.Contains(store.NaisCode))
+                        return store;
+                }
+
+                return null;
+            }
         }
 
         private void ApplySecondWeighting(WeightsRecord record, Car existCar)
@@ -162,31 +227,24 @@ namespace NaisServiceLibrary
             _logger.Info($"Машина ({existCar.PlateNumberForward}) Прошла второе взвешивание. Статус машины изменен на \"{new FinishState().Name}\".");
         }
 
-        private bool IsExpectedState(Car existCar, WarehouseContext db)
+        private bool IsExpectedState(Car existCar)
         {
             var state = GetCarState(existCar);
 
-            if (state.TypeName == nameof(AwaitingWeighingState)) return true;
-            if (state.TypeName == nameof(WeighingState)) return true;
-
-            // Нужно ли уточнять что погрузка на территории весовой?
-            if (state.TypeName == nameof(LoadingState)) return true;
-
-            // Если AfterEnter камера не отработала по машине
-            if (state.TypeName == nameof(OnEnterState)) return true;
-
-            // Если на момент инициализации, машина уже вернулась с герцена
-            if (state.TypeName == nameof(ExitingForChangeAreaState)) return true;
-
+            foreach (var expectedState in _expectedStates)
+            {
+                if (expectedState.Id == state.Id)
+                    return true;
+            }
 
             return false;
         }
 
         private CarState GetCarState(Car car)
         {
-            using(var db = new WarehouseContext())
+            using (var db = new WarehouseContext())
             {
-                return db.CarStates.FirstOrDefault(x=>x.Id == car.CarStateId);
+                return db.CarStates.FirstOrDefault(x => x.Id == car.CarStateId);
             }
         }
     }

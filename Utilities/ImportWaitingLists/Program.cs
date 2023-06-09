@@ -1,12 +1,12 @@
 ﻿using ImportWaitingLists;
 using Newtonsoft.Json;
 using NLog;
-using System.Diagnostics;
-
 SharedLibrary.Logging.LoggingConfigurator.ConfigureLogger();
 var logger = LogManager.GetCurrentClassLogger();
+
 try
 {
+
     var sourceFolder = JsonConvert.DeserializeObject<Settings>(
         File.ReadAllText("ImportWaitingList.AppSettings.json"))
         .SourceFolder;

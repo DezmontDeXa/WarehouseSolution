@@ -30,6 +30,8 @@ namespace ImportWaitingLists
                 importerService.ImportList(
                     SharedLibrary.DataBaseModels.AccessGrantType.Tracked,
                     new FileInfo(file));
+
+                WriteLog($"Импорован файл {Path.GetFileName(file)}.");
             }
             catch (Exception ex)
             {

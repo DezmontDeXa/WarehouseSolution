@@ -5,6 +5,7 @@ using NLog;
 using SharedLibrary.DataBaseModels;
 using SharedLibrary.Logging;
 using TimeControlService;
+using WaitingListsService;
 using Warehouse.Models.CameraRoles;
 using Warehouse.Models.CameraRoles.Implements;
 using Warehouse.Models.CarStates;
@@ -27,7 +28,7 @@ namespace Warehouse
             BindCameraRoles();
             BindCarStates();
             Bind<FuzzyFindCarService>().ToSelf().InSingletonScope();
-            Bind<WaitingListsService>().ToSelf().InSingletonScope();
+            Bind<WaitingLists>().ToSelf().InSingletonScope();
             Bind<TimeControl>().ToSelf().InSingletonScope();
             Bind<WarehouseSystem>().ToSelf().InSingletonScope();
         }
@@ -57,6 +58,7 @@ namespace Warehouse
             Bind<CarStateBase>().To<WeighingState>();
             Bind<CarStateBase>().To<LoadingState>();
             Bind<CarStateBase>().To<UnloadingState>();
+            Bind<CarStateBase>().To<SamplingState>();
             Bind<CarStateBase>().To<ExitingForChangeAreaState>();
             Bind<CarStateBase>().To<ChangingAreaState>();
             Bind<CarStateBase>().To<ExitPassGrantedState>(); 

@@ -1,18 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NLog;
 using SharedLibrary.DataBaseModels;
+using Warehouse.Services;
 
-namespace Warehouse.Services
+namespace WaitingListsService
 {
     /// <summary>
     /// Check platenumber has access
     /// </summary>
-    public class WaitingListsService
+    public class WaitingLists
     {
         private readonly ILogger _logger;
         private readonly FuzzyFindCarService _findCarService;
 
-        public WaitingListsService(ILogger logger, FuzzyFindCarService findCarService)
+        public WaitingLists(ILogger logger, FuzzyFindCarService findCarService)
         {
             _logger = logger;
             _findCarService = findCarService;
@@ -31,12 +32,12 @@ namespace Warehouse.Services
                     car = db.Cars.Include(x => x.WaitingLists).First(x => x.Id == car.Id);
                 }
 
-                var includs = car.WaitingLists.OrderByDescending(x=>x.AccessGrantType).ToList();
+                var includs = car.WaitingLists.ToList();
 
                 if (includs.Count == 0)
                     return new CarAccessInfo(car, null);
 
-                return new CarAccessInfo(car, includs.First());
+                return new CarAccessInfo(car, includs);
             }
             catch (Exception ex)
             {
@@ -69,19 +70,4 @@ namespace Warehouse.Services
             }
         }
     }
-
-    public class CarAccessInfo
-    {
-        public CarAccessInfo(Car car, WaitingList list)
-        {
-            Car = car;
-            List = list;
-            AccessType = list?.AccessGrantType;
-        }
-
-        public Car Car { get; }
-        public WaitingList? List { get; }
-        public AccessGrantType? AccessType { get; }
-    }
-
 }

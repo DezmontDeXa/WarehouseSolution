@@ -8,7 +8,7 @@ public partial class UnknownCarNotify : CarNotifyBase
 
     public byte[] PlateNumberPicture { get; set; }
 
-    public virtual Camera? Camera { get; set; }
+    public int? CameraId { get; set; }
 
     public virtual CameraRole? Role { get; set; }
 }

@@ -1,8 +1,8 @@
 ﻿namespace Warehouse.Models.CarStates.Implements
 {
-    public class ExitingForChangeAreaState : CarStateBase
+    public class SamplingState : CarStateBase
     {
-        public ExitingForChangeAreaState() : base(6, "Выезжает для смены территории") { }
+        public SamplingState() : base(11, "Взятие проб") { }
     }
 
     //public class RequiredInspectioState : CarStateBase

@@ -41,97 +41,6 @@ namespace SharedLibrary.Migrations
                     b.ToTable("car_waiting_list", (string)null);
                 });
 
-            modelBuilder.Entity("SharedLibrary.DataBaseModels.Area", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id")
-                        .HasName("pk_areas");
-
-                    b.ToTable("areas", (string)null);
-                });
-
-            modelBuilder.Entity("SharedLibrary.DataBaseModels.BarrierInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AreaId")
-                        .HasColumnType("integer")
-                        .HasColumnName("area_id");
-
-                    b.Property<string>("Login")
-                        .HasColumnType("text")
-                        .HasColumnName("login");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("text")
-                        .HasColumnName("password");
-
-                    b.Property<string>("Uri")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("uri");
-
-                    b.HasKey("Id")
-                        .HasName("pk_barrier_infos");
-
-                    b.ToTable("barrier_infos", (string)null);
-                });
-
-            modelBuilder.Entity("SharedLibrary.DataBaseModels.Camera", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AreaId")
-                        .HasColumnType("integer")
-                        .HasColumnName("area_id");
-
-                    b.Property<int>("Direction")
-                        .HasColumnType("integer")
-                        .HasColumnName("direction");
-
-                    b.Property<string>("Link")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("link");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer")
-                        .HasColumnName("role_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_cameras");
-
-                    b.ToTable("cameras", (string)null);
-                });
-
             modelBuilder.Entity("SharedLibrary.DataBaseModels.CameraRole", b =>
                 {
                     b.Property<int>("Id")
@@ -252,9 +161,6 @@ namespace SharedLibrary.Migrations
                     b.HasKey("Id")
                         .HasName("pk_car_detected_notifies");
 
-                    b.HasIndex("CameraId")
-                        .HasDatabaseName("ix_car_detected_notifies_camera_id");
-
                     b.HasIndex("CarId")
                         .HasDatabaseName("ix_car_detected_notifies_car_id");
 
@@ -318,30 +224,6 @@ namespace SharedLibrary.Migrations
                     b.ToTable("car_state_timers", (string)null);
                 });
 
-            modelBuilder.Entity("SharedLibrary.DataBaseModels.Config", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("key");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("text")
-                        .HasColumnName("value");
-
-                    b.HasKey("Id")
-                        .HasName("pk_configs");
-
-                    b.ToTable("configs", (string)null);
-                });
-
             modelBuilder.Entity("SharedLibrary.DataBaseModels.ExpiredListCarNotify", b =>
                 {
                     b.Property<int>("Id")
@@ -392,9 +274,6 @@ namespace SharedLibrary.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_expired_list_car_notifies");
-
-                    b.HasIndex("CameraId")
-                        .HasDatabaseName("ix_expired_list_car_notifies_camera_id");
 
                     b.HasIndex("CarId")
                         .HasDatabaseName("ix_expired_list_car_notifies_car_id");
@@ -529,9 +408,6 @@ namespace SharedLibrary.Migrations
                     b.HasKey("Id")
                         .HasName("pk_not_in_list_car_notifies");
 
-                    b.HasIndex("CameraId")
-                        .HasDatabaseName("ix_not_in_list_car_notifies_camera_id");
-
                     b.HasIndex("CarId")
                         .HasDatabaseName("ix_not_in_list_car_notifies_car_id");
 
@@ -539,58 +415,6 @@ namespace SharedLibrary.Migrations
                         .HasDatabaseName("ix_not_in_list_car_notifies_role_id");
 
                     b.ToTable("not_in_list_car_notifies", (string)null);
-                });
-
-            modelBuilder.Entity("SharedLibrary.DataBaseModels.Storage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AreaId")
-                        .HasColumnType("integer")
-                        .HasColumnName("area_id");
-
-                    b.Property<string>("NaisCode")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("nais_code");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id")
-                        .HasName("pk_storages");
-
-                    b.ToTable("storages", (string)null);
-                });
-
-            modelBuilder.Entity("SharedLibrary.DataBaseModels.TimeControledState", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CarStateId")
-                        .HasColumnType("integer")
-                        .HasColumnName("car_state_id");
-
-                    b.Property<int>("Timeout")
-                        .HasColumnType("integer")
-                        .HasColumnName("timeout");
-
-                    b.HasKey("Id")
-                        .HasName("pk_time_controled_states");
-
-                    b.ToTable("time_controled_states", (string)null);
                 });
 
             modelBuilder.Entity("SharedLibrary.DataBaseModels.UnknownCarNotify", b =>
@@ -636,45 +460,10 @@ namespace SharedLibrary.Migrations
                     b.HasKey("Id")
                         .HasName("pk_unknown_car_notifies");
 
-                    b.HasIndex("CameraId")
-                        .HasDatabaseName("ix_unknown_car_notifies_camera_id");
-
                     b.HasIndex("RoleId")
                         .HasDatabaseName("ix_unknown_car_notifies_role_id");
 
                     b.ToTable("unknown_car_notifies", (string)null);
-                });
-
-            modelBuilder.Entity("SharedLibrary.DataBaseModels.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("login");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("password_hash");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer")
-                        .HasColumnName("role_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_users");
-
-                    b.HasIndex("Login")
-                        .HasDatabaseName("ix_users_login");
-
-                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("SharedLibrary.DataBaseModels.WaitingList", b =>
@@ -748,28 +537,16 @@ namespace SharedLibrary.Migrations
 
             modelBuilder.Entity("SharedLibrary.DataBaseModels.CarDetectedNotify", b =>
                 {
-                    b.HasOne("SharedLibrary.DataBaseModels.Camera", "Camera")
-                        .WithMany()
-                        .HasForeignKey("CameraId")
-                        .HasConstraintName("fk_car_detected_notifies_cameras_camera_id");
-
                     b.HasOne("SharedLibrary.DataBaseModels.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
                         .HasConstraintName("fk_car_detected_notifies_cars_car_id");
-
-                    b.Navigation("Camera");
 
                     b.Navigation("Car");
                 });
 
             modelBuilder.Entity("SharedLibrary.DataBaseModels.ExpiredListCarNotify", b =>
                 {
-                    b.HasOne("SharedLibrary.DataBaseModels.Camera", "Camera")
-                        .WithMany()
-                        .HasForeignKey("CameraId")
-                        .HasConstraintName("fk_expired_list_car_notifies_cameras_camera_id");
-
                     b.HasOne("SharedLibrary.DataBaseModels.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
@@ -784,8 +561,6 @@ namespace SharedLibrary.Migrations
                         .WithMany()
                         .HasForeignKey("WaitingListId")
                         .HasConstraintName("fk_expired_list_car_notifies_waiting_lists_waiting_list_id");
-
-                    b.Navigation("Camera");
 
                     b.Navigation("Car");
 
@@ -806,11 +581,6 @@ namespace SharedLibrary.Migrations
 
             modelBuilder.Entity("SharedLibrary.DataBaseModels.NotInListCarNotify", b =>
                 {
-                    b.HasOne("SharedLibrary.DataBaseModels.Camera", "Camera")
-                        .WithMany()
-                        .HasForeignKey("CameraId")
-                        .HasConstraintName("fk_not_in_list_car_notifies_cameras_camera_id");
-
                     b.HasOne("SharedLibrary.DataBaseModels.Car", "Car")
                         .WithMany()
                         .HasForeignKey("CarId")
@@ -821,8 +591,6 @@ namespace SharedLibrary.Migrations
                         .HasForeignKey("RoleId")
                         .HasConstraintName("fk_not_in_list_car_notifies_camera_roles_role_id");
 
-                    b.Navigation("Camera");
-
                     b.Navigation("Car");
 
                     b.Navigation("Role");
@@ -830,17 +598,10 @@ namespace SharedLibrary.Migrations
 
             modelBuilder.Entity("SharedLibrary.DataBaseModels.UnknownCarNotify", b =>
                 {
-                    b.HasOne("SharedLibrary.DataBaseModels.Camera", "Camera")
-                        .WithMany()
-                        .HasForeignKey("CameraId")
-                        .HasConstraintName("fk_unknown_car_notifies_cameras_camera_id");
-
                     b.HasOne("SharedLibrary.DataBaseModels.CameraRole", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .HasConstraintName("fk_unknown_car_notifies_camera_roles_role_id");
-
-                    b.Navigation("Camera");
 
                     b.Navigation("Role");
                 });

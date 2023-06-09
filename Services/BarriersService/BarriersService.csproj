@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SharedLibrary\SharedLibrary.csproj" />
+    <ProjectReference Include="..\WarehouseConfigService\WarehouseConfigService.csproj" />
   </ItemGroup>
 
 </Project>

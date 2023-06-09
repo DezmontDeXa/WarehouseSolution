@@ -12,7 +12,7 @@ public partial class ExpiredListCarNotify : CarNotifyBase
 
     public virtual WaitingList? WaitingList { get; set; }
 
-    public virtual Camera? Camera { get; set; }
+    public int? CameraId { get; set; }
 
     public virtual CameraRole? Role { get; set; }
 }

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
-namespace SharedLibrary.DataBaseModels;
+namespace WarehouseConfgisService.Models;
 
 [Index(nameof(Login))]
 public partial class User

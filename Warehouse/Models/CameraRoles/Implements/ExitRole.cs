@@ -1,14 +1,16 @@
 ﻿using CameraListenerService;
 using NLog;
 using SharedLibrary.DataBaseModels;
+using WaitingListsService;
 using Warehouse.Models.CarStates.Implements;
 using Warehouse.Services;
+using WarehouseConfgisService.Models;
 
 namespace Warehouse.Models.CameraRoles.Implements
 {
     public class ExitRole : CameraRoleBase
     {
-        public ExitRole(ILogger logger, WaitingListsService waitingList, IBarriersService barriersService) : base(logger, waitingList, barriersService)
+        public ExitRole(ILogger logger, WaitingLists waitingList, IBarriersService barriersService) : base(logger, waitingList, barriersService)
         {
             Id = 4;
             Name = "Выезд";
@@ -21,15 +23,17 @@ namespace Warehouse.Models.CameraRoles.Implements
             }
         }
 
-        protected override void OnCarWithFreeAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock)
+        protected override void OnCarWithFreeAccess(Camera camera, CarAccessInfo info, CameraNotifyBlock pictureBlock)
         {
-            base.OnCarWithFreeAccess(camera, car, list, pictureBlock);
+            base.OnCarWithFreeAccess(camera, info, pictureBlock);
+            var car = info.Car;
             ProcessCar(camera, car);
         }
 
-        protected override void OnCarWithTempAccess(Camera camera, Car car, WaitingList list, CameraNotifyBlock pictureBlock)
+        protected override void OnCarWithTempAccess(Camera camera, CarAccessInfo info, CameraNotifyBlock pictureBlock)
         {
-            base.OnCarWithTempAccess(camera, car, list, pictureBlock);
+            base.OnCarWithTempAccess(camera, info, pictureBlock);
+            var car = info.Car;
             ProcessCar(camera, car);
         }
 
@@ -49,7 +53,7 @@ namespace Warehouse.Models.CameraRoles.Implements
             // Для выезда с целью смены территории
             if (car.CarStateId == new ExitingForChangeAreaState().Id)
             {
-                ChangeStatus(camera, car.Id, new ChangingAreaState().Id);
+                ChangeCarStatus(camera, car.Id, new ChangingAreaState().Id);
                 SetCarArea(camera, car.Id, null);
                 OpenBarrier(camera, car);
 
@@ -60,7 +64,7 @@ namespace Warehouse.Models.CameraRoles.Implements
             // Для выезда с концами
             if (car.CarStateId == new ExitPassGrantedState().Id)
             {
-                ChangeStatus(camera, car.Id, new FinishState().Id);
+                ChangeCarStatus(camera, car.Id, new FinishState().Id);
                 SetCarArea(camera, car.Id, null);
                 OpenBarrier(camera, car);
 

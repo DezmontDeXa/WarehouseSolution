@@ -4,9 +4,4 @@
     {
         public LoadingState() : base(4, "Погрузка") { }
     }
-
-    //public class RequiredInspectioState : CarStateBase
-    //{
-    //    public RequiredInspectioState() : base(0, "Требуется инспекция") { }
-    //}
 }

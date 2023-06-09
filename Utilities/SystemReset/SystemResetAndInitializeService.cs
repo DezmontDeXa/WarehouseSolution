@@ -8,7 +8,7 @@ public class SystemResetAndInitializeService
     {
         using (var db = new WarehouseContext())
         {
-            ClearDataBase(db);
+           // ClearDataBase(db);
 
             Console.WriteLine("Cleared. Any key for import start data");
             Console.ReadKey();
@@ -56,7 +56,7 @@ public class SystemResetAndInitializeService
         ImportFreeLists();
 
         Console.WriteLine("Import temp access lists...");
-        ImportTempLists();
+        //ImportTempLists();
     }
 
     private static void ImportFreeLists()

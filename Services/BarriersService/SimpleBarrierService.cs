@@ -1,7 +1,7 @@
 ﻿using NLog;
 using System.Net.Http.Headers;
 using System.Text;
-using SharedLibrary.DataBaseModels;
+using WarehouseConfgisService.Models;
 
 namespace Warehouse.Services
 {

@@ -2,6 +2,8 @@
 using NLog;
 using SharedLibrary.DataBaseModels;
 using SharedLibrary.Extensions;
+using WarehouseConfgisService.Models;
+using WarehouseConfigService;
 
 namespace TimeControlService
 {
@@ -23,9 +25,10 @@ namespace TimeControlService
         {
             while (true)
             {
+                using(var configsDb = new WarehouseConfig())
                 using (var db = new WarehouseContext())
                 {
-                    foreach (var controlledState in db.TimeControledStates.ToList())
+                    foreach (var controlledState in configsDb.TimeControledStates.ToList())
                     {
                         foreach (var car in db.Cars.Where(x => x.CarStateId == controlledState.CarStateId).ToList())
                         {
