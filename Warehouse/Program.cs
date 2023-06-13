@@ -1,17 +1,19 @@
-﻿using NaisServiceLibrary;
-using Ninject;
-using TimeControlService;
+﻿using Ninject;
 using Warehouse;
-using Warehouse.Models.CameraRoles;
-using Warehouse.Models.CarStates;
+using Warehouse.Interfaces.AppSettings;
+using Warehouse.Interfaces.CameraRoles;
+using Warehouse.Interfaces.CarStates;
+using Warehouse.Interfaces.DataBase;
+using Warehouse.Interfaces.TimeControl;
+using Warehouse.Nais;
 
 try
 {
-
     var _kernel = new StandardKernel(new Container());
-    _kernel.Get<CameraRolesToDB>().AddExistingCameraRolesToDB();
-    _kernel.Get<CarStatesToDB>().AddExistingCarStatesToDB();
-    _kernel.Get<TimeControl>().RunAsync();
+    _kernel.Get<IAppSettings>().Load();
+    _kernel.Get<IWarehouseDataBaseMethods>().RegisterCameraRoles(_kernel.GetAll<ICameraRoleBase>());
+    _kernel.Get<IWarehouseDataBaseMethods>().RegisterCarStates(_kernel.GetAll<ICarStateBase>());
+    _kernel.Get<ITimeControler>().RunAsync();
     _kernel.Get<NaisService>().RunAsync();
     _kernel.Get<WarehouseSystem>().RunAsync();
 

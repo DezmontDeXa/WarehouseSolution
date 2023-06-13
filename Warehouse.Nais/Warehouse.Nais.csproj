@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FirebirdSql.Data.FirebirdClient" Version="9.1.1" />
+    <PackageReference Include="Ninject" Version="3.3.6" />
+    <PackageReference Include="NLog" Version="5.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Warehouse.CarStates\Warehouse.CarStates.csproj" />
+    <ProjectReference Include="..\Warehouse.ConfigDataBase\Warehouse.ConfigDataBase.csproj" />
+    <ProjectReference Include="..\Warehouse.Interfaces\Warehouse.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

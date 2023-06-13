@@ -1,0 +1,17 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Warehouse.Interfaces.DataBase;
+
+namespace Warehouse.DataBase
+{
+    public partial class CarState : ICarState
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get; set; }
+
+        public string Name { get; set; } = null!;
+
+        public string TypeName { get; set; } = null!;
+    }
+}

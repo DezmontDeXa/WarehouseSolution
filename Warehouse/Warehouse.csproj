@@ -14,19 +14,24 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Ninject" Version="3.3.6" />
-    <PackageReference Include="NLog" Version="5.1.4" />
-    <PackageReference Include="NLog.Database" Version="5.1.4" />
+    <PackageReference Include="NLog.Database" Version="5.2.0" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.2.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Services\BarriersService\BarriersService.csproj" />
-    <ProjectReference Include="..\Services\CameraListenerService\CameraListenerService.csproj" />
-    <ProjectReference Include="..\Services\FindCarService\FindCarService.csproj" />
-    <ProjectReference Include="..\Services\NaisService\NaisService.csproj" />
-    <ProjectReference Include="..\Services\TimeConrolService\TimeControlService.csproj" />
-    <ProjectReference Include="..\SharedLibrary\SharedLibrary.csproj" />
+    <ProjectReference Include="..\Warehouse.AppSettings\Warehouse.AppSettings.csproj" />
+    <ProjectReference Include="..\Warehouse.Barriers\Warehouse.Barriers.csproj" />
+    <ProjectReference Include="..\Warehouse.CameraListeners\Warehouse.CameraListeners.csproj" />
+    <ProjectReference Include="..\Warehouse.ConfigDataBase\Warehouse.ConfigDataBase.csproj" />
+    <ProjectReference Include="..\Warehouse.DataBase\Warehouse.DataBase.csproj" />
+    <ProjectReference Include="..\Warehouse.DbMethods\Warehouse.DbMethods.csproj" />
+    <ProjectReference Include="..\Warehouse.FindCarServices\Warehouse.FindCarServices.csproj" />
+    <ProjectReference Include="..\Warehouse.Logging\Warehouse.Logging.csproj" />
+    <ProjectReference Include="..\Warehouse.Nais\Warehouse.Nais.csproj" />
+    <ProjectReference Include="..\Warehouse.RusificationServices\Warehouse.RusificationServices.csproj" />
+    <ProjectReference Include="..\Warehouse.TimeControl\Warehouse.TimeControl.csproj" />
+    <ProjectReference Include="..\Warehouse.WaitingListsServices\Warehouse.WaitingListsServices.csproj" />
   </ItemGroup>
 
 </Project>
