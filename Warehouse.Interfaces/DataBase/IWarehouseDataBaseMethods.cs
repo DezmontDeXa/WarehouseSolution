@@ -24,7 +24,6 @@ namespace Warehouse.Interfaces.DataBase
         void SendCarDetectedNotify(ICamera camera, ICarAccessInfo carAccessInfo);
         void SendExpriredListCarNotify(ICamera camera, ICar car, IWaitingList list, ICameraNotifyBlock pictureBlock, string plateNumber, string direction);
         void SendInspectionRequiredCarNotify(ICar car);
-        void SendNotify<T>(T notify) where T : class;
         void SendNotInListCarNotify(ICamera camera, ICar car, ICameraNotifyBlock pictureBlock, string plateNumber, string direction);
         void SendUnknownCarNotify(ICamera camera, ICameraNotifyBlock pictureBlock, string plateNumber, string direction);
         void SetCarArea(ICar? car, int? areaId);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using Warehouse.DataBase;
 using Warehouse.DataBase.Context;
 using Warehouse.DataBase.Notifies;
@@ -21,7 +22,7 @@ namespace Warehouse.DbMethods
             this.settings = settings;
         }
 
-        // Init
+        #region Init
 
         public void RegisterCarStates(IEnumerable<ICarStateBase> carStates)
         {
@@ -58,7 +59,10 @@ namespace Warehouse.DbMethods
             }
         }
 
-        // Cars
+        #endregion
+
+        #region Cars
+
         public IEnumerable<ICar> GetCars()
         {
             using (var db = new WarehouseContext(settings))
@@ -68,7 +72,7 @@ namespace Warehouse.DbMethods
         public ICar? GetCarById(int id)
         {
             using (var db = new WarehouseContext(settings))
-                return FindEntity<ICar>(db, id);
+                return FindEntity<Car>(db, id);
         }
 
         public ICar? GetCarByPlateNumber(string plateNumber)
@@ -109,8 +113,8 @@ namespace Warehouse.DbMethods
         {
             using (var db = new WarehouseContext(settings))
             {
-                if (TryFindEntity<ICar>(db, car.Id, out var entity))
-                    ((Car)entity).IsInspectionRequired = value;
+                if (TryFindEntity<Car>(db, car.Id, out var entity))
+                    entity.IsInspectionRequired = value;
                 db.SaveChanges();
             }
         }
@@ -119,19 +123,18 @@ namespace Warehouse.DbMethods
         {
             using (var db = new WarehouseContext(settings))
             {
-                if (TryFindEntity<ICar>(db, car.Id, out var dbCar))
-                    ((Car)dbCar).StorageId = storage.Id;
+                if (TryFindEntity<Car>(db, car.Id, out var dbCar))
+                    dbCar.StorageId = storage.Id;
                 db.SaveChanges();
             }
         }
-
 
         public void SetCarState(ICar car, ICarStateBase state)
         {
             using (var db = new WarehouseContext(settings))
             {
-                if (TryFindEntity<ICar>(db, car.Id, out var dbCar))
-                    ((Car)dbCar).CarStateId = state.Id;
+                if (TryFindEntity<Car>(db, car.Id, out var dbCar))
+                    dbCar.CarStateId = state.Id;
                 db.SaveChanges();
             }
         }
@@ -140,8 +143,8 @@ namespace Warehouse.DbMethods
         {
             using (var db = new WarehouseContext(settings))
             {
-                if (TryFindEntity<ICar>(db, car.Id, out var dbCar))
-                    ((Car)dbCar).CarStateId = state.Id;
+                if (TryFindEntity<Car>(db, car.Id, out var dbCar))
+                    dbCar.CarStateId = state.Id;
                 db.SaveChanges();
             }
         }
@@ -150,8 +153,8 @@ namespace Warehouse.DbMethods
         {
             using (var db = new WarehouseContext(settings))
             {
-                if (TryFindEntity<ICar>(db, car, out var dbCar))
-                    ((Car)dbCar).CarStateId = state;
+                if (TryFindEntity<Car>(db, car, out var dbCar))
+                    dbCar.CarStateId = state;
                 db.SaveChanges();
             }
         }
@@ -160,25 +163,46 @@ namespace Warehouse.DbMethods
         {
             using (var db = new WarehouseContext(settings))
             {
-                if (TryFindEntity<ICar>(db, car.Id, out var dbCar))
-                    ((Car)dbCar).TargetAreaId = areaId;
+                if (TryFindEntity<Car>(db, car.Id, out var dbCar))
+                    dbCar.TargetAreaId = areaId;
                 db.SaveChanges();
             }
         }
 
+        public void SetCarArea(ICar? car, int? areaId)
+        {
+            using (var db = new WarehouseContext(settings))
+            {
+                var dbCar = FindEntity<Car>(db, car.Id);
+                dbCar.AreaId = areaId;
+                db.SaveChanges();
+            }
+        }
 
-        // Camera Roles
+        #endregion
+
+        #region Camera Roles
 
         public ICameraRole GetCameraRoleById(int roleId)
         {
             using (var db = new WarehouseContext(settings))
-            {
                 return FindEntity<CameraRole>(db, roleId);
-            }
         }
 
+        #endregion
 
-        // Timers
+        #region States
+
+        public ICarState? GetStateById(int stateId)
+        {
+            using (var db = new WarehouseContext(settings))
+                return FindEntity<CarState>(db, stateId);
+        }
+
+        #endregion
+
+        #region Timers
+
         public void CreateTimer(ICarStateTimer timer)
         {
             CreateEntity(timer);
@@ -194,7 +218,7 @@ namespace Warehouse.DbMethods
         {
             using (var db = new WarehouseContext(settings))
             {
-                if (TryFindEntity<ICarStateTimer>(db, timer.Id, out var entity))
+                if (TryFindEntity<CarStateTimer>(db, timer.Id, out var entity))
                     entity.IsAlive = value;
                 db.SaveChanges();
             }
@@ -206,6 +230,115 @@ namespace Warehouse.DbMethods
                 return db.CarStates.First(x => x.Id == controlledState.CarStateId);
         }
 
+        public void CreateTimer(ICar car, ITimeControledState controlledState)
+        {
+            var timer = new CarStateTimer()
+            {
+                IsAlive = true,
+                CarId = car.Id,
+                TimeControledStateId = controlledState.Id,
+                CarStateId = controlledState.CarStateId,
+                StartTimeTicks = DateTime.Now.Ticks,
+            };
+        }
+
+        #endregion
+
+        #region Send Notifies
+
+        public void SendCarDetectedNotify(ICamera camera, ICarAccessInfo carAccessInfo)
+        {
+            using (var db = new WarehouseContext(settings))
+            {
+                var notify = new CarDetectedNotify()
+                {
+                    CameraId = camera.Id,
+                    CreatedOn = DateTime.Now,
+                    Car = FindEntity<Car>(db, carAccessInfo.Car.Id),
+                };
+                SendNotify(db, notify);
+            }
+        }
+
+        public void SendUnknownCarNotify(ICamera camera, ICameraNotifyBlock pictureBlock, string plateNumber, string direction)
+        {
+            using (var db = new WarehouseContext(settings))
+            {
+
+                var notify = new UnknownCarNotify()
+                {
+                    CreatedOn = DateTime.Now,
+                    DetectedPlateNumber = plateNumber,
+                    Direction = direction,
+                    PlateNumberPicture = pictureBlock.ContentBytes,
+                    CameraId = camera.Id,
+                    Role = FindEntity<CameraRole>(db, camera.RoleId),
+                };
+                SendNotify(db, notify);
+            }
+        }
+
+        public void SendNotInListCarNotify(ICamera camera, ICar car, ICameraNotifyBlock pictureBlock, string plateNumber, string direction)
+        {
+            using (var db = new WarehouseContext(settings))
+            {
+
+                var notify = new NotInListCarNotify()
+                {
+                    CameraId = camera.Id,
+                    CreatedOn = DateTime.Now,
+                    DetectedPlateNumber = plateNumber,
+                    Direction = direction,
+                    PlateNumberPicture = pictureBlock.ContentBytes,
+                    Car = FindEntity<Car>(db, car.Id),
+                    Role = FindEntity<CameraRole>(db, camera.RoleId),
+                };
+                SendNotify(db, notify);
+            }
+        }
+
+        public void SendExpriredListCarNotify(ICamera camera, ICar car, IWaitingList list, ICameraNotifyBlock pictureBlock, string plateNumber, string direction)
+        {
+            using (var db = new WarehouseContext(settings))
+            {
+                var notify = new ExpiredListCarNotify()
+                {
+                    CameraId = camera.Id,
+                    CreatedOn = DateTime.Now,
+                    WaitingList = (WaitingList)list,
+                    DetectedPlateNumber = plateNumber,
+                    Direction = direction,
+                    PlateNumberPicture = pictureBlock.ContentBytes,
+                    Car = FindEntity<Car>(db, car.Id),
+                    Role = FindEntity<CameraRole>(db, camera.RoleId),
+                };
+                SendNotify(db, notify);
+            }
+        }
+
+        public void SendInspectionRequiredCarNotify(ICar car)
+        {
+            using (var db = new WarehouseContext(settings))
+            {
+                var notify = new InspectionRequiredCarNotify()
+                {
+                    CreatedOn = DateTime.Now,
+                    Car = FindEntity<Car>(db, car.Id),
+                };
+                SendNotify(db, notify);
+            }
+        }
+
+        private void SendNotify<T>(WarehouseContext db, T notify) where T : class
+        {
+            db.Set<T>().Add(notify);
+            db.SaveChanges();
+
+        }
+
+        #endregion
+
+        #region Private
 
         private bool TryFindEntity<T>(WarehouseContext db, int id, out T entity) where T : class
         {
@@ -224,110 +357,7 @@ namespace Warehouse.DbMethods
                 db.Set<T>().Add(entity);
         }
 
-        public ICarState? GetStateById(int stateId)
-        {
-            using (var db = new WarehouseContext(settings))
-                return FindEntity<CarState>(db, stateId);
-        }
-
-        public void SendNotify<T>(T notify) where T : class
-        {
-            using (var db = new WarehouseContext(settings))
-            {
-                db.Set<T>().Add(notify);
-                db.SaveChanges();
-            }
-        }
-
-        public void SetCarArea(ICar? car, int? areaId)
-        {
-            using (var db = new WarehouseContext(settings))
-            {
-                var dbCar = (Car)GetCarById(car.Id);
-                dbCar.AreaId = areaId;
-                db.SaveChanges();
-            }
-        }
-
-        #region Send Notifies
-
-        public void SendCarDetectedNotify(ICamera camera, ICarAccessInfo carAccessInfo)
-        {
-            SendNotify(
-                    new CarDetectedNotify()
-                    {
-                        CameraId = camera.Id,
-                        CreatedOn = DateTime.Now,
-                        Car = (Car)GetCarById(carAccessInfo.Car.Id),
-                    });
-        }
-
-        public void SendUnknownCarNotify(ICamera camera, ICameraNotifyBlock pictureBlock, string plateNumber, string direction)
-        {
-            var notify = new UnknownCarNotify()
-            {
-                CreatedOn = DateTime.Now,
-                DetectedPlateNumber = plateNumber,
-                Direction = direction,
-                PlateNumberPicture = pictureBlock.ContentBytes,
-                CameraId = camera.Id,
-                Role = (CameraRole)GetCameraRoleById(camera.RoleId)
-            };
-            SendNotify(notify);
-        }
-
-        public void SendNotInListCarNotify(ICamera camera, ICar car, ICameraNotifyBlock pictureBlock, string plateNumber, string direction)
-        {
-            var notify = new NotInListCarNotify()
-            {
-                CameraId = camera.Id,
-                CreatedOn = DateTime.Now,
-                DetectedPlateNumber = plateNumber,
-                Direction = direction,
-                PlateNumberPicture = pictureBlock.ContentBytes,
-                Car = (Car)GetCarById(car.Id),
-                Role = (CameraRole)GetCameraRoleById(camera.RoleId)
-            };
-            SendNotify(notify);
-        }
-
-        public void SendExpriredListCarNotify(ICamera camera, ICar car, IWaitingList list, ICameraNotifyBlock pictureBlock, string plateNumber, string direction)
-        {
-            var notify = new ExpiredListCarNotify()
-            {
-                CameraId = camera.Id,
-                CreatedOn = DateTime.Now,
-                WaitingList = (WaitingList)list,
-                DetectedPlateNumber = plateNumber,
-                Direction = direction,
-                PlateNumberPicture = pictureBlock.ContentBytes,
-                Car = (Car)GetCarById(car.Id),
-                Role = (CameraRole)GetCameraRoleById(camera.RoleId)
-            };
-            SendNotify(notify);
-        }
-
-        public void SendInspectionRequiredCarNotify(ICar car)
-        {
-            var notify = new InspectionRequiredCarNotify()
-            {
-                CreatedOn = DateTime.Now,
-                Car = (Car)GetCarById(car.Id),
-            };
-        }
-
-        public void CreateTimer(ICar car, ITimeControledState controlledState)
-        {
-            var timer = new CarStateTimer()
-            {
-                IsAlive = true,
-                CarId = car.Id,
-                TimeControledStateId = controlledState.Id,
-                CarStateId = controlledState.CarStateId,
-                StartTimeTicks = DateTime.Now.Ticks,
-            };
-        }
-
         #endregion
+
     }
 }
