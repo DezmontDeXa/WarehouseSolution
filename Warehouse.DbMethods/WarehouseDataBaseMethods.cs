@@ -202,12 +202,6 @@ namespace Warehouse.DbMethods
         #endregion
 
         #region Timers
-
-        public void CreateTimer(ICarStateTimer timer)
-        {
-            CreateEntity(timer);
-        }
-
         public IEnumerable<ICarStateTimer> GetTimers()
         {
             using (var db = new WarehouseContext(settings))
@@ -240,6 +234,7 @@ namespace Warehouse.DbMethods
                 CarStateId = controlledState.CarStateId,
                 StartTimeTicks = DateTime.Now.Ticks,
             };
+            CreateEntity(timer);
         }
 
         #endregion
@@ -354,7 +349,10 @@ namespace Warehouse.DbMethods
         private void CreateEntity<T>(T entity) where T : class
         {
             using (var db = new WarehouseContext(settings))
+            {
                 db.Set<T>().Add(entity);
+                db.SaveChanges();
+            }
         }
 
         #endregion
