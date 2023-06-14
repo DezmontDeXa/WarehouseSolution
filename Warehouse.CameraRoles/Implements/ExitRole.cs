@@ -39,6 +39,11 @@ namespace Warehouse.CameraRoles.Implements
             ProcessCar(camera, car);
         }
 
+        protected override bool IfNotExpectedCarState(ICarState carState, List<int> expectedStateIds)
+        {
+            return true;
+        }
+
         private void ProcessCar(ICamera camera, ICar car)
         {
             var cameraArea = GetCameraArea(camera);

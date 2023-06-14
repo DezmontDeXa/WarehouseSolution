@@ -70,6 +70,11 @@ namespace Warehouse.CameraRoles.Implements
             SendNotInListCarNotify(camera, car, pictureBlock, plateNumber, direction);
         }
 
+        protected override bool IfNotExpectedCarState(ICarState carState, List<int> expectedStateIds)
+        {
+            return true;
+        }
+
         private void ProcessTempAccessWithChangingAreaState(ICamera camera, IArea? cameraArea, ICar car)
         {
             var targetArea = GetCarTargetArea(car);

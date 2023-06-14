@@ -248,12 +248,13 @@ namespace Warehouse.CameraRoles
             if (_expectedStateIds != null && _expectedStateIds.Count > 0 && !_expectedStateIds.Exists(x => x == info.Car?.CarStateId))
             {
                 var carState = _dbMethods.GetStateById(info.Car.CarStateId.Value);
-                Logger.Warn($"{camera.Name}:\t Машина ({info.Car.PlateNumberForward}) имела неожиданный статус. Текущий статус: \"{carState.Name}\". Без действий.");
-                return false;
+                Logger.Warn($"{camera.Name}:\t Машина ({info.Car.PlateNumberForward}) имела неожиданный статус. Текущий статус: \"{carState.Name}\".");
+                return IfNotExpectedCarState(carState, _expectedStateIds);
             }
 
             return true;
         }
+
 
         private bool IsAvailableDirection(ICamera camera, string direction)
         {
@@ -294,10 +295,18 @@ namespace Warehouse.CameraRoles
         {
             _dbMethods.SendNotInListCarNotify(camera, car, pictureBlock, plateNumber, direction);
         }
+        protected void SendNotInListCarNotify(ICamera camera, ICar car, IWaitingList waitingList, ICameraNotifyBlock pictureBlock, string plateNumber, string direction)
+        {
+            _dbMethods.SendExpriredListCarNotify(camera, car, waitingList, pictureBlock, plateNumber, direction);
+        }
 
         protected void SendInspectionRequiredCarNotify(ICar car)
         {
             _dbMethods.SendInspectionRequiredCarNotify(car);
+        }
+        protected virtual bool IfNotExpectedCarState(ICarState carState, List<int> expectedStateIds)
+        {
+            return false;
         }
 
         #endregion

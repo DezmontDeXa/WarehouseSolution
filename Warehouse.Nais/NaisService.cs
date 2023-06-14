@@ -105,7 +105,7 @@ namespace Warehouse.Nais
             {
                 var state = _dbMethods.GetCarState(existCar);
                 _logger.Error($"Машина ({platenumber}) имела не ожиданный статус. Статус: {state.Name}. Продолжаем.");
-                return;
+                //return;
             }
 
             var carHasFirstWeighting = existCar.FirstWeighingCompleted;

@@ -85,6 +85,10 @@ namespace Warehouse.CameraRoles.Implements
             SendNotInListCarNotify(camera, car, pictureBlock, plateNumber, direction);
         }
 
+        protected override bool IfNotExpectedCarState(ICarState carState, List<int> expectedStateIds)
+        {
+            return true;
+        }
         private void PassCar(ICamera camera, IArea? cameraArea, ICar car, ICarStateBase targetState)
         {
             ChangeCarStatus(camera, car.Id, targetState.Id);
