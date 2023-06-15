@@ -1,7 +1,7 @@
 ﻿using Ninject;
 using NLog;
 using Warehouse.CarStates.Implements;
-using Warehouse.ConfigDataBase.Context;
+using Warehouse.ConfigDataBase;
 using Warehouse.Interfaces.AppSettings;
 using Warehouse.Interfaces.CarStates;
 using Warehouse.Interfaces.DataBase;

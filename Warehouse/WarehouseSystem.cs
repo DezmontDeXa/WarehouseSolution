@@ -1,6 +1,6 @@
 ﻿using NLog;
 using Warehouse.CameraListeners;
-using Warehouse.ConfigDataBase.Context;
+using Warehouse.ConfigDataBase;
 using Warehouse.Interfaces.AppSettings;
 using Warehouse.Interfaces.CameraRoles;
 using Warehouse.Interfaces.CamerasListener;

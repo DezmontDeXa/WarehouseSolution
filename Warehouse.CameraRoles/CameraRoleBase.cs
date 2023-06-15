@@ -8,10 +8,8 @@ using Warehouse.Interfaces.CarStates;
 using Warehouse.Interfaces.RusificationServices;
 using Warehouse.Interfaces.CameraRoles;
 using Warehouse.CarStates.Implements;
-using Warehouse.ConfigDataBase.Context;
 using Warehouse.Interfaces.AppSettings;
-using Ninject;
-using Warehouse.ConfigDataBase.Models;
+using Warehouse.ConfigDataBase;
 
 namespace Warehouse.CameraRoles
 {

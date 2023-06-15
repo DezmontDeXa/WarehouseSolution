@@ -52,9 +52,9 @@ namespace Warehouse.CameraRoles.Implements
             var car = info.Car;
             var cameraArea = GetCameraArea(camera);
 
-            if (info.TopAccessTypeList?.Camera != null)
-                if (InvalideWaitingCamera(camera, info, car, cameraArea))
-                    return;
+            //if (info.TopAccessTypeList?.Camera != null)
+            //    if (InvalideWaitingCamera(camera, info, car, cameraArea))
+            //        return;
 
             PassCar(camera, car);
             Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {cameraArea.Name}. Статус машины изменен на \"{new OnEnterState().Name}\".");

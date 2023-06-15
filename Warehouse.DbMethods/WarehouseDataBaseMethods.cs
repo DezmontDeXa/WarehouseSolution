@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using Warehouse.DataBase;
-using Warehouse.DataBase.Context;
-using Warehouse.DataBase.Notifies;
+using Warehouse.DataBase.Models.Main;
+using Warehouse.DataBase.Models.Main.Notifies;
 using Warehouse.Interfaces.AppSettings;
 using Warehouse.Interfaces.CameraRoles;
 using Warehouse.Interfaces.CamerasListener;

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Warehouse.DataBase.Context;
+using Warehouse.DataBase;
 
 #nullable disable
 

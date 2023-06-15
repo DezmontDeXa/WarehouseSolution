@@ -12,20 +12,20 @@ using Warehouse.ConfigDataBase;
 namespace WarehouseConfigService.Migrations
 {
     [DbContext(typeof(WarehouseConfig))]
-    [Migration("20230609143754_Init")]
-    partial class Init
+    [Migration("20230615162646_AddExpectedStatesToCameras")]
+    partial class AddExpectedStatesToCameras
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("WarehouseConfgisService.Models.Area", b =>
+            modelBuilder.Entity("Warehouse.DataBase.Models.Config.Area", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,7 +44,7 @@ namespace WarehouseConfigService.Migrations
                     b.ToTable("areas", (string)null);
                 });
 
-            modelBuilder.Entity("WarehouseConfgisService.Models.BarrierInfo", b =>
+            modelBuilder.Entity("Warehouse.DataBase.Models.Config.BarrierInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,7 +80,7 @@ namespace WarehouseConfigService.Migrations
                     b.ToTable("barrier_infos", (string)null);
                 });
 
-            modelBuilder.Entity("WarehouseConfgisService.Models.Camera", b =>
+            modelBuilder.Entity("Warehouse.DataBase.Models.Config.Camera", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -116,7 +116,7 @@ namespace WarehouseConfigService.Migrations
                     b.ToTable("cameras", (string)null);
                 });
 
-            modelBuilder.Entity("WarehouseConfgisService.Models.Config", b =>
+            modelBuilder.Entity("Warehouse.DataBase.Models.Config.Config", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -140,7 +140,7 @@ namespace WarehouseConfigService.Migrations
                     b.ToTable("configs", (string)null);
                 });
 
-            modelBuilder.Entity("WarehouseConfgisService.Models.Storage", b =>
+            modelBuilder.Entity("Warehouse.DataBase.Models.Config.Storage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,7 +169,7 @@ namespace WarehouseConfigService.Migrations
                     b.ToTable("storages", (string)null);
                 });
 
-            modelBuilder.Entity("WarehouseConfgisService.Models.TimeControledState", b =>
+            modelBuilder.Entity("Warehouse.DataBase.Models.Config.TimeControledState", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -192,7 +192,7 @@ namespace WarehouseConfigService.Migrations
                     b.ToTable("time_controled_states", (string)null);
                 });
 
-            modelBuilder.Entity("WarehouseConfgisService.Models.User", b =>
+            modelBuilder.Entity("Warehouse.DataBase.Models.Config.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -222,6 +222,48 @@ namespace WarehouseConfigService.Migrations
                         .HasDatabaseName("ix_users_login");
 
                     b.ToTable("users", (string)null);
+                });
+
+            modelBuilder.Entity("Warehouse.DataBase.Models.Main.CarStateType", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    b.Property<int?>("CameraId")
+                        .HasColumnType("integer")
+                        .HasColumnName("camera_id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type_name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_car_state_type");
+
+                    b.HasIndex("CameraId")
+                        .HasDatabaseName("ix_car_state_type_camera_id");
+
+                    b.ToTable("car_state_type", (string)null);
+                });
+
+            modelBuilder.Entity("Warehouse.DataBase.Models.Main.CarStateType", b =>
+                {
+                    b.HasOne("Warehouse.DataBase.Models.Config.Camera", null)
+                        .WithMany("ExpectedStates")
+                        .HasForeignKey("CameraId")
+                        .HasConstraintName("fk_car_state_type_cameras_camera_id");
+                });
+
+            modelBuilder.Entity("Warehouse.DataBase.Models.Config.Camera", b =>
+                {
+                    b.Navigation("ExpectedStates");
                 });
 #pragma warning restore 612, 618
         }

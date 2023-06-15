@@ -1,5 +1,5 @@
 ﻿using NLog;
-using Warehouse.ConfigDataBase.Context;
+using Warehouse.ConfigDataBase;
 using Warehouse.Interfaces.AppSettings;
 using Warehouse.Interfaces.DataBase;
 using Warehouse.Interfaces.DataBase.Configs;

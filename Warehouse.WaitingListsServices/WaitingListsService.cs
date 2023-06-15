@@ -25,7 +25,7 @@ namespace Warehouse.WaitingListsServices
         {
             try
             {
-                var car = _findCarService.FindCar(plateNumber);// FindCar(plateNumber);
+                var car = _findCarService.FindCar(plateNumber);
                 if (car == null)
                     return new CarAccessInfo(null, null);
 

@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Warehouse.DataBase.Models\Warehouse.DataBase.Models.csproj" />
     <ProjectReference Include="..\Warehouse.Interfaces\Warehouse.Interfaces.csproj" />
   </ItemGroup>
 

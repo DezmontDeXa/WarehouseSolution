@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Warehouse.Interfaces\Warehouse.Interfaces.csproj" />
+    <ProjectReference Include="..\Warehouse.Processors\Warehouse.Processors.csproj" />
+  </ItemGroup>
+
+</Project>
