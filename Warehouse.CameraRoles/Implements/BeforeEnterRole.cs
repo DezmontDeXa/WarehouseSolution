@@ -42,6 +42,8 @@ namespace Warehouse.CameraRoles.Implements
                 ProcessTempAccessWithChangingAreaState(camera, cameraArea, car);
                 return;
             }
+
+            ProcessTempWithAnotherState(camera, car , cameraArea);
         }
 
         protected override void OnCarWithFreeAccess(ICamera camera, ICarAccessInfo info, ICameraNotifyBlock pictureBlock)
@@ -70,7 +72,7 @@ namespace Warehouse.CameraRoles.Implements
             SendNotInListCarNotify(camera, car, pictureBlock, plateNumber, direction);
         }
 
-        protected override bool IfNotExpectedCarState(ICarState carState, List<int> expectedStateIds)
+        protected override bool IfNotExpectedCarState(ICarStateType carState, List<int> expectedStateIds)
         {
             return true;
         }
@@ -82,22 +84,26 @@ namespace Warehouse.CameraRoles.Implements
             if (car.TargetAreaId != camera.AreaId)
             {
                 SetCarErrorStatus(camera, car.Id);
-                Logger.Warn($"{camera.Name}:\t Машина ({car.PlateNumberForward}) ожидалась на {targetArea?.Name}, но подъехала к {cameraArea?.Name}. Статус машины изменен на \"{new ErrorState().Name}\".");
-                return;
+                Logger.Warn($"{camera.Name}:\t Машина ({car.PlateNumberForward}) ожидалась на {targetArea?.Name}, но подъехала к {cameraArea?.Name}. Статус машины изменен на \"{new ErrorState().Name}\".");      
             }
 
             PassCar(camera, car);
             Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) вернулась на {cameraArea.Name}. Статус машины изменен на \"{new OnEnterState().Name}\".");
-            return;
+            
         }
 
         private void ProcessTempAccessWithAwaitingState(ICamera camera, ICarAccessInfo info, IArea? cameraArea, ICar car)
         {
-            if (InvalideWaitingCamera(camera, info, car, cameraArea))
-                return;
+            InvalideWaitingCamera(camera, info, car, cameraArea);
 
             PassCar(camera, car);
             Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {cameraArea.Name} с целью {info.TopPurposeOfArrival}. Статус машины изменен на \"{new OnEnterState().Name}\".");
+        }
+
+        private void ProcessTempWithAnotherState(ICamera camera, ICar car, IArea cameraArea)
+        {
+            PassCar(camera, car);
+            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) прибыла на {cameraArea.Name}. Статус машины изменен на \"{new OnEnterState().Name}\".");
             return;
         }
 

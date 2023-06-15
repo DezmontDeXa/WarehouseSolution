@@ -125,7 +125,7 @@ namespace Warehouse.Nais
 
             if (storage == null)
             {
-                _dbMethods.SetCarState(car, new ErrorState());
+                _dbMethods.SetCarState(car.Id, new ErrorState().Id);
                 _logger.Warn($"Склад c обозначением {record.StorageName} не реализован. Статус машины изменен на \"{new ErrorState().Name}\".");
                 return;
             }
@@ -148,13 +148,13 @@ namespace Warehouse.Nais
         {
             if (accessType.TopPurposeOfArrival == PurposeOfArrival.Loading || accessType.TopPurposeOfArrival == PurposeOfArrival.Unloading)
             {
-                _dbMethods.SetCarState(existCar, new ExitingForChangeAreaState());
+                _dbMethods.SetCarState(existCar.Id, new ExitingForChangeAreaState().Id);
                 _dbMethods.SetCarTargetArea(existCar, storage.AreaId);
                 _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{new ExitingForChangeAreaState().Name}\".");
             }
             else
             {
-                _dbMethods.SetCarState(existCar, new ErrorState());
+                _dbMethods.SetCarState(existCar.Id, new ErrorState().Id);
                 _logger.Error($"Машина ({existCar.PlateNumberForward}) из списка ({accessType.TopAccessTypeList?.Number}) с целью заезда ({accessType.TopPurposeOfArrival}) была отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{new ErrorState().Name}\".");
             }
         }
@@ -164,17 +164,17 @@ namespace Warehouse.Nais
             switch (accessType.TopPurposeOfArrival)
             {
                 case PurposeOfArrival.Loading:
-                    _dbMethods.SetCarState(existCar, new LoadingState());
+                    _dbMethods.SetCarState(existCar.Id, new LoadingState().Id);
                     _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{new LoadingState().Name}\".");
 
                     break;
                 case PurposeOfArrival.Unloading:
-                    _dbMethods.SetCarState(existCar, new UnloadingState());
+                    _dbMethods.SetCarState(existCar.Id, new UnloadingState().Id);
                     _logger.Info($"Машина ({existCar.PlateNumberForward}) отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{new UnloadingState().Name}\".");
                     break;
 
                 default:
-                    _dbMethods.SetCarState(existCar, new ErrorState());
+                    _dbMethods.SetCarState(existCar.Id, new ErrorState().Id);
                     _logger.Error($"Машина ({existCar.PlateNumberForward}) из списка ({accessType.TopAccessTypeList?.Number}) с целью заезда ({accessType.TopPurposeOfArrival}) была отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{new ErrorState().Name}\".");
                     break;
             }
@@ -199,13 +199,13 @@ namespace Warehouse.Nais
 
         private void ApplySecondWeighting(IWeightsRecord record, ICar existCar)
         {
-            _dbMethods.SetCarState(existCar, new ExitPassGrantedState());
+            _dbMethods.SetCarState(existCar.Id, new ExitPassGrantedState().Id);
             _logger.Info($"Машина ({existCar.PlateNumberForward}) Прошла второе взвешивание. Статус машины изменен на \"{new ExitPassGrantedState().Name}\".");
         }
 
         private void ApplySecondWeightingOnInit(IWeightsRecord record, ICar existCar)
         {
-            _dbMethods.SetCarState(existCar, new FinishState());
+            _dbMethods.SetCarState(existCar.Id, new FinishState().Id);
             _logger.Info($"Машина ({existCar.PlateNumberForward}) Прошла второе взвешивание. Статус машины изменен на \"{new FinishState().Name}\".");
         }
 

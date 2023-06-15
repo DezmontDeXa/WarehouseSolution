@@ -6,11 +6,16 @@ namespace Warehouse.DataBase.Context;
 
 public partial class WarehouseContext : DbContext
 {
-    private readonly IAppSettings settings;
+    private readonly string connectionString;
+
+    //public WarehouseContext()
+    //{
+    //    connectionString = File.ReadAllText("C:\\Users\\DezmontDeXa\\source\\repos\\WarehouseSolution\\Warehouse.DataBase\\ConnectionString.json");
+    //}
 
     public WarehouseContext(IAppSettings appSettings)
     {
-        this.settings = appSettings;
+        connectionString = appSettings.ConnectionString;
     }
 
     public WarehouseContext(DbContextOptions<WarehouseContext> options)
@@ -23,13 +28,13 @@ public partial class WarehouseContext : DbContext
         AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
         optionsBuilder
-        .UseNpgsql(settings.ConnectionString)
+        .UseNpgsql(connectionString)
         .UseSnakeCaseNamingConvention();
     }
 
     public DbSet<Car> Cars { get; set; }
 
-    public DbSet<CarState> CarStates { get; set; }
+    public DbSet<CarStateType> CarStateTypes { get; set; }
 
     public DbSet<Log> Logs { get; set; }
 

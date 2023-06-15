@@ -559,3 +559,6 @@ Utilities/SystemReset/AppData/FreeAccess.txt
 Utilities/SystemReset/AppData/FreeAccess.json
 /AppSettings/AppSettings.json
 /Warehouse.AppSettings/AppSettings.json
+/Warehouse.DataBase/App.config
+/Warehouse.DataBase/DevSettings.json
+/Warehouse.DataBase/ConnectionString.json

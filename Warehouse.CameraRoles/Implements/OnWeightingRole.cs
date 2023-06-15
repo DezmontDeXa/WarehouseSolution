@@ -41,7 +41,7 @@ namespace Warehouse.CameraRoles.Implements
             ProcessCar(camera, car);
         }
 
-        protected override bool IfNotExpectedCarState(ICarState carState, List<int> expectedStateIds)
+        protected override bool IfNotExpectedCarState(ICarStateType carState, List<int> expectedStateIds)
         {
             return true;
         }

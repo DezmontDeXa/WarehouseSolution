@@ -7,6 +7,29 @@ namespace Warehouse.Logging
 {
     public class LoggingConfigurator
     {
+        public static void ConfigureLoggerWithoutDb()
+        {
+
+            var config = new NLog.Config.LoggingConfiguration();
+
+            // Targets where to log to: File and Console
+            var logfile = new FileTarget("logfile") { FileName = $"logs/{DateTime.Now.ToString("yyyy-MM-dd")}.log" };
+            var logconsole = new ColoredConsoleTarget("logconsole");
+            logconsole.Layout = "${longdate}|${level:uppercase=true}|${logger}|${message:withexception=false}";
+
+            // Rules for mapping loggers to targets            
+            config.AddRule(LogLevel.Info, LogLevel.Fatal, logconsole);
+            config.AddRule(LogLevel.Trace, LogLevel.Fatal, logfile);
+
+            BuildInternalLogger();
+
+            // Apply config           
+            LogManager.Configuration = config;
+
+            var logger = LogManager.GetCurrentClassLogger();
+            logger.Info("Logger configured");
+        }
+
         public static void ConfigureLogger(IAppSettings settings)
         {
             var config = new NLog.Config.LoggingConfiguration();

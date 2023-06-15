@@ -48,6 +48,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		CodeMap.dgml = CodeMap.dgml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{A6EFF2E2-728B-4212-8A05-5909003ACA86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaitingListsImporterProject", "Utilities\WaitingListsImporterProject\WaitingListsImporterProject.csproj", "{A4D4CDD0-4796-4EB8-9C0E-7EA83EAF2235}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +122,10 @@ Global
 		{CD511D16-0135-46A1-8737-6E0B49BB5EE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD511D16-0135-46A1-8737-6E0B49BB5EE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD511D16-0135-46A1-8737-6E0B49BB5EE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4D4CDD0-4796-4EB8-9C0E-7EA83EAF2235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4D4CDD0-4796-4EB8-9C0E-7EA83EAF2235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4D4CDD0-4796-4EB8-9C0E-7EA83EAF2235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4D4CDD0-4796-4EB8-9C0E-7EA83EAF2235}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -139,6 +147,7 @@ Global
 		{4B0BDED0-DE85-47F5-8CCB-9DB0A8E6236C} = {D1C0C2AE-62EE-438B-94AF-56AED540DD57}
 		{FDAF3FB4-E5CB-446B-AD38-7220BBFEA8AA} = {68BDB711-2B5C-4D91-8E86-C88A54631077}
 		{CD511D16-0135-46A1-8737-6E0B49BB5EE2} = {D1C0C2AE-62EE-438B-94AF-56AED540DD57}
+		{A4D4CDD0-4796-4EB8-9C0E-7EA83EAF2235} = {A6EFF2E2-728B-4212-8A05-5909003ACA86}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DC663EF5-B8BD-453E-9574-7A8375B37941}

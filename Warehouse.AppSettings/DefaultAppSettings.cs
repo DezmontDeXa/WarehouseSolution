@@ -8,6 +8,7 @@ namespace Warehouse.AppSettings
         public string? ConnectionString { get; set; }
         public string? ConfigConnectionString { get; set; }
         public string? NaisConnectionString { get; set; }
+        public string? WaitingListsImportFolder { get; set; }
 
         public void Load()
         {
@@ -16,6 +17,7 @@ namespace Warehouse.AppSettings
             ConnectionString = settings.ConnectionString;
             ConfigConnectionString = settings.ConfigConnectionString;
             NaisConnectionString = settings.NaisConnectionString;
+            WaitingListsImportFolder = settings.WaitingListsImportFolder;
         }
     }
 }

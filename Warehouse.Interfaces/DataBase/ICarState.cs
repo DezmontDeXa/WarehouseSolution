@@ -1,6 +1,6 @@
 ﻿namespace Warehouse.Interfaces.DataBase
 {
-    public interface ICarState
+    public interface ICarStateType
     {
         int Id { get; set; }
         string Name { get; set; }

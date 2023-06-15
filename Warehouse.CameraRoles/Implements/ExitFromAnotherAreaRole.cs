@@ -54,7 +54,7 @@ namespace Warehouse.CameraRoles.Implements
             Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) покинула территорию {cameraArea.Name}. Статус машины изменен на \"{new AwaitingState().Name}\".");
         }
 
-        protected override bool IfNotExpectedCarState(ICarState carState, List<int> expectedStateIds)
+        protected override bool IfNotExpectedCarState(ICarStateType carState, List<int> expectedStateIds)
         {
             return true;
         }

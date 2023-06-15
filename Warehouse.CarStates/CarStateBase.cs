@@ -18,16 +18,16 @@ namespace Warehouse.CarStates
 
         public override bool Equals(object? obj)
         {
-            if (obj is ICarState)
+            if (obj is ICarStateType)
             {
-                var carState = (ICarState)obj;
+                var carState = (ICarStateType)obj;
                 return Id == carState.Id;
             }
 
             return base.Equals(obj);
         }
 
-        public static bool Equals<T>(ICarState carState) where T : CarStateBase
+        public static bool Equals<T>(ICarStateType carState) where T : CarStateBase
         {
             var type = typeof(T);
             return type.Name == carState.TypeName;

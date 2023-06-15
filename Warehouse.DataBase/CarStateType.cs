@@ -4,7 +4,7 @@ using Warehouse.Interfaces.DataBase;
 
 namespace Warehouse.DataBase
 {
-    public partial class CarState : ICarState
+    public partial class CarStateType : ICarStateType
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

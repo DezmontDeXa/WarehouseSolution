@@ -104,12 +104,12 @@ namespace Warehouse.CameraRoles
         protected void ChangeCarStatus(ICamera camera, int carId, int stateId)
         {
             ICar? car = null;
-            ICarState? state = null;
+            ICarStateType? state = null;
             try
             {
                 car = _dbMethods.GetCarById(carId);
                 state = _dbMethods.GetStateById(stateId);
-                _dbMethods.SetCarState(car, state);
+                _dbMethods.SetCarState(carId, stateId);
                 Logger.Trace($"{camera.Name}:\t Для машины ({car.PlateNumberForward}) сменить статус на \"{state.Name}\"");
             }
             catch (Exception ex)
@@ -304,7 +304,7 @@ namespace Warehouse.CameraRoles
         {
             _dbMethods.SendInspectionRequiredCarNotify(car);
         }
-        protected virtual bool IfNotExpectedCarState(ICarState carState, List<int> expectedStateIds)
+        protected virtual bool IfNotExpectedCarState(ICarStateType carState, List<int> expectedStateIds)
         {
             return false;
         }

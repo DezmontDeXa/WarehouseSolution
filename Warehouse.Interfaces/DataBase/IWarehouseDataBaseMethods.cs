@@ -13,11 +13,11 @@ namespace Warehouse.Interfaces.DataBase
         ICar? GetCarById(int id);
         ICar? GetCarByPlateNumber(string plateNumber);
         IEnumerable<ICar> GetCars();
-        ICarState GetCarState(ICar car);
+        ICarStateType GetCarState(ICar car);
         IEnumerable<ICar> GetCarsWithWaitingLists();
-        ICarState? GetStateById(int stateId);
+        ICarStateType? GetStateById(int stateId);
         IEnumerable<ICarStateTimer> GetTimers();
-        ICarState GetTimerTargetState(ITimeControledState controlledState);
+        ICarStateType GetTimerTargetState(ITimeControledState controlledState);
 
         void RegisterCameraRoles(IEnumerable<ICameraRoleBase> cameraRoles);
         void RegisterCarStates(IEnumerable<ICarStateBase> carStates);
@@ -28,9 +28,7 @@ namespace Warehouse.Interfaces.DataBase
         void SendUnknownCarNotify(ICamera camera, ICameraNotifyBlock pictureBlock, string plateNumber, string direction);
         void SetCarArea(ICar? car, int? areaId);
         void SetCarInspectionRequired(ICar car, bool value);
-        void SetCarState(ICar car, ICarStateBase loadingState);
         void SetCarState(int car, int state);
-        void SetCarState(ICar car, ICarState state);
         void SetCarStorage(ICar car, IStorage storage);
         void SetCarTargetArea(ICar car, int? areaId);
         void SetTimerIsAlive(ICarStateTimer timer, bool value);

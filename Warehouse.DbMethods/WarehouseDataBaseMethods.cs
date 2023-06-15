@@ -30,9 +30,9 @@ namespace Warehouse.DbMethods
             {
                 foreach (var state in carStates)
                 {
-                    var stateInDb = db.CarStates.Find(state.Id);
+                    var stateInDb = db.CarStateTypes.Find(state.Id);
                     if (stateInDb == null)
-                        db.CarStates.Add(new CarState() { Id = state.Id, Name = state.Name, TypeName = state.TypeName });
+                        db.CarStateTypes.Add(new CarStateType() { Id = state.Id, Name = state.Name, TypeName = state.TypeName });
                 }
                 db.SaveChanges();
             }
@@ -103,10 +103,10 @@ namespace Warehouse.DbMethods
                 return db.Cars.Include(x => x.WaitingLists).ToList();
         }
 
-        public ICarState GetCarState(ICar car)
+        public ICarStateType GetCarState(ICar car)
         {
             using (var db = new WarehouseContext(settings))
-                return db.CarStates.First(x => x.Id == car.CarStateId);
+                return db.CarStateTypes.First(x => x.Id == car.CarStateId);
         }
 
         public void SetCarInspectionRequired(ICar car, bool value)
@@ -129,32 +129,11 @@ namespace Warehouse.DbMethods
             }
         }
 
-        public void SetCarState(ICar car, ICarStateBase state)
-        {
-            using (var db = new WarehouseContext(settings))
-            {
-                if (TryFindEntity<Car>(db, car.Id, out var dbCar))
-                    dbCar.CarStateId = state.Id;
-                db.SaveChanges();
-            }
-        }
-
-        public void SetCarState(ICar car, ICarState state)
-        {
-            using (var db = new WarehouseContext(settings))
-            {
-                if (TryFindEntity<Car>(db, car.Id, out var dbCar))
-                    dbCar.CarStateId = state.Id;
-                db.SaveChanges();
-            }
-        }
-
         public void SetCarState(int car, int state)
         {
             using (var db = new WarehouseContext(settings))
             {
-                if (TryFindEntity<Car>(db, car, out var dbCar))
-                    dbCar.CarStateId = state;
+                FindEntity<Car>(db, car).CarStateId = state;
                 db.SaveChanges();
             }
         }
@@ -193,10 +172,10 @@ namespace Warehouse.DbMethods
 
         #region States
 
-        public ICarState? GetStateById(int stateId)
+        public ICarStateType? GetStateById(int stateId)
         {
             using (var db = new WarehouseContext(settings))
-                return FindEntity<CarState>(db, stateId);
+                return FindEntity<CarStateType>(db, stateId);
         }
 
         #endregion
@@ -218,10 +197,10 @@ namespace Warehouse.DbMethods
             }
         }
 
-        public ICarState GetTimerTargetState(ITimeControledState controlledState)
+        public ICarStateType GetTimerTargetState(ITimeControledState controlledState)
         {
             using (var db = new WarehouseContext(settings))
-                return db.CarStates.First(x => x.Id == controlledState.CarStateId);
+                return db.CarStateTypes.First(x => x.Id == controlledState.CarStateId);
         }
 
         public void CreateTimer(ICar car, ITimeControledState controlledState)

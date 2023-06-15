@@ -39,7 +39,7 @@ namespace Warehouse.CameraRoles.Implements
             ProcessCar(camera, car);
         }
 
-        protected override bool IfNotExpectedCarState(ICarState carState, List<int> expectedStateIds)
+        protected override bool IfNotExpectedCarState(ICarStateType carState, List<int> expectedStateIds)
         {
             return true;
         }
@@ -79,6 +79,12 @@ namespace Warehouse.CameraRoles.Implements
 
                 return;
             }
+
+
+            ChangeCarStatus(camera, car.Id, new FinishState().Id);
+            SetCarArea(camera, car.Id, null);
+            OpenBarrier(camera, car);
+            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) уезжает. Статус машины изменен на \"{new FinishState().Name}\".");
         }
     }
 }
