@@ -14,7 +14,13 @@ namespace Warehouse.Utilities.WaitingListsImporterProject
     public class WaitingListImporterService : IWaitingListImporterService
     {
         private IRussificationService _ruService = new RussificationService();
-        private IAppSettings settings = new DefaultAppSettings();
+        private IAppSettings settings;
+
+        public WaitingListImporterService()
+        {
+            settings = new DefaultAppSettings();
+            settings.Load();
+        }
 
         private readonly Dictionary<string, int> _cameraToAreaId = new Dictionary<string, int>()
         {
@@ -65,10 +71,11 @@ namespace Warehouse.Utilities.WaitingListsImporterProject
             foreach (XmlNode node in xmlDocumentRoot.SelectNodes("//ТаблицаСписокТС"))
             {
                 var car = new Car();
-                car.PlateNumberForward = _ruService.ToRu(node.Attributes["НомерТС"].Value);
-                car.PlateNumberBackward = _ruService.ToRu(node.Attributes["Прицеп"].Value);
+                car.PlateNumberForward = _ruService.ToRu(node.Attributes["НомерТС"].Value.ToUpper());
+                car.PlateNumberBackward = _ruService.ToRu(node.Attributes["Прицеп"].Value.ToUpper());
                 car.Driver = node.Attributes["Водитель"].Value;
                 car.CarStateId = 0;
+                if(result.Camera != null && result.Camera != "")
                 car.TargetAreaId = _cameraToAreaId[result.Camera];
                 result.Cars.Add(car);
             }
@@ -89,6 +96,10 @@ namespace Warehouse.Utilities.WaitingListsImporterProject
                     if (existCar != null)
                         car.Id = existCar.Id;
                 }
+
+                if (list.PurposeOfArrival == "Постоянный")
+                    list.AccessGrantType = AccessGrantType.Free;
+
 
                 db.WaitingLists.Attach(list);
                 db.SaveChanges();

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Warehouse.Interfaces.DataBase;
+﻿using Warehouse.Interfaces.DataBase;
 
 
 namespace Warehouse.Utilities.WaitingListsImporterProject
@@ -36,7 +31,7 @@ namespace Warehouse.Utilities.WaitingListsImporterProject
             }
             catch (Exception ex)
             {
-                WriteLog($"Не удалось импортировать файл {Path.GetFileName(file)}. {ex.Message}");
+                WriteLog($"Не удалось импортировать файл {Path.GetFileName(file)}. {ex}");
                 return;
             }
         }

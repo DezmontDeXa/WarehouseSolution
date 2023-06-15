@@ -4,12 +4,14 @@ using Warehouse.Interfaces.AppSettings;
 using Warehouse.Logging;
 using Warehouse.Utilities.WaitingListsImporterProject;
 
-LoggingConfigurator.ConfigureLoggerWithoutDb();
-var logger = LogManager.GetCurrentClassLogger();
-
 try
 {
     IAppSettings settings = new DefaultAppSettings();
+    settings.Load();
+
+    LoggingConfigurator.ConfigureLogger(settings, useInternalLog: false, useDbLog: false);
+    var logger = LogManager.GetCurrentClassLogger();
+
     var sourceFolder = settings.WaitingListsImportFolder;
 
     logger.Info($"Папка с листами: {sourceFolder}");
@@ -51,7 +53,7 @@ try
 }
 catch (Exception ex)
 {
-    logger.Fatal($"{ex}");
     Console.WriteLine("Press Enter for Exit");
     Console.ReadLine();
 }
+Console.ReadLine();
