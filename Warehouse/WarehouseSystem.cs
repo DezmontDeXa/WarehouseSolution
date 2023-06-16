@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Ninject.Activation;
+using NLog;
 using Warehouse.CameraListeners;
 using Warehouse.ConfigDataBase;
 using Warehouse.Interfaces.AppSettings;
@@ -6,11 +7,13 @@ using Warehouse.Interfaces.CameraRoles;
 using Warehouse.Interfaces.CamerasListener;
 using Warehouse.Interfaces.DataBase;
 using Warehouse.Interfaces.DataBase.Configs;
+using Warehouse.Processors.Car.Core;
 
 namespace Warehouse
 {
     public class WarehouseSystem
     {
+        private readonly WarehousePipeline pipeline;
         private readonly ILogger _logger;
         private readonly List<ICameraListener> _cameraListeners;
         private readonly List<ICameraRoleBase> _cameraRoles;
@@ -18,9 +21,11 @@ namespace Warehouse
         private readonly IWarehouseDataBaseMethods dbMethods;
         private readonly Dictionary<ICameraListener, ICameraRoleBase> _cameraRolesMap;
         private readonly Dictionary<ICameraListener, ICamera> _listenersToCameraMap;
+        private readonly Dictionary<ICameraListener, ICameraNotifyBlock> _anpr;
 
-        public WarehouseSystem(ILogger logger, List<ICameraRoleBase> cameraRoles, IAppSettings settings, IWarehouseDataBaseMethods dbMethods)
+        public WarehouseSystem(WarehousePipeline pipeline, ILogger logger, List<ICameraRoleBase> cameraRoles, IAppSettings settings, IWarehouseDataBaseMethods dbMethods)
         {
+            this.pipeline = pipeline;
             _logger = logger;
             _cameraRoles = cameraRoles;
             this.settings = settings;
@@ -28,6 +33,7 @@ namespace Warehouse
             _cameraListeners = new List<ICameraListener>();
             _cameraRolesMap = new Dictionary<ICameraListener, ICameraRoleBase>();
             _listenersToCameraMap = new Dictionary<ICameraListener, ICamera>();
+            _anpr = new Dictionary<ICameraListener, ICameraNotifyBlock>();
         }
 
         public async void RunAsync()
@@ -69,7 +75,31 @@ namespace Warehouse
         {
             var listener = (ICameraListener)sender;
             var listenerToRole = _cameraRolesMap.FirstOrDefault(x => x.Key.GetHashCode() == listener.GetHashCode());
-            listenerToRole.Value.Execute(_listenersToCameraMap[listener], notifyBlock);
+            var listenerCamera = _listenersToCameraMap[listener];
+
+            // семафор для сбора двух блоков - один с данными ANPR другой с фоткой
+            if (IsAnprEvent(notifyBlock))
+            {
+                _anpr.Add(listener, notifyBlock);;
+                return;
+            }
+            if (!_anpr.ContainsKey(listener)) return;
+            var _anprBlock = _anpr[listener];
+            var _pictureBlock = notifyBlock;
+            _anpr.Remove(listener);
+
+            pipeline.Process(new CarInfo(listenerCamera, _anprBlock, _pictureBlock));
         }
+
+        private static bool IsAnprEvent(ICameraNotifyBlock notifyBlock)
+        {
+            if (notifyBlock.Headers["Content-Type"] == "application/xml" || notifyBlock.Headers["Content-Type"] == "text/xml")
+                // Skip all events,except Car detected
+                if (notifyBlock.EventType == "ANPR")
+                    return true;
+
+            return false;
+        }
+
     }
 }

@@ -12,7 +12,7 @@ public partial class WaitingList : IWaitingList
 
     public string Name { get; set; } = null!;
 
-    public AccessGrantType AccessGrantType { get; set; }
+    public AccessType AccessType { get; set; }
 
     public virtual ICollection<Car> Cars { get; set; }
     ICollection<ICar> IWaitingList.Cars => Cars.Cast<ICar>().ToList();

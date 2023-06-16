@@ -9,6 +9,6 @@ namespace Warehouse.Interfaces.CameraRoles
         int Id { get; }
         string Name { get; }
 
-        void Execute(ICamera camera, ICameraNotifyBlock notifyBlock);
+        //void Execute(ICamera camera, ICameraNotifyBlock notifyBlock);
     }
 }

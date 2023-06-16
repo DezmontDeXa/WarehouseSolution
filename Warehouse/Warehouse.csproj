@@ -24,11 +24,13 @@
     <ProjectReference Include="..\Warehouse.Barriers\Warehouse.Barriers.csproj" />
     <ProjectReference Include="..\Warehouse.CameraListeners\Warehouse.CameraListeners.csproj" />
     <ProjectReference Include="..\Warehouse.ConfigDataBase\Warehouse.ConfigDataBase.csproj" />
+    <ProjectReference Include="..\Warehouse.ConfigDbMethods\Warehouse.ConfigDbMethods.csproj" />
     <ProjectReference Include="..\Warehouse.DataBase\Warehouse.DataBase.csproj" />
     <ProjectReference Include="..\Warehouse.DbMethods\Warehouse.DbMethods.csproj" />
     <ProjectReference Include="..\Warehouse.FindCarServices\Warehouse.FindCarServices.csproj" />
     <ProjectReference Include="..\Warehouse.Logging\Warehouse.Logging.csproj" />
     <ProjectReference Include="..\Warehouse.Nais\Warehouse.Nais.csproj" />
+    <ProjectReference Include="..\Warehouse.Processors.Car\Warehouse.Processors.Car.csproj" />
     <ProjectReference Include="..\Warehouse.RusificationServices\Warehouse.RusificationServices.csproj" />
     <ProjectReference Include="..\Warehouse.TimeControl\Warehouse.TimeControl.csproj" />
     <ProjectReference Include="..\Warehouse.WaitingListsServices\Warehouse.WaitingListsServices.csproj" />

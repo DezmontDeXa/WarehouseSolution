@@ -1,6 +1,6 @@
 ﻿namespace Warehouse.Interfaces.DataBase;
 
-public enum AccessGrantType
+public enum AccessType
 {
     Free = 1,
     Tracked = 2

@@ -33,7 +33,7 @@ namespace Warehouse.Nais
 
             _expectedStates = new List<ICarStateBase>()
             {
-                new AwaitingWeighingState(),
+                new AwaitingFirstWeighingState(),
                 new WeighingState(),
                 new LoadingState(),
                 new LoadingState(),
@@ -199,7 +199,7 @@ namespace Warehouse.Nais
 
         private void ApplySecondWeighting(IWeightsRecord record, ICar existCar)
         {
-            _dbMethods.SetCarState(existCar.Id, new ExitPassGrantedState().Id);
+            _dbMethods.SetCarState(existCar.Id, new ExitingState().Id);
             _logger.Info($"Машина ({existCar.PlateNumberForward}) Прошла второе взвешивание. Статус машины изменен на \"{new ExitPassGrantedState().Name}\".");
         }
 

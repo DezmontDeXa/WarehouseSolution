@@ -14,48 +14,48 @@ namespace Warehouse.CameraRoles.Implements
     {
         private IArea weightControlArea;
 
-        public ExitFromAnotherAreaRole(
-            ILogger logger, IWaitingListsService waitingListsService, IBarriersService barriersService, 
-            IRussificationService ruService, IAppSettings settings, IWarehouseDataBaseMethods dbMethods) 
-            :base (logger, waitingListsService, barriersService, ruService, settings, dbMethods)
+        public ExitFromAnotherAreaRole()
+            //ILogger logger, IWaitingListsService waitingListsService, IBarriersService barriersService, 
+            //IRussificationService ruService, IAppSettings settings, IWarehouseDataBaseMethods dbMethods) 
+            //:base (logger, waitingListsService, barriersService, ruService, settings, dbMethods)
         {
             Id = 6;
             Name = "Выезд с другой территории";
             Description = "Выезд с териитории без весов и открытие шлагбаума";
-            AddExpectedState(new LoadingState());
-            AddExpectedState(new UnloadingState());
-            AddExpectedState(new SamplingState());
+            //AddExpectedState(new LoadingState());
+            //AddExpectedState(new UnloadingState());
+            //AddExpectedState(new SamplingState());
 
-            weightControlArea = GetNaisArea();
+            //weightControlArea = GetNaisArea();
         }
 
-        protected override void OnCarWithTempAccess(ICamera camera, ICarAccessInfo info, ICameraNotifyBlock _pictureBlock)
-        {
-            base.OnCarWithTempAccess(camera, info, _pictureBlock);
-            var car = info.Car;
-            SetCarArea(camera, car.Id, camera.AreaId);
-            ChangeCarStatus(camera, car.Id, new ChangingAreaState().Id);
-            SetCarTargetArea(camera, car.Id, weightControlArea.Id);
-            var cameraArea = GetCameraArea(camera);
+        //protected override void OnCarWithTempAccess(ICamera camera, ICarAccessInfo info, ICameraNotifyBlock _pictureBlock)
+        //{
+        //    base.OnCarWithTempAccess(camera, info, _pictureBlock);
+        //    var car = info.Car;
+        //    SetCarArea(camera, car.Id, camera.AreaId);
+        //    ChangeCarStatus(camera, car.Id, new ChangingAreaState().Id);
+        //    SetCarTargetArea(camera, car.Id, weightControlArea.Id);
+        //    var cameraArea = GetCameraArea(camera);
 
-            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) меняет территорию с {cameraArea.Name} на {weightControlArea.Name}. Статус машины изменен на \"{new ChangingAreaState().Name}\".");
-        }
+        //    Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) меняет территорию с {cameraArea.Name} на {weightControlArea.Name}. Статус машины изменен на \"{new ChangingAreaState().Name}\".");
+        //}
 
-        protected override void OnCarWithFreeAccess(ICamera camera, ICarAccessInfo info, ICameraNotifyBlock _pictureBlock)
-        {
-            base.OnCarWithFreeAccess(camera, info, _pictureBlock);
-            var car = info.Car;
-            ChangeCarStatus(camera, car.Id, new AwaitingState().Id);
-            SetCarArea(camera, car.Id, null);
-            OpenBarrier(camera, car);
+        //protected override void OnCarWithFreeAccess(ICamera camera, ICarAccessInfo info, ICameraNotifyBlock _pictureBlock)
+        //{
+        //    base.OnCarWithFreeAccess(camera, info, _pictureBlock);
+        //    var car = info.Car;
+        //    ChangeCarStatus(camera, car.Id, new AwaitingState().Id);
+        //    SetCarArea(camera, car.Id, null);
+        //    OpenBarrier(camera, car);
 
-            var cameraArea = GetCameraArea(camera);
-            Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) покинула территорию {cameraArea.Name}. Статус машины изменен на \"{new AwaitingState().Name}\".");
-        }
+        //    var cameraArea = GetCameraArea(camera);
+        //    Logger.Info($"{camera.Name}:\t Машина ({car.PlateNumberForward}) покинула территорию {cameraArea.Name}. Статус машины изменен на \"{new AwaitingState().Name}\".");
+        //}
 
-        protected override bool IfNotExpectedCarState(ICarStateType carState, List<int> expectedStateIds)
-        {
-            return true;
-        }
+        //protected override bool IfNotExpectedCarState(ICarStateType carState, List<int> expectedStateIds)
+        //{
+        //    return true;
+        //}
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Warehouse.Interfaces.DataBase;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.Core
 {
     public abstract class DbProcessorBase : IProcessor<CarInfo>
     {

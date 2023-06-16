@@ -24,7 +24,7 @@ namespace Warehouse.Utilities.WaitingListsImporterProject
                 if (!file.EndsWith(".xml")) return;
 
                 importerService.ImportList(
-                    AccessGrantType.Tracked,
+                    AccessType.Tracked,
                     new FileInfo(file));
 
                 WriteLog($"Импорован файл {Path.GetFileName(file)}.");

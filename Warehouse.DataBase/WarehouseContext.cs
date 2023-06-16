@@ -9,10 +9,10 @@ public partial class WarehouseContext : DbContext
 {
     private readonly string connectionString;
 
-    //public WarehouseContext()
-    //{
-    //    connectionString = File.ReadAllText("C:\\Users\\DezmontDeXa\\source\\repos\\WarehouseSolution\\Warehouse.DataBase\\ConnectionString.json");
-    //}
+    public WarehouseContext()
+    {
+        connectionString = File.ReadAllText("C:\\Users\\DezmontDeXa\\source\\repos\\WarehouseSolution\\Warehouse.DataBase\\ConnectionString.json");
+    }
 
     public WarehouseContext(IAppSettings appSettings)
     {

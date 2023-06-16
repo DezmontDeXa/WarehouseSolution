@@ -1,8 +1,8 @@
 ﻿namespace Warehouse.CarStates.Implements
 {
-    public class AwaitingWeighingState : CarStateBase
+    public class AwaitingSecondWeighingState : CarStateBase
     {
-        public AwaitingWeighingState() : base(2, "Ожидает взвешивание") { }
+        public AwaitingSecondWeighingState() : base(13, "Ожидает второе взвешивание") { }
     }
 
     //public class RequiredInspectioState : CarStateBase

@@ -2,7 +2,7 @@
 {
     public interface IWaitingList
     {
-        AccessGrantType AccessGrantType { get; }
+        AccessType AccessType { get; }
         string? Camera { get;  }
         ICollection<ICar> Cars { get; }
         string? Customer { get; }

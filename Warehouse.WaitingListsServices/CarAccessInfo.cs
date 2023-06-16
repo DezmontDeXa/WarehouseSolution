@@ -9,8 +9,8 @@ namespace Warehouse.WaitingListsServices
         {
             Car = car;
             AllIncludeLists = lists;
-            TopAccessTypeList = lists?.OrderByDescending(x => x.AccessGrantType)?.FirstOrDefault();
-            TopAccessType = TopAccessTypeList?.AccessGrantType;
+            TopAccessTypeList = lists?.OrderByDescending(x => x.AccessType)?.FirstOrDefault();
+            TopAccessType = TopAccessTypeList?.AccessType;
 
             switch (TopAccessTypeList?.PurposeOfArrival?.ToLower()?.Replace(" ", ""))
             {
@@ -29,7 +29,7 @@ namespace Warehouse.WaitingListsServices
         public ICar Car { get; }
         public List<IWaitingList> AllIncludeLists { get; }
         public IWaitingList? TopAccessTypeList { get; }
-        public AccessGrantType? TopAccessType { get; }
+        public AccessType? TopAccessType { get; }
         public PurposeOfArrival TopPurposeOfArrival { get; }
     }
 }

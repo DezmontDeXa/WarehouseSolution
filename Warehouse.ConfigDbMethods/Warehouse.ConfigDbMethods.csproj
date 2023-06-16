@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Warehouse.ConfigDataBase\Warehouse.ConfigDataBase.csproj" />
     <ProjectReference Include="..\Warehouse.Interfaces\Warehouse.Interfaces.csproj" />
   </ItemGroup>
 

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Warehouse.ExprectedStates\Warehouse.ExprectedStates.csproj" />
     <ProjectReference Include="..\Warehouse.Interfaces\Warehouse.Interfaces.csproj" />
     <ProjectReference Include="..\Warehouse.Processors\Warehouse.Processors.csproj" />
   </ItemGroup>

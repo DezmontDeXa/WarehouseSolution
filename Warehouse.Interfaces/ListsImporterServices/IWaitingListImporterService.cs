@@ -4,7 +4,7 @@ namespace Warehouse.Interfaces.ListsImporterServices
 {
     public interface IWaitingListImporterService
     {
-        void ImportList(AccessGrantType accessGrantType, FileInfo xmlFileInfo);
-        void ImportList(AccessGrantType accessGrantType, string xmlFileContent);
+        void ImportList(AccessType accessGrantType, FileInfo xmlFileInfo);
+        void ImportList(AccessType accessGrantType, string xmlFileContent);
     }
 }

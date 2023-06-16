@@ -1,34 +1,28 @@
-﻿using Warehouse.Interfaces.DataBase;
+﻿using NLog;
 using Warehouse.Interfaces.DataBase.Configs;
+using Warehouse.Processors.Car.Core;
 
 namespace Warehouse.Processors.Car
 {
-    public class DirectionFilter : IProcessor<CarInfo>
+    public class DirectionFilter : CarInfoProcessorBase
     {
-        public ProcessorResult Process(CarInfo info)
+        public DirectionFilter(ILogger logger) : base(logger) 
         {
-            if (info.Camera.Direction == info.DetectedDirection)
-                return ProcessorResult.Next;
+            
+        }
 
-            // TODO: incorrect direction
-            return ProcessorResult.Finish;
+        protected override ProcessorResult Action(CarInfo info)
+        {
+            var camera = info.Camera;
+            var direction = info.MoveDirectionString;
+
+            if (camera.Direction != MoveDirection.Both && direction.ToLower() != camera.Direction.ToString().ToLower())
+            {
+                Logger.Error($"Не верное направление движения. Ожидалось: {camera.Direction}. Направление: {direction}. Обработка прервана.");
+                return ProcessorResult.Finish;
+            }
+
+            return ProcessorResult.Next;
         }
     }
-
-    public class StatesFilter : DbProcessorBase
-    {
-        private readonly IWarehouseConfigDataBaseMethods _configDbMethods;
-
-        public StatesFilter(IWarehouseDataBaseMethods dbmethods, IWarehouseConfigDataBaseMethods configDbMethods) : base(dbmethods)
-        {
-            _configDbMethods = configDbMethods;
-        }
-
-        public override ProcessorResult Process(CarInfo info)
-        {
-            //_configDbMethods.GetCameraExpectedStates(info.Camera.ExpectedStates);
-            return ProcessorResult.Finish;
-        }
-    }
-
 }

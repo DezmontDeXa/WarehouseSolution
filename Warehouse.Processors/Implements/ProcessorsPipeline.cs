@@ -4,13 +4,15 @@
     /// Исполняет дочерние процессоры по очереди, пока один не вернет Finish. Всегда возвращает Next.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ProcessorsQueue<T> : IProcessor<T>
+    public class ProcessorsPipeline<T> : IProcessor<T>
     {
-        private ICollection<IProcessor<T>> _processors;
+        public event EventHandler AllSkipped;
 
-        public ProcessorsQueue(ICollection<IProcessor<T>> processors)
+        private List<IProcessor<T>> _processors = new List<IProcessor<T>>();
+
+        public void AddProcessor(IProcessor<T> processor)
         {
-            _processors = processors.ToList();
+            _processors.Add(processor);
         }
 
         public ProcessorResult Process(T info)
@@ -19,6 +21,7 @@
                 if (proc.Process(info) == ProcessorResult.Finish)
                     return ProcessorResult.Next;
 
+            AllSkipped?.Invoke(this, null);
             return ProcessorResult.Next;
         }
     }

@@ -28,16 +28,16 @@ namespace Warehouse.Utilities.WaitingListsImporterProject
             {"Въезд герцена", 2 },
         };
 
-        public void ImportList(AccessGrantType accessGrantType, string xmlFileContent)
+        public void ImportList(AccessType accessGrantType, string xmlFileContent)
         {
             xmlFileContent = FixContent(xmlFileContent);
             var result = ParseFile(xmlFileContent);
-            result.AccessGrantType = accessGrantType;
+            result.AccessType = accessGrantType;
             result.Name = $"{accessGrantType}({result.Number})";
             ImportToDataBase(result);
         }
 
-        public void ImportList(AccessGrantType accessGrantType, FileInfo xmlFileInfo)
+        public void ImportList(AccessType accessGrantType, FileInfo xmlFileInfo)
         {
             ImportList(accessGrantType, File.ReadAllText(xmlFileInfo.FullName));
         }
@@ -98,7 +98,7 @@ namespace Warehouse.Utilities.WaitingListsImporterProject
                 }
 
                 if (list.PurposeOfArrival == "Постоянный")
-                    list.AccessGrantType = AccessGrantType.Free;
+                    list.AccessType = AccessType.Free;
 
 
                 db.WaitingLists.Attach(list);
