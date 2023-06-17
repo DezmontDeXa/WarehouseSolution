@@ -27,6 +27,7 @@ using Warehouse.Processors.Car.Filters;
 using Warehouse.Processors.Car.Getters;
 using Warehouse.Processors.Car.Setters;
 using Warehouse.Processors.Car.StateSwithers;
+using Warehouse.Processors.Car.StateSwithers.AAA;
 using Warehouse.RusificationServices;
 using Warehouse.TimeControl;
 using Warehouse.WaitingListsServices;
@@ -109,16 +110,30 @@ namespace Warehouse
             Bind<WaitingListsGetter>().ToSelf().InSingletonScope();
             Bind<AccessTypeGetter>().ToSelf().InSingletonScope();
             Bind<PurposesGetter>().ToSelf().InSingletonScope();
-            Bind<BlockCarAfterLoadingUnloadingProcessor>().ToSelf().InSingletonScope();
-            Bind<FreeStateSwitcher>().ToSelf().InSingletonScope();
-            Bind<TrackedStateSwitcher>().ToSelf().InSingletonScope();
-            Bind<AfterFirstWeightningStateSwitcher>().ToSelf().InSingletonScope();
-            Bind<AnotherAreaStateSwitcher>().ToSelf().InSingletonScope();
+            //Bind<BlockCarAfterLoadingUnloadingProcessor>().ToSelf().InSingletonScope();
+            //Bind<FreeStateSwitcher>().ToSelf().InSingletonScope();
+            //Bind<TrackedStateSwitcher>().ToSelf().InSingletonScope();
+            //Bind<AfterFirstWeightningStateSwitcher>().ToSelf().InSingletonScope();
+            //Bind<AnotherAreaStateSwitcher>().ToSelf().InSingletonScope();
             Bind<OpenBarrierProcessor>().ToSelf().InSingletonScope();
             Bind<DetectedCarPrinter>().ToSelf().InSingletonScope();
             Bind<PlateNumberGetter>().ToSelf().InSingletonScope();
             Bind<WeightningGetter>().ToSelf().InSingletonScope();
             Bind<StateFixer>().ToSelf().InSingletonScope();
+
+            // Main StateSwitchers
+            Bind<MainStateSwitchers>().ToSelf().InSingletonScope();
+            Bind<BeforeEnterSwitcher>().ToSelf().InSingletonScope();
+            Bind<AfterEnterSwitcher>().ToSelf().InSingletonScope();
+            Bind<FirstWeightningSwitch>().ToSelf().InSingletonScope();
+            Bind<SecondWeightningSwitch>().ToSelf().InSingletonScope();
+            Bind<ExitAfterSecondWeightingSwitcher>().ToSelf().InSingletonScope();
+
+            // Second StateSwitchers
+            Bind<ExitingForChangeAreaSwitcher>().ToSelf().InSingletonScope();
+            Bind<ChangingAreaSwitcher>().ToSelf().InSingletonScope();
+            Bind<ExitFromAnotherAreaSwitcher>().ToSelf().InSingletonScope();
+
         }
 
     }
