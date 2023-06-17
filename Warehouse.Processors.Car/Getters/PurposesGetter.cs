@@ -1,5 +1,4 @@
 ﻿using NLog;
-using Warehouse.Interfaces.WaitingListServices;
 using Warehouse.Processors.Car.Core;
 
 namespace Warehouse.Processors.Car.Getters
