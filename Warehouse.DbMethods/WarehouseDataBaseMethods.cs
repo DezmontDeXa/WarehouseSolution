@@ -32,6 +32,11 @@ namespace Warehouse.DbMethods
                     var stateInDb = db.CarStateTypes.Find(state.Id);
                     if (stateInDb == null)
                         db.CarStateTypes.Add(new CarStateType() { Id = state.Id, Name = state.Name, TypeName = state.TypeName });
+                    else
+                    {
+                        stateInDb.TypeName = state.TypeName;
+                        stateInDb.Name = state.Name;
+                    }
                 }
                 db.SaveChanges();
             }

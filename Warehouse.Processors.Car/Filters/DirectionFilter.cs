@@ -2,13 +2,13 @@
 using Warehouse.Interfaces.DataBase.Configs;
 using Warehouse.Processors.Car.Core;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.Filters
 {
     public class DirectionFilter : CarInfoProcessorBase
     {
-        public DirectionFilter(ILogger logger) : base(logger) 
+        public DirectionFilter(ILogger logger) : base(logger)
         {
-            
+
         }
 
         protected override ProcessorResult Action(CarInfo info)
@@ -18,7 +18,7 @@ namespace Warehouse.Processors.Car
 
             if (camera.Direction != MoveDirection.Both && direction.ToLower() != camera.Direction.ToString().ToLower())
             {
-                Logger.Error($"Не верное направление движения. Ожидалось: {camera.Direction}. Направление: {direction}. Обработка прервана.");
+                Logger.Trace(BuildLogMessage(info, $"Не верное направление движения. Ожидалось: {camera.Direction}. Направление: {direction}. Обработка прервана."));
                 return ProcessorResult.Finish;
             }
 

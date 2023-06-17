@@ -4,7 +4,7 @@ using Warehouse.CarStates.Implements;
 using Warehouse.Interfaces.DataBase;
 using Warehouse.Processors.Car.Core;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.StateSwithers
 {
     public class AfterFirstWeightningStateSwitcher : CarInfoProcessorBase
     {
@@ -20,7 +20,7 @@ namespace Warehouse.Processors.Car
             if (info.Camera.RoleId == new ExitRole().Id)
                 if (info.State.TypeName == nameof(ExitingForChangeAreaState))
                 {
-                    ChangeStatus(dbmethods, info.Car.Id, new ChangingAreaState());
+                    ChangeStatus(dbmethods, info, new ChangingAreaState());
                     dbmethods.SetCarState(info.Car.Id, new ChangingAreaState().Id);
                     return ProcessorResult.Finish;
                 }
@@ -28,14 +28,14 @@ namespace Warehouse.Processors.Car
             if (info.Camera.RoleId == new OnWeightingRole().Id)
                 if (info.State.TypeName == nameof(LoadingState))
                 {
-                    ChangeStatus(dbmethods, info.Car.Id, new WeighingState());
+                    ChangeStatus(dbmethods, info, new WeighingState());
                     return ProcessorResult.Finish;
                 }
 
             if (info.Camera.RoleId == new OnWeightingRole().Id)
                 if (info.State.TypeName == nameof(UnloadingState))
                 {
-                    ChangeStatus(dbmethods, info.Car.Id, new WeighingState());
+                    ChangeStatus(dbmethods, info, new WeighingState());
                     return ProcessorResult.Finish;
                 }
 

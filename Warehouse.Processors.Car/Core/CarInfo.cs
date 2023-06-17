@@ -21,6 +21,8 @@ namespace Warehouse.Processors.Car.Core
         public IEnumerable<string> Purposes { get; internal set; }
         public bool AnotherAreaProgress { get; internal set; }
         public string MoveDirectionString { get; internal set; }
+        public bool HasFirstWeightning { get; internal set; }
+        public bool HasSecondWeightning { get; internal set; }
 
         public CarInfo(ICamera camera, ICameraNotifyBlock anprBlock, ICameraNotifyBlock pictureBlock)
         {

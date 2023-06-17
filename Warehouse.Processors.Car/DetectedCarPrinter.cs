@@ -11,7 +11,7 @@ namespace Warehouse.Processors.Car
 
         protected override ProcessorResult Action(CarInfo info)
         {
-            Logger.Info($"Обнаружена машина. Номер: {info.RecognizedPlateNumber}. Камера: {info.Camera.Name}");
+            Logger.Info($"({info.Camera.Name})({info.RecognizedPlateNumber}): Обнаружена машина.");
             return ProcessorResult.Next;
         }
     }

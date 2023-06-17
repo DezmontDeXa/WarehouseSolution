@@ -3,7 +3,7 @@ using Warehouse.CarStates.Implements;
 using Warehouse.Interfaces.DataBase;
 using Warehouse.Processors.Car.Core;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.StateSwithers
 {
     public class BlockCarAfterLoadingUnloadingProcessor : CarInfoProcessorBase
     {
@@ -16,15 +16,14 @@ namespace Warehouse.Processors.Car
 
         protected override ProcessorResult Action(CarInfo info)
         {
-            if(info.State.TypeName == nameof(OnEnterState))
+            if (info.State.TypeName == nameof(OnEnterState))
             {
                 var carInDb = dbMethods.GetCarById(info.Car.Id);
-                if(carInDb.FirstWeighingCompleted && !carInDb.SecondWeighingCompleted)
+                if (carInDb.FirstWeighingCompleted && !carInDb.SecondWeighingCompleted)
                 {
-                    dbMethods.SetCarState(info.Car.Id, new AwaitingSecondWeighingState().Id);
-                    Logger.Info($"Статус изменен на {new AwaitingSecondWeighingState().Name}");
+                    ChangeStatus(dbMethods, info, new AwaitingSecondWeighingState());
                     return ProcessorResult.Finish;
-                }    
+                }
             }
 
             return ProcessorResult.Next;

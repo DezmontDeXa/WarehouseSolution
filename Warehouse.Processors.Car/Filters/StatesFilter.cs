@@ -1,9 +1,10 @@
 ﻿using NLog;
 using Warehouse.DataBase.Models.Config;
+using Warehouse.DataBase.Models.Main;
 using Warehouse.ExprectedStates;
 using Warehouse.Processors.Car.Core;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.Filters
 {
     public class StatesFilter : CarInfoProcessorBase
     {

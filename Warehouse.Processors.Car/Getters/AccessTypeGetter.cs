@@ -1,13 +1,11 @@
 ﻿using NLog;
-using Warehouse.DataBase.Models.Config;
-using Warehouse.Interfaces.WaitingListServices;
 using Warehouse.Processors.Car.Core;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.Getters
 {
-    public class AccessTypeSelector : CarInfoProcessorBase
+    public class AccessTypeGetter : CarInfoProcessorBase
     {
-        public AccessTypeSelector(ILogger logger) : base(logger)
+        public AccessTypeGetter(ILogger logger) : base(logger)
         {
         }
 
@@ -15,7 +13,7 @@ namespace Warehouse.Processors.Car
         {
             var topList = info.WaitingLists.OrderByDescending(x => x.AccessType).FirstOrDefault();
             info.AccessType = topList.AccessType;
-            Logger.Trace($"Тип доступа: {info.AccessType}");
+            Logger.Trace(BuildLogMessage(info, $"Тип доступа: {info.AccessType}"));
             return ProcessorResult.Next;
         }
     }

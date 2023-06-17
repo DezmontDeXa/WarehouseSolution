@@ -23,6 +23,10 @@ using Warehouse.Logging;
 using Warehouse.Nais;
 using Warehouse.Processors.Car;
 using Warehouse.Processors.Car.Core;
+using Warehouse.Processors.Car.Filters;
+using Warehouse.Processors.Car.Getters;
+using Warehouse.Processors.Car.Setters;
+using Warehouse.Processors.Car.StateSwithers;
 using Warehouse.RusificationServices;
 using Warehouse.TimeControl;
 using Warehouse.WaitingListsServices;
@@ -81,10 +85,10 @@ namespace Warehouse
             Bind<ICarStateBase>().To<AwaitingState>();
             Bind<ICarStateBase>().To<OnEnterState>();
             Bind<ICarStateBase>().To<AwaitingFirstWeighingState>();
+            Bind<ICarStateBase>().To<AwaitingSecondWeighingState>();
             Bind<ICarStateBase>().To<WeighingState>();
             Bind<ICarStateBase>().To<LoadingState>();
             Bind<ICarStateBase>().To<UnloadingState>();
-            Bind<ICarStateBase>().To<AwaitingSecondWeighingState>();
             Bind<ICarStateBase>().To<ExitingForChangeAreaState>();
             Bind<ICarStateBase>().To<ChangingAreaState>();
             Bind<ICarStateBase>().To<ExitPassGrantedState>(); 
@@ -99,11 +103,11 @@ namespace Warehouse
             Bind<DirectionGetter>().ToSelf().InSingletonScope();
             Bind<DirectionFilter>().ToSelf().InSingletonScope();
             Bind<RegisteredCarFilter>().ToSelf().InSingletonScope();
-            Bind<ChangeCarAreaProcessor>().ToSelf().InSingletonScope();
+            Bind<CarAreaByCameraSetter>().ToSelf().InSingletonScope();
             Bind<CurrentStateGetter>().ToSelf().InSingletonScope();
             Bind<StatesFilter>().ToSelf().InSingletonScope();
             Bind<WaitingListsGetter>().ToSelf().InSingletonScope();
-            Bind<AccessTypeSelector>().ToSelf().InSingletonScope();
+            Bind<AccessTypeGetter>().ToSelf().InSingletonScope();
             Bind<PurposesGetter>().ToSelf().InSingletonScope();
             Bind<BlockCarAfterLoadingUnloadingProcessor>().ToSelf().InSingletonScope();
             Bind<FreeStateSwitcher>().ToSelf().InSingletonScope();
@@ -113,6 +117,8 @@ namespace Warehouse
             Bind<OpenBarrierProcessor>().ToSelf().InSingletonScope();
             Bind<DetectedCarPrinter>().ToSelf().InSingletonScope();
             Bind<PlateNumberGetter>().ToSelf().InSingletonScope();
+            Bind<WeightningGetter>().ToSelf().InSingletonScope();
+            Bind<StateFixer>().ToSelf().InSingletonScope();
         }
 
     }

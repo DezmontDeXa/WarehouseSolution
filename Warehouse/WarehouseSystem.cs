@@ -1,5 +1,4 @@
-﻿using Ninject.Activation;
-using NLog;
+﻿using NLog;
 using Warehouse.CameraListeners;
 using Warehouse.ConfigDataBase;
 using Warehouse.Interfaces.AppSettings;

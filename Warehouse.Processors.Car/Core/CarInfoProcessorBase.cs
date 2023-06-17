@@ -1,5 +1,7 @@
 ﻿using NLog;
 using Warehouse.CarStates;
+using Warehouse.CarStates.Implements;
+using Warehouse.DataBase.Models.Main;
 using Warehouse.Interfaces.DataBase;
 
 namespace Warehouse.Processors.Car.Core
@@ -17,7 +19,10 @@ namespace Warehouse.Processors.Car.Core
         {
             try
             {
-                return Action(info);
+                if (IsSuitableInfo(info))
+                    return Action(info);
+                else
+                    return ProcessorResult.Next;
             }
             catch (Exception ex)
             {
@@ -26,12 +31,33 @@ namespace Warehouse.Processors.Car.Core
             }
         }
 
+        protected virtual bool IsSuitableInfo(CarInfo info)
+        {
+            return true;
+        }
+
         protected abstract ProcessorResult Action(CarInfo info);
 
-        protected void ChangeStatus(IWarehouseDataBaseMethods dbMethods, int carId, CarStateBase state)
+        protected void ChangeStatus(IWarehouseDataBaseMethods dbMethods, CarInfo info, CarStateBase state)
         {
-            dbMethods.SetCarState(carId, state.Id);
-            Logger.Info($"Статус изменен на {state.Name}");
+            dbMethods.SetCarState(info.Car.Id, state.Id);
+            Logger.Info(BuildLogMessage(info, $"Статус изменен c {info.State.Name} на {state.Name}"));
+            info.State = BuildCarStateType(state);
+        }
+
+        protected ICarStateType BuildCarStateType(CarStateBase state)
+        {
+            return new CarStateType()
+            {
+                Id = state.Id,
+                Name = state.Name,
+                TypeName = state.TypeName
+            };
+        }
+
+        protected string BuildLogMessage(CarInfo info, string msg)
+        {
+            return $"({info.Camera.Name})({info.NormalizedPlateNumber}): {msg}";
         }
     }
 }

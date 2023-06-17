@@ -2,7 +2,7 @@
 using Warehouse.Interfaces.CamerasListener;
 using Warehouse.Processors.Car.Core;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.Getters
 {
     public class PlateNumberGetter : CarInfoProcessorBase
     {

@@ -2,7 +2,7 @@
 using Warehouse.Interfaces.WaitingListServices;
 using Warehouse.Processors.Car.Core;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.Getters
 {
     public class PurposesGetter : CarInfoProcessorBase
     {
@@ -13,7 +13,7 @@ namespace Warehouse.Processors.Car
         protected override ProcessorResult Action(CarInfo info)
         {
             info.Purposes = info.WaitingLists.Select(x => x.PurposeOfArrival ?? "").ToList();
-            Logger.Trace($"Причины заезда: {string.Join(", ", info.Purposes)}");
+            Logger.Trace(BuildLogMessage(info, $"Причины заезда: {string.Join(", ", info.Purposes.Distinct())}"));
             return ProcessorResult.Next;
         }
     }

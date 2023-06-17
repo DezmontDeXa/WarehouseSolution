@@ -3,7 +3,7 @@ using Warehouse.CarStates.Implements;
 using Warehouse.Interfaces.DataBase;
 using Warehouse.Processors.Car.Core;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.StateSwithers
 {
     public class TrackedStateSwitcher : CarInfoProcessorBase
     {
@@ -22,20 +22,20 @@ namespace Warehouse.Processors.Car
             switch (info.State.TypeName)
             {
                 case nameof(AwaitingState):
-                    ChangeStatus(dbMethods,info.Car.Id, new OnEnterState());
+                    ChangeStatus(dbMethods, info, new OnEnterState());
                     return ProcessorResult.Finish;
 
                 case nameof(OnEnterState):
-                    ChangeStatus(dbMethods, info.Car.Id, new AwaitingFirstWeighingState());
+                    ChangeStatus(dbMethods, info, new AwaitingFirstWeighingState());
                     return ProcessorResult.Finish;
 
                 case nameof(AwaitingFirstWeighingState):
-                    ChangeStatus(dbMethods, info.Car.Id, new WeighingState());
+                    ChangeStatus(dbMethods, info, new WeighingState());
                     return ProcessorResult.Finish;
 
 
                 case nameof(ExitingState):
-                    ChangeStatus(dbMethods, info.Car.Id, new FinishState());
+                    ChangeStatus(dbMethods, info, new FinishState());
                     return ProcessorResult.Finish;
 
             }

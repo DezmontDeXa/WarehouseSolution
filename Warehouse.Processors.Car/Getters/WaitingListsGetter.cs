@@ -2,7 +2,7 @@
 using Warehouse.Interfaces.DataBase;
 using Warehouse.Processors.Car.Core;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.Getters
 {
     public class WaitingListsGetter : CarInfoProcessorBase
     {

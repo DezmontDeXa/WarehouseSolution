@@ -1,10 +1,11 @@
 ﻿using NLog;
+using NLog.Fluent;
 using Warehouse.DataBase.Models.Config;
 using Warehouse.Interfaces.FindCarServices;
 using Warehouse.Interfaces.RusificationServices;
 using Warehouse.Processors.Car.Core;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.Filters
 {
     public class RegisteredCarFilter : CarInfoProcessorBase
     {
@@ -21,13 +22,13 @@ namespace Warehouse.Processors.Car
         {
             info.NormalizedPlateNumber = _ruService.ToRu(info.RecognizedPlateNumber).ToUpper();
             var car = _findCarService.FindCar(info.NormalizedPlateNumber);
-            if(car==null)
+            if (car == null)
             {
-                Logger.Error($"Машина не найдена в базе. Обработка прервана.");
+                Logger.Error(BuildLogMessage(info, $"Неизвестная машина ({info.NormalizedPlateNumber}). Обработка прервана."));
                 return ProcessorResult.Finish;
             }
             info.Car = car;
-            Logger.Trace($"Машина найдена в базе");
+            Logger.Trace(BuildLogMessage(info, $"Машина найдена в базе"));
             return ProcessorResult.Next;
         }
     }

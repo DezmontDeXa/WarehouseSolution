@@ -3,7 +3,7 @@ using Warehouse.CarStates.Implements;
 using Warehouse.Interfaces.DataBase;
 using Warehouse.Processors.Car.Core;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.StateSwithers
 {
     public class AnotherAreaStateSwitcher : CarInfoProcessorBase
     {
@@ -22,20 +22,20 @@ namespace Warehouse.Processors.Car
                     if (!info.AnotherAreaProgress)
                     {
                         info.AnotherAreaProgress = true;
-                        ChangeStatus(dbmethods, info.Car.Id, new LoadingState());
+                        ChangeStatus(dbmethods, info, new LoadingState());
                     }
                     else
                     {
-                        ChangeStatus(dbmethods, info.Car.Id, new OnEnterState()); //TODO: or unloading
+                        ChangeStatus(dbmethods, info, new OnEnterState()); //TODO: or unloading
                     }
                     return ProcessorResult.Finish;
 
                 case nameof(LoadingState):
-                    ChangeStatus(dbmethods, info.Car.Id, new ChangingAreaState());
+                    ChangeStatus(dbmethods, info, new ChangingAreaState());
                     return ProcessorResult.Finish;
 
                 case nameof(UnloadingState):
-                    ChangeStatus(dbmethods, info.Car.Id, new ChangingAreaState());
+                    ChangeStatus(dbmethods, info, new ChangingAreaState());
                     return ProcessorResult.Finish;
             }
 

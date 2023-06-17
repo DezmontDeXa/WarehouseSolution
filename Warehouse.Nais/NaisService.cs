@@ -34,10 +34,11 @@ namespace Warehouse.Nais
             _expectedStates = new List<ICarStateBase>()
             {
                 new AwaitingFirstWeighingState(),
+                new AwaitingSecondWeighingState(),
                 new WeighingState(),
                 new LoadingState(),
-                new LoadingState(),
-                new ExitingForChangeAreaState()
+                new UnloadingState(),
+
             };
 
             _nais.RecordAdded += OnRecordAdded;
@@ -174,8 +175,8 @@ namespace Warehouse.Nais
                     break;
 
                 default:
-                    _dbMethods.SetCarState(existCar.Id, new ErrorState().Id);
-                    _logger.Error($"Машина ({existCar.PlateNumberForward}) из списка ({accessType.TopAccessTypeList?.Number}) с целью заезда ({accessType.TopPurposeOfArrival}) была отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{new ErrorState().Name}\".");
+                    _dbMethods.SetCarState(existCar.Id, new UnloadingState().Id);
+                    _logger.Error($"Машина ({existCar.PlateNumberForward}) из списка ({accessType.TopAccessTypeList?.Number}) без указанной цели заезда. Была отправлена на склад {storage.Name}({storage.NaisCode}). Статус машины изменен на \"{new UnloadingState().Name}\".");
                     break;
             }
             _dbMethods.SetCarTargetArea(existCar, null);

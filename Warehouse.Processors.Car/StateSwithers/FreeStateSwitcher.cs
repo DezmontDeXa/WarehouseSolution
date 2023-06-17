@@ -4,7 +4,7 @@ using Warehouse.CarStates.Implements;
 using Warehouse.Interfaces.DataBase;
 using Warehouse.Processors.Car.Core;
 
-namespace Warehouse.Processors.Car
+namespace Warehouse.Processors.Car.StateSwithers
 {
 
     public class FreeStateSwitcher : CarInfoProcessorBase
@@ -13,27 +13,27 @@ namespace Warehouse.Processors.Car
 
         public FreeStateSwitcher(ILogger logger, IWarehouseDataBaseMethods dbMethods) : base(logger)
         {
-            this.dbmethods = dbMethods;
+            dbmethods = dbMethods;
         }
 
         protected override ProcessorResult Action(CarInfo info)
         {
-            if(info.AccessType != AccessType.Free)
+            if (info.AccessType != AccessType.Free)
                 return ProcessorResult.Next;
 
             switch (info.State.TypeName)
             {
                 case nameof(AwaitingState):
-                    ChangeStatus(dbmethods, info.Car.Id, new OnEnterState());
+                    ChangeStatus(dbmethods, info, new OnEnterState());
                     return ProcessorResult.Finish;
                 case nameof(OnEnterState):
-                    ChangeStatus(dbmethods, info.Car.Id, new ExitPassGrantedState());
+                    ChangeStatus(dbmethods, info, new ExitPassGrantedState());
                     return ProcessorResult.Finish;
                 case nameof(ExitPassGrantedState):
                     if (info.Camera.RoleId == new OnWeightingRole().Id)
-                        ChangeStatus(dbmethods, info.Car.Id, new WeighingState());
+                        ChangeStatus(dbmethods, info, new WeighingState());
                     else if (info.Camera.RoleId == new ExitRole().Id)
-                        ChangeStatus(dbmethods, info.Car.Id, new AwaitingState());
+                        ChangeStatus(dbmethods, info, new AwaitingState());
                     else
                         return ProcessorResult.Next;
 
