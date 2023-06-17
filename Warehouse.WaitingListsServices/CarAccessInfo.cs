@@ -5,7 +5,7 @@ namespace Warehouse.WaitingListsServices
 {
     public class CarAccessInfo : ICarAccessInfo
     {
-        public CarAccessInfo(ICar car, List<IWaitingList> lists)
+        public CarAccessInfo(ICar? car, List<IWaitingList>? lists)
         {
             Car = car;
             AllIncludeLists = lists;
@@ -26,8 +26,8 @@ namespace Warehouse.WaitingListsServices
             }
         }
 
-        public ICar Car { get; }
-        public List<IWaitingList> AllIncludeLists { get; }
+        public ICar? Car { get; }
+        public List<IWaitingList>? AllIncludeLists { get; }
         public IWaitingList? TopAccessTypeList { get; }
         public AccessType? TopAccessType { get; }
         public PurposeOfArrival TopPurposeOfArrival { get; }

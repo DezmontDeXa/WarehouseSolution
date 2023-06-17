@@ -53,6 +53,8 @@ namespace Warehouse.CameraListeners
             {
                 StringBuilder contentBuilder = new StringBuilder();
                 var line = reader.ReadLine();
+                if (line == null) 
+                    continue;
                 if (line.StartsWith("Content-Type:"))
                 {
                     var e = new CameraNotifyBlock(reader, line);

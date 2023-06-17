@@ -4,6 +4,6 @@ namespace Warehouse.Interfaces.FindCarServices
 {
     public interface IFindCarService
     {
-        ICar FindCar(string plateNumber);
+        ICar? FindCar(string plateNumber);
     }
 }

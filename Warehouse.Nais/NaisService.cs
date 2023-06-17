@@ -1,8 +1,6 @@
-﻿using Ninject;
-using NLog;
+﻿using NLog;
 using Warehouse.CarStates.Implements;
 using Warehouse.ConfigDataBase;
-using Warehouse.DataBase.Models.Main;
 using Warehouse.Interfaces.AppSettings;
 using Warehouse.Interfaces.CarStates;
 using Warehouse.Interfaces.DataBase;
@@ -133,6 +131,9 @@ namespace Warehouse.Nais
             }
 
             var existCar = _dbMethods.GetCarById(car.Id);
+            if (existCar is null)
+                throw new ArgumentNullException(nameof(existCar));
+
             _dbMethods.SetCarStorage(existCar, storage);
             _dbMethods.SetCarFirstWeightning(car, true);
             _dbMethods.SetCarSecondWeightning(car, false);
@@ -188,7 +189,13 @@ namespace Warehouse.Nais
         private int GetNaisAreaId()
         {
             using (var configsDb = new WarehouseConfig(_settings))
-                return int.Parse(configsDb.Configs.First(x => x.Key == "NaisAreaId").Value);
+            {
+                var value = configsDb.Configs.First(x => x.Key == "NaisAreaId").Value;
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+
+                return int.Parse(value);
+            }
         }
 
         private IStorage GetStorage(IWeightsRecord record)

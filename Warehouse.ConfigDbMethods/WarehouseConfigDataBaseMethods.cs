@@ -14,7 +14,7 @@ namespace Warehouse.ConfigDbMethods
             this.settings = settings;
         }
 
-        public IBarrierInfo? GetBarrierInfo(ICamera? camera)
+        public IBarrierInfo? GetBarrierInfo(ICamera camera)
         {
             using(var db = new WarehouseConfig(settings))
             {

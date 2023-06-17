@@ -15,12 +15,13 @@ namespace Warehouse.ConfigDataBase
 
         public WarehouseConfig(IAppSettings settings)
         {
-            connectionString = settings.ConfigConnectionString;
+            connectionString = settings.ConfigConnectionString ?? throw new ArgumentNullException(nameof(settings.ConfigConnectionString));
         }
 
         public WarehouseConfig(DbContextOptions<WarehouseConfig> options)
             : base(options)
         {
+            connectionString = "";
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

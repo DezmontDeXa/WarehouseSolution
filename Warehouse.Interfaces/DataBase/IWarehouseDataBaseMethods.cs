@@ -9,7 +9,7 @@ namespace Warehouse.Interfaces.DataBase
     public interface IWarehouseDataBaseMethods
     {
         void CreateTimer(ICar car, ITimeControledState controlledState);
-        ICameraRole GetCameraRoleById(int roleId);
+        ICameraRole? GetCameraRoleById(int roleId);
         ICar? GetCarById(int id);
         ICar? GetCarByPlateNumber(string plateNumber);
         IEnumerable<ICar> GetCars();

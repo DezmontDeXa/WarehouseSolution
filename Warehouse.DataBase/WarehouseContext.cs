@@ -16,7 +16,7 @@ public partial class WarehouseContext : DbContext
 
     public WarehouseContext(IAppSettings appSettings)
     {
-        connectionString = appSettings.ConnectionString;
+        connectionString = appSettings.ConnectionString ?? throw new ArgumentNullException(nameof(appSettings.ConnectionString));
     }
 
     public WarehouseContext(DbContextOptions<WarehouseContext> options)

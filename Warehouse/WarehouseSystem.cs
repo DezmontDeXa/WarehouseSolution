@@ -77,12 +77,19 @@ namespace Warehouse
         private void Listener_OnError(object? sender, Exception e)
         {
             var listener = (ICameraListener)sender;
+
+            if (listener is null)
+                throw new ArgumentNullException(nameof(listener));
+
             _logger.Error(e, $"Error while listening {_listenersToCameraMap[listener].Name}. {e.Message}. Listener will be restarted. Check stacktrace in file or db.");
         }
 
         private void Listener_OnNotification(object? sender, ICameraNotifyBlock notifyBlock)
         {
             var listener = (ICameraListener)sender;
+            if (listener is null)
+                throw new ArgumentNullException(nameof(listener));
+
             var listenerToRole = _cameraRolesMap.FirstOrDefault(x => x.Key.GetHashCode() == listener.GetHashCode());
             var listenerCamera = _listenersToCameraMap[listener];
 

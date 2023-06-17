@@ -71,7 +71,7 @@ namespace Warehouse.Nais
                 }
                 catch (Exception e)
                 {
-                    logger.Error($"Error on NaisRole.Working. {e.Message}. Continue.", e);
+                    logger.Error(e, $"Error on NaisRole.Working. {e.Message}. Continue.");
                 }
                 Task.Delay(UpdateDelay).Wait();
             }

@@ -6,8 +6,8 @@ namespace Warehouse.RusificationServices
     {
         public string ToRu(string enStr)
         {
-            if (enStr == null) return enStr;
-            if (enStr.Length == 0) return enStr;
+            if (enStr == null) return "";
+            if (enStr.Length == 0) return "";
 
             var _input = enStr;
             var ru = "АВЕКМНОРСТУХ";

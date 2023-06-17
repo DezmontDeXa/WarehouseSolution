@@ -33,6 +33,11 @@ namespace Warehouse.CarStates
             return type.Name == carState.TypeName;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
     }
 
     //public class RequiredInspectioState : CarStateBase

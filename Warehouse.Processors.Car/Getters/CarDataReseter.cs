@@ -17,6 +17,9 @@ namespace Warehouse.Processors.Car.Getters
 
         protected override ProcessorResult Action(CarInfo info)
         {
+            if (info.Car is null)
+                throw new ArgumentNullException(nameof(info.Car));
+
             dbMethods.SetCarInspectionRequired(info.Car, false);
             dbMethods.SetCarArea(info.Car, null);
             dbMethods.SetCarFirstWeightning(info.Car, false);

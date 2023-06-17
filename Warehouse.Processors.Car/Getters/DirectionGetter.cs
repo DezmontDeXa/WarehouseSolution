@@ -12,13 +12,15 @@ namespace Warehouse.Processors.Car.Getters
 
         protected override ProcessorResult Action(CarInfo info)
         {
+            if(info is null) throw new ArgumentNullException(nameof(info));
+
             info.MoveDirectionString = ParseDirection(info.AnprBlock);
             return ProcessorResult.Next;
         }
 
-        private static string ParseDirection(ICameraNotifyBlock block)
+        private static string? ParseDirection(ICameraNotifyBlock block)
         {
-            var direction = block.XmlDocumentRoot["ANPR"]["direction"]?.InnerText;
+            var direction = block.XmlDocumentRoot["ANPR"]?["direction"]?.InnerText;
             return direction;
         }
     }

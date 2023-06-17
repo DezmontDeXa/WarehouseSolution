@@ -2,6 +2,6 @@
 {
     public interface IRussificationService
     {
-        string ToRu(string enStr);
+        string ToRu(string? enStr);
     }
 }

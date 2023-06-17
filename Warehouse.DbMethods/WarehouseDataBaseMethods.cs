@@ -187,7 +187,7 @@ namespace Warehouse.DbMethods
 
         #region Camera Roles
 
-        public ICameraRole GetCameraRoleById(int roleId)
+        public ICameraRole? GetCameraRoleById(int roleId)
         {
             using (var db = new WarehouseContext(settings))
                 return FindEntity<CameraRole>(db, roleId);
@@ -339,7 +339,7 @@ namespace Warehouse.DbMethods
 
         #region Private
 
-        private bool TryFindEntity<T>(WarehouseContext db, int id, out T entity) where T : class
+        private bool TryFindEntity<T>(WarehouseContext db, int id, out T? entity) where T : class
         {
             entity = FindEntity<T>(db, id);
             return entity != null;

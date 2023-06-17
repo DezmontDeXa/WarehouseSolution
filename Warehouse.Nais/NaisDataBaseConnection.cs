@@ -62,7 +62,7 @@ namespace Warehouse.Nais
             }
         }
 
-        private static T GetDbValue<T>(FbDataReader reader, int column)
+        private static T? GetDbValue<T>(FbDataReader reader, int column)
         {
             var value = reader.GetValue(column);
             if (value is DBNull)

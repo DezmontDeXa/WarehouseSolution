@@ -15,6 +15,9 @@ namespace Warehouse.Processors.Car.Getters
 
         protected override ProcessorResult Action(CarInfo info)
         {
+            if (info.Car is null)
+                throw new ArgumentNullException(nameof(info.Car));
+
             info.State = dbmethods.GetCarState(info.Car);
             return ProcessorResult.Next;
         }

@@ -17,7 +17,7 @@ namespace Warehouse.FindCarServices
             this.dbMethods = dbMethods;
         }
 
-        public ICar FindCar(string plateNumber)
+        public ICar? FindCar(string plateNumber)
         {
             var allCars = dbMethods.GetCars();
 

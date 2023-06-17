@@ -6,7 +6,7 @@ namespace Warehouse.CameraListeners
     public static class BinaryReaderExtension
     {
 
-        public static string ReadLine(this BinaryReader reader)
+        public static string? ReadLine(this BinaryReader reader)
         {
             var result = new StringBuilder();
             bool foundEndOfLine = false;

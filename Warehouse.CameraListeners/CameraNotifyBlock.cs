@@ -8,7 +8,7 @@ namespace Warehouse.CameraListeners
     {
         public IReadOnlyDictionary<string, string> Headers { get; private set; }
 
-        public string Content { get; private set; }
+        public string? Content { get; private set; }
 
         public byte[] ContentBytes { get; private set; }
 
@@ -16,15 +16,17 @@ namespace Warehouse.CameraListeners
 
         public int ContentLength { get; private set; }
 
-        public XmlDocument XmlDocument { get; private set; }
+        public XmlDocument? XmlDocument { get; private set; }
 
-        public XmlElement XmlDocumentRoot { get; private set; }
+        public XmlElement? XmlDocumentRoot { get; private set; }
 
         public string? EventType { get; private set; }
 
         public CameraNotifyBlock(BinaryReader reader, string contentType)
         {
-            ReadHeaders(reader, contentType);
+            ContentType = contentType.Split(":;".ToCharArray())[1].Trim();
+            ContentLength = int.Parse(reader.ReadLine()?.Split(":")[1].Trim() ?? "0");
+            Headers = ReadHeaders();
 
             ContentBytes = reader.ReadBytes(ContentLength);
 
@@ -49,11 +51,9 @@ namespace Warehouse.CameraListeners
 
         }
 
-        private void ReadHeaders(BinaryReader reader, string contentType)
+        private Dictionary<string, string> ReadHeaders()
         {
-            ContentType = contentType.Split(":;".ToCharArray())[1].Trim();
-            ContentLength = int.Parse(reader.ReadLine().Split(":")[1].Trim());
-            Headers = new Dictionary<string, string>()
+            return new Dictionary<string, string>()
             {
                 { "Content-Type", ContentType },
                 { "Content-Length", ContentLength.ToString() }
@@ -62,10 +62,12 @@ namespace Warehouse.CameraListeners
 
         private void CreateXMLDocument()
         {
+            if (Content is null) throw new ArgumentNullException(nameof(Content));
+
             XmlDocument = new XmlDocument();
             XmlDocument.LoadXml(Content);
             XmlDocumentRoot = XmlDocument.DocumentElement;
-            EventType = XmlDocumentRoot["eventType"]?.InnerText;
+            EventType = XmlDocumentRoot?["eventType"]?.InnerText ?? "Null event type";
         }
 
         public override string ToString() => "ContentType: " + ContentType + "\r\nContent: " + Content + "\r\n";

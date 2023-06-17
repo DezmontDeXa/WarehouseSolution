@@ -18,7 +18,7 @@ namespace Warehouse.Processors.Car.Getters
 
         private static string ParsePlateNumber(ICameraNotifyBlock block)
         {
-            return block.XmlDocumentRoot["ANPR"]["licensePlate"]?.InnerText;
+            return block.XmlDocumentRoot["ANPR"]?["licensePlate"]?.InnerText ?? "";
         }
     }
 }

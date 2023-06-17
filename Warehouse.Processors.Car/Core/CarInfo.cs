@@ -20,7 +20,7 @@ namespace Warehouse.Processors.Car.Core
         public AccessType AccessType { get; internal set; }
         public IEnumerable<string> Purposes { get; internal set; }
         public bool AnotherAreaProgress { get; internal set; }
-        public string MoveDirectionString { get; internal set; }
+        public string? MoveDirectionString { get; internal set; }
         public bool HasFirstWeightning { get; internal set; }
         public bool HasSecondWeightning { get; internal set; }
 
