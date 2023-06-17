@@ -83,12 +83,14 @@ namespace Warehouse.Processors.Car.StateSwithers
                         ChangeStatus(dbMethods, info, new AwaitingFirstWeighingState());
                         break;
                 }
+                return ProcessorResult.Finish;
             }
             else if (!info.HasSecondWeightning)
             {
                 ChangeStatus(dbMethods, info, new AwaitingSecondWeighingState());
+                return ProcessorResult.Finish;
             }
-            return ProcessorResult.Finish;
+            return ProcessorResult.Next;
         }
 
         protected override bool IsSuitableInfo(CarInfo info)
@@ -226,7 +228,7 @@ namespace Warehouse.Processors.Car.StateSwithers
         protected override ProcessorResult Action(CarInfo info)
         {
             ChangeStatus(dbMethods, info, new ChangingAreaState());
-            return ProcessorResult.Next;
+            return ProcessorResult.Finish;
         }
 
         protected override bool IsSuitableInfo(CarInfo info)
@@ -253,7 +255,7 @@ namespace Warehouse.Processors.Car.StateSwithers
         {
             var state = SelectLoadingUnloadingState(info);
             ChangeStatus(dbMethods, info, state);
-            return ProcessorResult.Next;
+            return ProcessorResult.Finish;
         }
 
         protected override bool IsSuitableInfo(CarInfo info)
@@ -279,7 +281,7 @@ namespace Warehouse.Processors.Car.StateSwithers
         protected override ProcessorResult Action(CarInfo info)
         {
             ChangeStatus(dbMethods, info, new ChangingAreaState());
-            return ProcessorResult.Next;
+            return ProcessorResult.Finish;
         }
 
         protected override bool IsSuitableInfo(CarInfo info)
