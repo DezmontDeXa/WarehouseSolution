@@ -17,13 +17,8 @@ namespace Warehouse.Processors.Car.Core
         {
             kernel = _kernel;
             this.logger = logger;
-            var stateSwitchers = new ProcessorsPipeline<CarInfo>();
-            stateSwitchers.AddProcessor(_kernel.Get<BlockCarAfterLoadingUnloadingProcessor>());
-            stateSwitchers.AddProcessor(_kernel.Get<FreeStateSwitcher>());
-            stateSwitchers.AddProcessor(_kernel.Get<TrackedStateSwitcher>());
-            stateSwitchers.AddProcessor(_kernel.Get<AfterFirstWeightningStateSwitcher>());
-            stateSwitchers.AddProcessor(_kernel.Get<AnotherAreaStateSwitcher>());
-            stateSwitchers.AllSkipped += StateSwitchers_AllSkipped;
+            var mainStateSwitchers = kernel.Get<MainStateSwitchers>();
+            mainStateSwitchers.AllSkipped += StateSwitchers_AllSkipped;
 
             AddProcessor(_kernel.Get<PlateNumberGetter>());
             AddProcessor(_kernel.Get<DirectionGetter>());
@@ -38,8 +33,9 @@ namespace Warehouse.Processors.Car.Core
             AddProcessor(_kernel.Get<WaitingListsGetter>());
             AddProcessor(_kernel.Get<AccessTypeGetter>());
             AddProcessor(_kernel.Get<PurposesGetter>());
-            AddProcessor(stateSwitchers);
+            AddProcessor(mainStateSwitchers);
             AddProcessor(_kernel.Get<OpenBarrierProcessor>());
+            AddProcessor(_kernel.Get<CarDataReseter>());
         }
 
         private void StateSwitchers_AllSkipped(object? sender, CarInfo e)
