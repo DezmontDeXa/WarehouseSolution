@@ -59,5 +59,15 @@ namespace Warehouse.Processors.Car.Core
         {
             return $"({info.Camera.Name})({info.NormalizedPlateNumber}): {msg}";
         }
+
+        protected CarStateBase SelectLoadingUnloadingState(CarInfo info)
+        {
+            if (info.Purposes.Contains("Погрузка"))
+                return new LoadingState();
+            if (info.Purposes.Contains("Разгрузка"))
+                return new UnloadingState();
+
+            throw new Exception("Не удалось установить цель заезда на другую территорию.");
+        }
     }
 }
