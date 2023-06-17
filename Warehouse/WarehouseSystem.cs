@@ -22,6 +22,8 @@ namespace Warehouse
         private readonly Dictionary<ICameraListener, ICamera> _listenersToCameraMap;
         private readonly Dictionary<ICameraListener, ICameraNotifyBlock> _anpr;
 
+        private readonly Queue<CarInfo> _carInfoQueue = new Queue<CarInfo>();
+
         public WarehouseSystem(WarehousePipeline pipeline, ILogger logger, List<ICameraRoleBase> cameraRoles, IAppSettings settings, IWarehouseDataBaseMethods dbMethods)
         {
             this.pipeline = pipeline;
@@ -37,7 +39,8 @@ namespace Warehouse
 
         public async void RunAsync()
         {
-            await Task.Run(RunCameras);
+            Task.Run(RunCameras);
+            await Task.Run(ProcessorsLoop);
         }
 
         private void RunCameras()
@@ -53,6 +56,13 @@ namespace Warehouse
                     listener.OnNotification += Listener_OnNotification;
                     listener.OnError += Listener_OnError;
                 }
+        }
+
+        private void ProcessorsLoop()
+        {
+            while (true)
+                if (_carInfoQueue.TryDequeue(out var carInfo))
+                    pipeline.Process(carInfo);
         }
 
         private ICameraRoleBase GetCameraRole(int roleId)
@@ -87,7 +97,7 @@ namespace Warehouse
             var _pictureBlock = notifyBlock;
             _anpr.Remove(listener);
 
-            pipeline.Process(new CarInfo(listenerCamera, _anprBlock, _pictureBlock));
+            _carInfoQueue.Enqueue(new CarInfo(listenerCamera, _anprBlock, _pictureBlock));            
         }
 
         private static bool IsAnprEvent(ICameraNotifyBlock notifyBlock)
