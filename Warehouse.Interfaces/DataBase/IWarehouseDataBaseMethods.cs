@@ -27,7 +27,9 @@ namespace Warehouse.Interfaces.DataBase
         void SendNotInListCarNotify(ICamera camera, ICar car, ICameraNotifyBlock pictureBlock, string plateNumber, string direction);
         void SendUnknownCarNotify(ICamera camera, ICameraNotifyBlock pictureBlock, string plateNumber, string direction);
         void SetCarArea(ICar? car, int? areaId);
+        void SetCarFirstWeightning(ICar car, bool v);
         void SetCarInspectionRequired(ICar car, bool value);
+        void SetCarSecondWeightning(ICar car, bool v);
         void SetCarState(int car, int state);
         void SetCarStorage(ICar car, IStorage storage);
         void SetCarTargetArea(ICar car, int? areaId);

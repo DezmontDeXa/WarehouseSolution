@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Warehouse.DataBase;
+using Warehouse.DataBase.Models.Config;
 using Warehouse.DataBase.Models.Main;
 using Warehouse.DataBase.Models.Main.Notifies;
 using Warehouse.Interfaces.AppSettings;
@@ -158,6 +159,26 @@ namespace Warehouse.DbMethods
             {
                 var dbCar = FindEntity<Car>(db, car.Id);
                 dbCar.AreaId = areaId;
+                db.SaveChanges();
+            }
+        }
+
+        public void SetCarFirstWeightning(ICar car, bool value)
+        {
+            using (var db = new WarehouseContext(settings))
+            {
+                var dbCar = FindEntity<Car>(db, car.Id);
+                dbCar.FirstWeighingCompleted = value;
+                db.SaveChanges();
+            }
+        }
+
+        public void SetCarSecondWeightning(ICar car, bool value)
+        {
+            using (var db = new WarehouseContext(settings))
+            {
+                var dbCar = FindEntity<Car>(db, car.Id);
+                dbCar.SecondWeighingCompleted = value;
                 db.SaveChanges();
             }
         }
