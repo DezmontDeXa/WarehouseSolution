@@ -19,17 +19,21 @@ namespace Warehouse.Processors.Car
 
         protected override ProcessorResult Action(CarInfo info)
         {
-            if (InfoCameraHasBarrier(info))
-            {
+            //TODO: запретить открытие для неподходящих стейтов и isInspectionrequered
 
-                var barrier = configMethods.GetBarrierInfo(info.Camera);
-                if (barrier == null)
-                    return ProcessorResult.Next;
+            var barrier = configMethods.GetBarrierInfo(info.Camera);
+            if (barrier == null)
+                return ProcessorResult.Next;
 
-                barriersService.Open(barrier);
-                Logger.Info(BuildLogMessage(info, "Шлагбаум открыт"));
-            }
+            barriersService.Open(barrier);
+            Logger.Info(BuildLogMessage(info, "Шлагбаум открыт"));
+
             return ProcessorResult.Next;
+        }
+
+        protected override bool IsSuitableInfo(CarInfo info)
+        {
+            return InfoCameraHasBarrier(info);
         }
 
         private bool InfoCameraHasBarrier(CarInfo info)
