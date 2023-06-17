@@ -2,6 +2,7 @@
 using NLog;
 using Warehouse.CarStates.Implements;
 using Warehouse.ConfigDataBase;
+using Warehouse.DataBase.Models.Main;
 using Warehouse.Interfaces.AppSettings;
 using Warehouse.Interfaces.CarStates;
 using Warehouse.Interfaces.DataBase;
@@ -133,6 +134,8 @@ namespace Warehouse.Nais
 
             var existCar = _dbMethods.GetCarById(car.Id);
             _dbMethods.SetCarStorage(existCar, storage);
+            _dbMethods.SetCarFirstWeightning(car, true);
+            _dbMethods.SetCarSecondWeightning(car, false);
             var naisAreaId = GetNaisAreaId();
             var accessType = _waitingListService.GetAccessTypeInfo(existCar.PlateNumberForward);
             if (storage.AreaId == naisAreaId)
@@ -198,16 +201,20 @@ namespace Warehouse.Nais
             throw new NullReferenceException($"Failed GetStorage from WeightsRecord. NaisCode: {record.StorageName}");
         }
 
-        private void ApplySecondWeighting(IWeightsRecord record, ICar existCar)
+        private void ApplySecondWeighting(IWeightsRecord record, ICar car)
         {
-            _dbMethods.SetCarState(existCar.Id, new ExitingState().Id);
-            _logger.Info($"Машина ({existCar.PlateNumberForward}) Прошла второе взвешивание. Статус машины изменен на \"{new ExitPassGrantedState().Name}\".");
+            _dbMethods.SetCarState(car.Id, new ExitingState().Id);
+            _dbMethods.SetCarFirstWeightning(car, true);
+            _dbMethods.SetCarSecondWeightning(car, true);
+            _logger.Info($"Машина ({car.PlateNumberForward}) Прошла второе взвешивание. Статус машины изменен на \"{new ExitingState().Name}\".");
         }
 
-        private void ApplySecondWeightingOnInit(IWeightsRecord record, ICar existCar)
+        private void ApplySecondWeightingOnInit(IWeightsRecord record, ICar car)
         {
-            _dbMethods.SetCarState(existCar.Id, new FinishState().Id);
-            _logger.Info($"Машина ({existCar.PlateNumberForward}) Прошла второе взвешивание. Статус машины изменен на \"{new FinishState().Name}\".");
+            _dbMethods.SetCarState(car.Id, new ExitingState().Id);
+            _dbMethods.SetCarFirstWeightning(car, true);
+            _dbMethods.SetCarSecondWeightning(car, true);
+            _logger.Info($"Машина ({car.PlateNumberForward}) Прошла второе взвешивание. Статус машины изменен на \"{new ExitingState().Name}\".");
         }
 
         private bool IsExpectedState(ICar existCar)
