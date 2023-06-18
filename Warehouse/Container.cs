@@ -124,6 +124,7 @@ namespace Warehouse
             Bind<MainStateSwitchers>().ToSelf().InSingletonScope();
             Bind<BeforeEnterSwitcher>().ToSelf().InSingletonScope();
             Bind<AfterEnterSwitcher>().ToSelf().InSingletonScope();
+
             Bind<FirstWeightningSwitch>().ToSelf().InSingletonScope();
             Bind<SecondWeightningSwitch>().ToSelf().InSingletonScope();
             Bind<ExitAfterSecondWeightingSwitcher>().ToSelf().InSingletonScope();
@@ -133,6 +134,7 @@ namespace Warehouse
             Bind<ChangingAreaSwitcher>().ToSelf().InSingletonScope();
             Bind<ExitFromAnotherAreaSwitcher>().ToSelf().InSingletonScope();
 
+            Bind<ExitForFreeSwitcher>().ToSelf().InSingletonScope();
         }
 
     }

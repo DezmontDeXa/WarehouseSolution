@@ -15,7 +15,7 @@ namespace Warehouse.Processors.Car.StateSwithers
         public MainStateSwitchers(BeforeEnterSwitcher beforeEnterSwitcher, AfterEnterSwitcher afterEnterSwitcher, FirstWeightningSwitch firstWeightningSwitch,
             SecondWeightningSwitch secondWeightningSwitch, ExitAfterSecondWeightingSwitcher exitAfterSecondWeightingSwitcher,
             ExitingForChangeAreaSwitcher exitingForChangeAreaSwitcher, ChangingAreaSwitcher changingAreaSwitcher,
-            ExitFromAnotherAreaSwitcher exitFromAnotherAreaSwitcher)
+            ExitFromAnotherAreaSwitcher exitFromAnotherAreaSwitcher, ExitForFreeSwitcher exitForFreeSwitcher )
         {
             AddProcessor(beforeEnterSwitcher);
             AddProcessor(afterEnterSwitcher);
@@ -26,6 +26,7 @@ namespace Warehouse.Processors.Car.StateSwithers
             AddProcessor(exitingForChangeAreaSwitcher);
             AddProcessor(changingAreaSwitcher);
             AddProcessor(exitFromAnotherAreaSwitcher);
+            AddProcessor(exitForFreeSwitcher);
         }
     }
 
@@ -308,4 +309,28 @@ namespace Warehouse.Processors.Car.StateSwithers
 
     #endregion
 
+    public class ExitForFreeSwitcher : CarInfoProcessorBase
+    {
+        private readonly IWarehouseDataBaseMethods dbMethods;
+
+        public ExitForFreeSwitcher(ILogger logger, IWarehouseDataBaseMethods dbMethods) : base(logger)
+        {
+            this.dbMethods = dbMethods;
+        }
+
+        protected override ProcessorResult Action(CarInfo info)
+        {
+            ChangeStatus(dbMethods, info, new AwaitingState());
+            return ProcessorResult.Next;
+        }
+
+        protected override bool IsSuitableInfo(CarInfo info)
+        {
+            if (info.Camera.RoleId == new ExitRole().Id)
+                if (info.State.Id == new ExitPassGrantedState().Id)
+                    return true;
+
+            return false;
+        }
+    }
 }
